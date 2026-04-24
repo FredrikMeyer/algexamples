@@ -35,9 +35,9 @@ const TYPE_LABELS: Record<'variety' | 'computation' | 'counterexample', string> 
 }
 
 const ACTIVE_TAB_COLOURS: Record<'variety' | 'computation' | 'counterexample', string> = {
-  variety: 'bg-blue-600 text-white',
-  computation: 'bg-green-600 text-white',
-  counterexample: 'bg-orange-600 text-white',
+  variety: 'bg-teal-700 text-white',
+  computation: 'bg-emerald-700 text-white',
+  counterexample: 'bg-amber-600 text-white',
 }
 
 function ExamplesPage() {
@@ -48,8 +48,13 @@ function ExamplesPage() {
   return (
     <div>
       <div className="mb-6">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">{heading}</h1>
-        <p className="text-gray-600">
+        <h1
+          className="text-4xl font-semibold text-gray-900 mb-2"
+          style={{ fontFamily: "'EB Garamond', Georgia, serif", letterSpacing: '-0.01em' }}
+        >
+          {heading}
+        </h1>
+        <p className="text-gray-500">
           {examples.length === 0
             ? q
               ? `No examples match "${q}".`
@@ -65,7 +70,7 @@ function ExamplesPage() {
           search={{}}
           className={`px-4 py-1.5 rounded-full text-sm font-medium transition-colors ${
             !activeType
-              ? 'bg-gray-800 text-white'
+              ? 'bg-indigo-700 text-white'
               : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
           }`}
         >

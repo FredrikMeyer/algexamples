@@ -28,7 +28,12 @@ function ExampleDetailPage() {
 
   return (
     <div data-pagefind-body>
-      <h1 className="text-3xl font-bold text-gray-900 mb-6">{example.title}</h1>
+      <h1
+        className="text-4xl font-semibold text-gray-900 mb-6"
+        style={{ fontFamily: "'EB Garamond', Georgia, serif", letterSpacing: '-0.01em' }}
+      >
+        {example.title}
+      </h1>
 
       <div className="flex flex-col lg:flex-row gap-8">
         {/* Main content */}

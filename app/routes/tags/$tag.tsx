@@ -14,9 +14,15 @@ function TagPage() {
   return (
     <div>
       <div className="mb-6">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">#{tag}</h1>
-        <p className="text-gray-600">
-          {examples.length} example{examples.length === 1 ? '' : 's'} tagged #{tag}
+        <p className="text-xs font-medium text-gray-400 uppercase tracking-widest mb-1">Tag</p>
+        <h1
+          className="text-4xl font-semibold text-gray-900 mb-2"
+          style={{ fontFamily: "'EB Garamond', Georgia, serif", letterSpacing: '-0.01em' }}
+        >
+          {tag}
+        </h1>
+        <p className="text-gray-500">
+          {examples.length} example{examples.length === 1 ? '' : 's'}
         </p>
       </div>
 

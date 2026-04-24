@@ -21,37 +21,34 @@ function HomePage() {
 
   return (
     <div>
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">
+      <div className="mb-10">
+        <h1
+          className="text-4xl font-semibold text-gray-900 mb-3"
+          style={{ fontFamily: "'EB Garamond', Georgia, serif", letterSpacing: '-0.01em' }}
+        >
           Algebraic Geometry Examples
         </h1>
-        <p className="text-gray-600">
+        <p className="text-gray-500 mb-3">
           A reference database of concrete examples in algebraic geometry and related fields.
-          {total > 0 && ` ${total} entries.`}
         </p>
+        {total > 0 && (
+          <div className="flex gap-4 text-sm">
+            <Link to="/examples/" search={{ type: 'variety' }} className="text-indigo-600 hover:text-indigo-800 hover:underline">
+              {counts.variety} {counts.variety === 1 ? 'variety' : 'varieties'}
+            </Link>
+            <span className="text-gray-300">·</span>
+            <Link to="/examples/" search={{ type: 'computation' }} className="text-indigo-600 hover:text-indigo-800 hover:underline">
+              {counts.computation} {counts.computation === 1 ? 'computation' : 'computations'}
+            </Link>
+            <span className="text-gray-300">·</span>
+            <Link to="/examples/" search={{ type: 'counterexample' }} className="text-indigo-600 hover:text-indigo-800 hover:underline">
+              {counts.counterexample} {counts.counterexample === 1 ? 'counterexample' : 'counterexamples'}
+            </Link>
+          </div>
+        )}
       </div>
 
-      <div className="grid grid-cols-3 gap-3 mb-8">
-        {(
-          [
-            { type: 'variety', label: 'Varieties', count: counts.variety },
-            { type: 'computation', label: 'Computations', count: counts.computation },
-            { type: 'counterexample', label: 'Counterexamples', count: counts.counterexample },
-          ] as const
-        ).map(({ type, label, count }) => (
-          <Link
-            key={type}
-            to="/examples/"
-            search={{ type }}
-            className="border border-gray-200 rounded-lg p-4 bg-white text-center hover:border-blue-300 transition-colors block"
-          >
-            <div className="text-2xl font-bold text-blue-600">{count}</div>
-            <div className="text-sm text-gray-600">{label}</div>
-          </Link>
-        ))}
-      </div>
-
-      <h2 className="text-lg font-semibold text-gray-800 mb-3">Recently added</h2>
+      <h2 className="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-4">Recently added</h2>
       <div className="space-y-3">
         {recent.map((e) => (
           <ExampleCard key={e.slug} example={e} />
@@ -59,7 +56,7 @@ function HomePage() {
       </div>
 
       {total === 0 && (
-        <p className="text-gray-500 text-sm mt-4">
+        <p className="text-gray-400 text-sm mt-4">
           No examples yet. Add .md files to <code>content/examples/</code>.
         </p>
       )}

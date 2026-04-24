@@ -26,10 +26,10 @@ function RootLayout() {
       <head>
         <HeadContent />
       </head>
-      <body className="bg-gray-50 min-h-screen">
+      <body className="min-h-screen" style={{ background: '#faf9f6', fontFamily: "'Inter', system-ui, sans-serif" }}>
         <div className="flex min-h-screen">
           <Sidebar allTags={allTags} />
-          <main className="flex-1 min-w-0 p-6 md:p-8 max-w-4xl">
+          <main className="flex-1 min-w-0 p-6 md:p-10">
             <Outlet />
           </main>
         </div>

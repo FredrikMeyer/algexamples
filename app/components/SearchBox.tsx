@@ -15,13 +15,21 @@ export function SearchBox() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="mb-4">
+    <form onSubmit={handleSubmit}>
       <input
         type="search"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
-        placeholder="Search examples…"
-        className="w-full rounded border border-gray-300 bg-white px-3 py-1.5 text-sm text-gray-900 placeholder-gray-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+        placeholder="Search…"
+        className="w-full rounded px-3 py-1.5 text-sm focus:outline-none focus:ring-2"
+        style={{
+          background: '#312e81',
+          border: '1px solid #4338ca',
+          color: '#e0e7ff',
+          colorScheme: 'dark',
+        }}
+        onFocus={(e) => (e.currentTarget.style.borderColor = '#818cf8')}
+        onBlur={(e) => (e.currentTarget.style.borderColor = '#4338ca')}
       />
     </form>
   )

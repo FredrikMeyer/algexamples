@@ -21,89 +21,88 @@ export function Sidebar({ allTags }: SidebarProps) {
 
   return (
     <>
-      {/* Mobile toggle — always visible outside the aside */}
+      {/* Mobile toggle */}
       <button
-        className="md:hidden fixed top-3 left-3 z-50 p-2 bg-white border rounded shadow text-sm"
+        className="md:hidden fixed top-3 left-3 z-50 p-2 bg-indigo-950 text-indigo-200 border border-indigo-800 rounded shadow text-sm"
         onClick={() => setOpen((o) => !o)}
         aria-label="Toggle sidebar"
       >
         {open ? '✕' : '☰'}
       </button>
 
-      {/*
-        data-open drives CSS for both mobile and desktop:
-          mobile:  transform-based slide-in/out (position: fixed overlay)
-          desktop: width-based collapse (position: static, in layout flow)
-        See .sidebar rules in global.css.
-      */}
       <aside
         data-open={open}
-        className="sidebar fixed md:static top-0 left-0 h-full z-40 bg-white border-r border-gray-200 flex flex-col overflow-hidden flex-shrink-0"
+        className="sidebar fixed md:static top-0 left-0 h-full z-40 flex flex-col overflow-hidden flex-shrink-0"
+        style={{ background: '#1e1b4b', color: '#c7d2fe' }}
       >
-        {/* Desktop header — always rendered so the toggle button survives collapse */}
+        {/* Header row */}
         <div
-          className={`hidden md:flex items-center flex-shrink-0 p-3 border-b border-gray-100 ${
+          className={`hidden md:flex items-center flex-shrink-0 px-4 py-4 border-b ${
             open ? 'justify-between' : 'justify-center'
           }`}
+          style={{ borderColor: '#312e81' }}
         >
           {open && (
-            <Link to="/" className="font-semibold text-gray-800 hover:text-blue-600 truncate">
+            <Link
+              to="/"
+              className="font-semibold text-white hover:text-indigo-200 truncate tracking-tight"
+              style={{ fontFamily: "'EB Garamond', Georgia, serif", fontSize: '1.1rem' }}
+            >
               AG Examples
             </Link>
           )}
           <button
             onClick={() => setOpen((o) => !o)}
-            className="text-gray-400 hover:text-gray-600 text-sm flex-shrink-0"
+            className="text-indigo-400 hover:text-white text-sm flex-shrink-0"
             aria-label={open ? 'Collapse sidebar' : 'Expand sidebar'}
           >
             {open ? '◀' : '▶'}
           </button>
         </div>
 
-        {/* Scrollable content — hidden when collapsed */}
         {open && (
-          <div className="flex-1 overflow-y-auto p-4">
+          <div className="flex-1 overflow-y-auto px-4 py-4 space-y-6">
             {/* Mobile header */}
-            <div className="md:hidden font-semibold text-gray-800 mb-4">
-              <Link to="/" className="hover:text-blue-600">AG Examples</Link>
+            <div className="md:hidden font-semibold text-white mb-2">
+              <Link to="/" className="hover:text-indigo-200">AG Examples</Link>
             </div>
 
             <SearchBox />
 
-            <nav className="mb-6">
-              <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">
-                Browse by type
-              </p>
-              <ul className="space-y-1">
-                <li>
-                  <Link to="/examples/" search={{ type: 'variety' }} className="block text-sm text-gray-700 hover:text-blue-600 py-0.5">
-                    Varieties
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/examples/" search={{ type: 'computation' }} className="block text-sm text-gray-700 hover:text-blue-600 py-0.5">
-                    Computations
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/examples/" search={{ type: 'counterexample' }} className="block text-sm text-gray-700 hover:text-blue-600 py-0.5">
-                    Counterexamples
-                  </Link>
-                </li>
+            {/* Browse by type */}
+            <nav>
+              <p className="text-xs font-medium text-indigo-400 mb-2 uppercase tracking-widest">Type</p>
+              <ul className="space-y-0.5">
+                {[
+                  { to: '/examples/', search: { type: 'variety' as const }, label: 'Varieties' },
+                  { to: '/examples/', search: { type: 'computation' as const }, label: 'Computations' },
+                  { to: '/examples/', search: { type: 'counterexample' as const }, label: 'Counterexamples' },
+                ].map(({ to, search, label }) => (
+                  <li key={label}>
+                    <Link
+                      to={to}
+                      search={search}
+                      className="block text-sm py-1 px-2 rounded text-indigo-200 hover:text-white hover:bg-indigo-800 transition-colors"
+                    >
+                      {label}
+                    </Link>
+                  </li>
+                ))}
               </ul>
             </nav>
 
-            <nav className="mb-6">
-              <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">
-                Fields
-              </p>
-              <ul className="space-y-1">
+            <div style={{ borderTop: '1px solid #312e81' }} />
+
+            {/* Fields */}
+            <nav>
+              <p className="text-xs font-medium text-indigo-400 mb-2 uppercase tracking-widest">Field</p>
+              <ul className="space-y-0.5">
                 {FIELDS.map((f) => (
                   <li key={f.id}>
                     <Link
                       to="/fields/$field"
                       params={{ field: f.id }}
-                      className="block text-sm text-gray-700 hover:text-blue-600 py-0.5"
+                      className="block text-sm py-1 px-2 rounded text-indigo-200 hover:text-white hover:bg-indigo-800 transition-colors"
                     >
                       {f.label}
                     </Link>
@@ -113,31 +112,41 @@ export function Sidebar({ allTags }: SidebarProps) {
             </nav>
 
             {allTags.length > 0 && (
-              <div>
-                <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">
-                  Tags
-                </p>
-                <div className="flex flex-wrap gap-1">
-                  {visibleTags.map((tag) => (
-                    <Link
-                      key={tag}
-                      to="/tags/$tag"
-                      params={{ tag }}
-                      className="text-xs bg-gray-100 hover:bg-blue-50 hover:text-blue-700 text-gray-600 px-2 py-0.5 rounded"
+              <>
+                <div style={{ borderTop: '1px solid #312e81' }} />
+                <div>
+                  <p className="text-xs font-medium text-indigo-400 mb-2 uppercase tracking-widest">Tags</p>
+                  <div className="flex flex-wrap gap-1">
+                    {visibleTags.map((tag) => (
+                      <Link
+                        key={tag}
+                        to="/tags/$tag"
+                        params={{ tag }}
+                        className="text-xs px-2 py-0.5 rounded transition-colors"
+                        style={{ background: '#312e81', color: '#a5b4fc' }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.background = '#4338ca'
+                          e.currentTarget.style.color = '#fff'
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.background = '#312e81'
+                          e.currentTarget.style.color = '#a5b4fc'
+                        }}
+                      >
+                        {tag}
+                      </Link>
+                    ))}
+                  </div>
+                  {allTags.length > 12 && (
+                    <button
+                      onClick={() => setShowAllTags((s) => !s)}
+                      className="mt-2 text-xs text-indigo-400 hover:text-indigo-200"
                     >
-                      {tag}
-                    </Link>
-                  ))}
+                      {showAllTags ? 'Show fewer' : `+${allTags.length - 12} more`}
+                    </button>
+                  )}
                 </div>
-                {allTags.length > 12 && (
-                  <button
-                    onClick={() => setShowAllTags((s) => !s)}
-                    className="mt-1 text-xs text-blue-500 hover:underline"
-                  >
-                    {showAllTags ? 'Show fewer' : `+${allTags.length - 12} more`}
-                  </button>
-                )}
-              </div>
+              </>
             )}
           </div>
         )}
