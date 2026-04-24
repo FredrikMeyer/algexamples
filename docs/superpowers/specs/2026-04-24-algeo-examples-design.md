@@ -9,14 +9,14 @@ A web-based reference database of concrete examples in algebraic geometry and re
 
 ## Stack
 
-| Concern | Choice |
-|---|---|
-| Framework | TanStack Start (React) with static prerendering |
-| Content | Markdown files + YAML frontmatter in `content/examples/` |
-| Schema validation | Zod — validates frontmatter at build time |
-| Math rendering | KaTeX via `remark-math` + `rehype-katex` |
-| Search | Pagefind — indexes static HTML output, runs fully client-side |
-| Deployment | Static output → GitHub Pages / Netlify / Vercel |
+| Concern           | Choice                                                        |
+|-------------------|---------------------------------------------------------------|
+| Framework         | TanStack Start (React) with static prerendering               |
+| Content           | Markdown files + YAML frontmatter in `content/examples/`      |
+| Schema validation | Zod — validates frontmatter at build time                     |
+| Math rendering    | KaTeX via `remark-math` + `rehype-katex`                      |
+| Search            | Pagefind — indexes static HTML output, runs fully client-side |
+| Deployment        | Static output → GitHub Pages / Netlify / Vercel               |
 
 TanStack Start is chosen over Astro because it provides a natural upgrade path to SSR, user authentication, and a database backend if needed in the future — without changing frameworks.
 
@@ -74,14 +74,14 @@ The rendered page shows a prominent "Refutes: …" banner at the top.
 
 ## Routes
 
-| Route | Description |
-|---|---|
-| `/` | Homepage: search bar, type counts, foldable sidebar, recently added |
-| `/examples` | Full listing, filterable by type / field / tag |
-| `/examples/$slug` | Individual example page (stable permalink) |
-| `/varieties` | Browse varieties, filter by property (dimension, ambient space, singularities, etc.) |
-| `/tags/$tag` | All examples with a given tag |
-| `/fields/$field` | All examples in a given field |
+| Route             | Description                                                                          |
+|-------------------|--------------------------------------------------------------------------------------|
+| `/`               | Homepage: search bar, type counts, foldable sidebar, recently added                  |
+| `/examples`       | Full listing, filterable by type / field / tag                                       |
+| `/examples/$slug` | Individual example page (stable permalink)                                           |
+| `/varieties`      | Browse varieties, filter by property (dimension, ambient space, singularities, etc.) |
+| `/tags/$tag`      | All examples with a given tag                                                        |
+| `/fields/$field`  | All examples in a given field                                                        |
 
 ## Layout
 
@@ -118,8 +118,42 @@ Pagefind is run as a post-build step over the static HTML output. The search UI 
 
 No CMS, no database. Git is the source of truth. The `slug` field in frontmatter is the stable permalink identifier — renaming the file does not break links as long as the slug is unchanged.
 
+## Additional features
+
+### A — CAS code snippets
+Macaulay2 and SageMath code blocks attached to any example. Authors use fenced code blocks tagged `macaulay2` or `sage` in the markdown body. Rendered with syntax highlighting and a copy button.
+
+### B — Commutative diagrams
+TikZJax loaded as a client-side script. Authors write standard `tikzcd` environments in fenced code blocks tagged `tikzcd`; TikZJax renders them as SVG in the browser. Must coexist with KaTeX on the same page.
+
+### C — Hodge diamond visualisation
+Varieties may include a `hodge_numbers` object in their `properties` (keyed `h00`, `h01`, `h10`, `h11`, etc.). When present, the properties section renders an SVG Hodge diamond alongside the table.
+
+### D — Automatic backlinks
+At build time, scan all `related` fields across every entry and invert the graph. Each example page gets a "Referenced by" section listing entries that point to it. No author action required.
+
+### E — Stacks Project tag links
+A custom remark plugin transforms `[SP XXXX]` syntax into a hyperlink to `stacks.math.columbia.edu/tag/XXXX`. At build time, the plugin fetches the tag's statement from the Stacks API and embeds it as a `data-tooltip` attribute; a CSS/JS tooltip renders it on hover. Fetch results are cached to avoid repeated build-time requests.
+
+### F — Concept tags (controlled vocabulary)
+A separate `content/concepts/` collection where each concept is a short `.md` file (slug, title, brief definition). Examples reference concepts via a `concepts: string[]` frontmatter field (slugs). On an example page, concept tags render as links to the concept definition. On a concept page, all examples tagged with it are listed. Distinct from free-form `tags`.
+
+### G — Side-by-side variety comparison
+On `/varieties`, checkboxes allow selecting 2–4 varieties. A "Compare" button opens a panel showing their properties tables side-by-side with differing values highlighted. Purely client-side using the build-time variety JSON.
+
+### H — Site-wide LaTeX macros
+A single `src/lib/katex-macros.ts` file defines macros applied globally via KaTeX's `macros` option:
+- `\PP` → `\mathbb{P}`
+- `\AA` → `\mathbb{A}`
+- `\OO` → `\mathcal{O}`
+- `\Spec` → `\operatorname{Spec}`
+- `\Proj` → `\operatorname{Proj}`
+
+Authors can use these in any entry without redeclaring them. The macros file is the canonical notation reference for the site.
+
 ## Future considerations
 
 - Community contributions: GitHub PR workflow (no backend needed) or a full submission form once SSR is enabled
 - Advanced search / filtering: Pagefind handles the common case; Algolia or a server-side index if needed at scale
 - User accounts / saved favourites: TanStack Start supports SSR adapters and API routes — this is a natural extension without rewriting the frontend
+- Export to LaTeX/PDF: markdown source is already close to LaTeX; a build-time step could generate `.tex` files per entry
