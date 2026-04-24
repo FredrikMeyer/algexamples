@@ -5,15 +5,25 @@ import { ExampleCard } from '~/components/ExampleCard'
 
 const SearchSchema = z.object({
   type: z.enum(['variety', 'computation', 'counterexample']).optional(),
+  q: z.string().optional(),
 })
 
 export const Route = createFileRoute('/examples/')({
   validateSearch: SearchSchema,
-  loaderDeps: ({ search }) => ({ type: search.type }),
-  loader: async ({ deps: { type } }) => {
-    const all = getAllExamples()
-    const examples = type ? all.filter((e) => e.type === type) : all
-    return { examples, activeType: type }
+  loaderDeps: ({ search }) => ({ type: search.type, q: search.q }),
+  loader: async ({ deps: { type, q } }) => {
+    let examples = getAllExamples()
+    if (type) examples = examples.filter((e) => e.type === type)
+    if (q) {
+      const term = q.toLowerCase()
+      examples = examples.filter(
+        (e) =>
+          e.title.toLowerCase().includes(term) ||
+          e.summary.toLowerCase().includes(term) ||
+          e.tags.some((t) => t.toLowerCase().includes(term))
+      )
+    }
+    return { examples, activeType: type, q: q ?? '' }
   },
   component: ExamplesPage,
 })
@@ -31,7 +41,7 @@ const ACTIVE_TAB_COLOURS: Record<'variety' | 'computation' | 'counterexample', s
 }
 
 function ExamplesPage() {
-  const { examples, activeType } = Route.useLoaderData()
+  const { examples, activeType, q } = Route.useLoaderData()
 
   const heading = activeType ? TYPE_LABELS[activeType] : 'Examples'
 
@@ -41,8 +51,10 @@ function ExamplesPage() {
         <h1 className="text-3xl font-bold text-gray-900 mb-2">{heading}</h1>
         <p className="text-gray-600">
           {examples.length === 0
-            ? 'No examples match the current filter.'
-            : `${examples.length} example${examples.length === 1 ? '' : 's'}`}
+            ? q
+              ? `No examples match "${q}".`
+              : 'No examples match the current filter.'
+            : `${examples.length} example${examples.length === 1 ? '' : 's'}${q ? ` matching "${q}"` : ''}`}
         </p>
       </div>
 
@@ -82,11 +94,9 @@ function ExamplesPage() {
         <div className="text-center py-12 text-gray-500">
           <p className="text-lg font-medium mb-1">No examples found</p>
           <p className="text-sm">
-            Try selecting a different filter or{' '}
             <Link to="/examples/" search={{}} className="text-blue-600 hover:underline">
-              view all examples
+              Clear filters
             </Link>
-            .
           </p>
         </div>
       ) : (

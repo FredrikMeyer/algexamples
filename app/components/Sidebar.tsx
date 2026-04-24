@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link } from '@tanstack/react-router'
-import { SearchWidget } from './SearchWidget'
+import { SearchBox } from './SearchBox'
 
 const FIELDS = [
   { id: 'algebraic-geometry', label: 'Algebraic Geometry' },
@@ -21,7 +21,7 @@ export function Sidebar({ allTags }: SidebarProps) {
 
   return (
     <>
-      {/* Mobile toggle button */}
+      {/* Mobile toggle — always visible outside the aside */}
       <button
         className="md:hidden fixed top-3 left-3 z-50 p-2 bg-white border rounded shadow text-sm"
         onClick={() => setOpen((o) => !o)}
@@ -30,30 +30,45 @@ export function Sidebar({ allTags }: SidebarProps) {
         {open ? '✕' : '☰'}
       </button>
 
+      {/*
+        data-open drives CSS for both mobile and desktop:
+          mobile:  transform-based slide-in/out (position: fixed overlay)
+          desktop: width-based collapse (position: static, in layout flow)
+        See .sidebar rules in global.css.
+      */}
       <aside
-        style={{
-          transform: open ? 'translateX(0)' : 'translateX(-100%)',
-          transition: 'transform 200ms',
-        }}
-        className="md:translate-x-0 md:static fixed top-0 left-0 h-full z-40 w-64 bg-white border-r border-gray-200 flex flex-col overflow-y-auto p-4"
+        data-open={open}
+        className="sidebar fixed md:static top-0 left-0 h-full z-40 bg-white border-r border-gray-200 flex flex-col overflow-hidden flex-shrink-0"
       >
-        {/* Desktop collapse button */}
-        <div className="hidden md:flex justify-between items-center mb-4">
-          <Link to="/" className="font-semibold text-gray-800 hover:text-blue-600">
-            AG Examples
-          </Link>
+        {/* Desktop header — always rendered so the toggle button survives collapse */}
+        <div
+          className={`hidden md:flex items-center flex-shrink-0 p-3 border-b border-gray-100 ${
+            open ? 'justify-between' : 'justify-center'
+          }`}
+        >
+          {open && (
+            <Link to="/" className="font-semibold text-gray-800 hover:text-blue-600 truncate">
+              AG Examples
+            </Link>
+          )}
           <button
             onClick={() => setOpen((o) => !o)}
-            className="text-gray-400 hover:text-gray-600 text-sm"
-            aria-label="Collapse sidebar"
+            className="text-gray-400 hover:text-gray-600 text-sm flex-shrink-0"
+            aria-label={open ? 'Collapse sidebar' : 'Expand sidebar'}
           >
             {open ? '◀' : '▶'}
           </button>
         </div>
 
+        {/* Scrollable content — hidden when collapsed */}
         {open && (
-          <>
-            <SearchWidget />
+          <div className="flex-1 overflow-y-auto p-4">
+            {/* Mobile header */}
+            <div className="md:hidden font-semibold text-gray-800 mb-4">
+              <Link to="/" className="hover:text-blue-600">AG Examples</Link>
+            </div>
+
+            <SearchBox />
 
             <nav className="mb-6">
               <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">
@@ -124,7 +139,7 @@ export function Sidebar({ allTags }: SidebarProps) {
                 )}
               </div>
             )}
-          </>
+          </div>
         )}
       </aside>
     </>

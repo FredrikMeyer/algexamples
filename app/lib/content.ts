@@ -3,7 +3,11 @@ import path from 'path'
 import matter from 'gray-matter'
 import { ExampleFrontmatterSchema, type Example, type ExampleFrontmatter } from './schema'
 
-const EXAMPLES_DIR = path.join(process.cwd(), 'content', 'examples')
+// Lazy so path.join never runs at module-init time in the browser bundle.
+// Loaders call these functions only on the server.
+function getExamplesDir(): string {
+  return path.join(process.cwd(), 'content', 'examples')
+}
 
 function parseExampleFile(filePath: string): Example {
   const raw = fs.readFileSync(filePath, 'utf-8')
@@ -13,11 +17,9 @@ function parseExampleFile(filePath: string): Example {
 }
 
 export function getAllExamples(): Example[] {
-  const files = fs
-    .readdirSync(EXAMPLES_DIR)
-    .filter((f) => f.endsWith('.md'))
-    .sort()
-  return files.map((f) => parseExampleFile(path.join(EXAMPLES_DIR, f)))
+  const dir = getExamplesDir()
+  const files = fs.readdirSync(dir).filter((f) => f.endsWith('.md')).sort()
+  return files.map((f) => parseExampleFile(path.join(dir, f)))
 }
 
 export function getExampleBySlug(slug: string): Example {

@@ -30,3 +30,15 @@ for (const { name, path } of pages) {
     })
   })
 }
+
+test('screenshot: sidebar-collapsed', async ({ page }) => {
+  await page.goto('/')
+  // networkidle ensures the client bundle has loaded and React has hydrated
+  await page.waitForLoadState('networkidle')
+  await page.click('aside button[aria-label="Collapse sidebar"]')
+  await page.waitForTimeout(500) // CSS transition is 200ms
+  await page.screenshot({
+    path: join(SCREENSHOTS_DIR, 'sidebar-collapsed.png'),
+    fullPage: true,
+  })
+})

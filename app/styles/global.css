@@ -2,6 +2,26 @@
 @import "katex/dist/katex.min.css";
 @import "highlight.js/styles/github.css";
 
+/* Sidebar collapse — data-open drives both mobile (transform) and desktop (width) */
+.sidebar {
+  width: 16rem; /* 256px — open */
+  transition: width 200ms ease, transform 200ms ease;
+}
+
+/* Mobile: slide in/out as fixed overlay */
+@media (max-width: 767px) {
+  .sidebar[data-open="false"] {
+    transform: translateX(-100%);
+  }
+}
+
+/* Desktop: collapse to a thin strip showing just the expand button */
+@media (min-width: 768px) {
+  .sidebar[data-open="false"] {
+    width: 2.5rem; /* 40px */
+  }
+}
+
 /* Prose styles for markdown content */
 .prose {
   max-width: none;
