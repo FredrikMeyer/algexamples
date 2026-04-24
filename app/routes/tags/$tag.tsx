@@ -3,7 +3,7 @@ import { getExamplesByTagFn } from '~/lib/server-fns'
 import { ExampleCard } from '~/components/ExampleCard'
 
 export const Route = createFileRoute('/tags/$tag')({
-  loader: ({ params: { tag } }) => getExamplesByTagFn({ data: tag }),
+  loader: ({ params: { tag } }) => getExamplesByTagFn(tag),
   notFoundComponent: () => <div>Tag not found.</div>,
   component: TagPage,
 })

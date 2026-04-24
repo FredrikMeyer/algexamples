@@ -39,15 +39,13 @@ export const Route = createFileRoute('/search')({
   loaderDeps: ({ search }) => search,
   loader: async ({ deps }) => {
     const results = await searchExamplesFn({
-      data: {
-        q: deps.q,
-        type: deps.type,
-        field: deps.field,
-        tag: deps.tag,
-        dim: deps.dim,
-        rational: deps.rational,
-        smooth: deps.smooth,
-      },
+      q: deps.q,
+      type: deps.type,
+      field: deps.field,
+      tag: deps.tag,
+      dim: deps.dim,
+      rational: deps.rational,
+      smooth: deps.smooth,
     })
     return { results }
   },

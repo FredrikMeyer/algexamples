@@ -10,7 +10,7 @@ function formatFieldName(field: string): string {
 }
 
 export const Route = createFileRoute('/fields/$field')({
-  loader: ({ params: { field } }) => getExamplesByFieldFn({ data: field }),
+  loader: ({ params: { field } }) => getExamplesByFieldFn(field),
   notFoundComponent: () => <div>Field not found.</div>,
   component: FieldPage,
 })

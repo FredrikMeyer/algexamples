@@ -4,6 +4,8 @@ import tailwindcss from '@tailwindcss/vite'
 import viteReact from '@vitejs/plugin-react'
 import { resolve } from 'path'
 import { getAllExamples, getAllTags, getAllFields } from './app/lib/content'
+import { computeBacklinks } from './app/lib/backlinks'
+import { processMarkdown } from './app/lib/markdown'
 
 const base = process.env.VITE_BASE_PATH ?? '/'
 
@@ -41,5 +43,28 @@ export default defineConfig({
     }),
     viteReact(),
     tailwindcss(),
+    {
+      name: 'algeo-data-dev',
+      configureServer(server) {
+        server.middlewares.use(`${base}data.json`, async (_req, res) => {
+          try {
+            const examples = getAllExamples()
+            const backlinkMap = computeBacklinks(examples)
+            const enriched = await Promise.all(
+              examples.map(async (e) => ({
+                ...e,
+                html: await processMarkdown(e.body),
+                backlinks: backlinkMap.get(e.slug) ?? [],
+              })),
+            )
+            res.setHeader('Content-Type', 'application/json')
+            res.end(JSON.stringify(enriched))
+          } catch (err) {
+            res.statusCode = 500
+            res.end(String(err))
+          }
+        })
+      },
+    },
   ],
 })

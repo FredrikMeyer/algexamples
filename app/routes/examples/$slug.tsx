@@ -5,7 +5,7 @@ import { ExampleMeta } from '~/components/ExampleMeta'
 import type { VarietyExample } from '~/lib/schema'
 
 export const Route = createFileRoute('/examples/$slug')({
-  loader: ({ params: { slug } }) => getExampleDetailFn({ data: slug }),
+  loader: ({ params: { slug } }) => getExampleDetailFn(slug),
   head: ({ loaderData }) => ({
     meta: loaderData
       ? [{ title: `${loaderData.example.title} — Algebraic Geometry Examples` }]
