@@ -1,10 +1,10 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
-import { getAllExamples } from '~/lib/content'
+import { getAllExamplesFn } from '~/lib/server-fns'
 import { ExampleCard } from '~/components/ExampleCard'
 
 export const Route = createFileRoute('/')({
-  loader: () => {
-    const all = getAllExamples()
+  loader: async () => {
+    const all = await getAllExamplesFn()
     const counts = {
       variety: all.filter((e) => e.type === 'variety').length,
       computation: all.filter((e) => e.type === 'computation').length,

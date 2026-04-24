@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { z } from 'zod'
-import { getAllExamples } from '~/lib/content'
+import { getAllExamplesFn } from '~/lib/server-fns'
 import { ExampleCard } from '~/components/ExampleCard'
 
 const SearchSchema = z.object({
@@ -12,7 +12,7 @@ export const Route = createFileRoute('/examples/')({
   validateSearch: SearchSchema,
   loaderDeps: ({ search }) => ({ type: search.type, q: search.q }),
   loader: async ({ deps: { type, q } }) => {
-    let examples = getAllExamples()
+    let examples = await getAllExamplesFn()
     if (type) examples = examples.filter((e) => e.type === type)
     if (q) {
       const term = q.toLowerCase()

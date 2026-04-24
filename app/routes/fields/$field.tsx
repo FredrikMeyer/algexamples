@@ -1,6 +1,5 @@
-import { createFileRoute, notFound } from '@tanstack/react-router'
-import { getExamplesByField } from '~/lib/content'
-import { FieldEnum } from '~/lib/schema'
+import { createFileRoute } from '@tanstack/react-router'
+import { getExamplesByFieldFn } from '~/lib/server-fns'
 import { ExampleCard } from '~/components/ExampleCard'
 
 function formatFieldName(field: string): string {
@@ -11,14 +10,7 @@ function formatFieldName(field: string): string {
 }
 
 export const Route = createFileRoute('/fields/$field')({
-  loader: async ({ params: { field } }) => {
-    const parsed = FieldEnum.safeParse(field)
-    if (!parsed.success) {
-      throw notFound()
-    }
-    const examples = await getExamplesByField(parsed.data)
-    return { field: parsed.data, examples }
-  },
+  loader: ({ params: { field } }) => getExamplesByFieldFn({ data: field }),
   notFoundComponent: () => <div>Field not found.</div>,
   component: FieldPage,
 })

@@ -1,6 +1,6 @@
 import { createFileRoute, useNavigate, Link } from '@tanstack/react-router'
 import { z } from 'zod'
-import { getAllExamples } from '~/lib/content'
+import { getAllExamplesFn } from '~/lib/server-fns'
 import { ExampleCard } from '~/components/ExampleCard'
 import type { VarietyExample } from '~/lib/schema'
 
@@ -17,7 +17,7 @@ export const Route = createFileRoute('/varieties/')({
   validateSearch: SearchSchema,
   loaderDeps: ({ search }) => search,
   loader: async ({ deps }) => {
-    const all = getAllExamples()
+    const all = await getAllExamplesFn()
     let varieties = all.filter((e) => e.type === 'variety') as VarietyExample[]
 
     if (deps.dimension !== undefined) {

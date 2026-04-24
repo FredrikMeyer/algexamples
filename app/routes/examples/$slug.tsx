@@ -1,26 +1,11 @@
-import { createFileRoute, notFound } from '@tanstack/react-router'
-import { getAllExamples } from '~/lib/content'
-import { computeBacklinks } from '~/lib/backlinks'
-import { processMarkdown } from '~/lib/markdown'
+import { createFileRoute } from '@tanstack/react-router'
+import { getExampleDetailFn } from '~/lib/server-fns'
 import { PropertiesTable } from '~/components/PropertiesTable'
 import { ExampleMeta } from '~/components/ExampleMeta'
 import type { VarietyExample } from '~/lib/schema'
 
 export const Route = createFileRoute('/examples/$slug')({
-  loader: async ({ params: { slug } }) => {
-    const allExamples = getAllExamples()
-    const example = allExamples.find((e) => e.slug === slug)
-    if (!example) throw notFound()
-
-    const backlinkMap = computeBacklinks(allExamples)
-    const html = await processMarkdown(example.body)
-
-    return {
-      example,
-      html,
-      backlinks: backlinkMap.get(slug) ?? [],
-    }
-  },
+  loader: ({ params: { slug } }) => getExampleDetailFn({ data: slug }),
   head: ({ loaderData }) => ({
     meta: loaderData
       ? [{ title: `${loaderData.example.title} — Algebraic Geometry Examples` }]

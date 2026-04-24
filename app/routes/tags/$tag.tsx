@@ -1,18 +1,9 @@
-import { createFileRoute, notFound } from '@tanstack/react-router'
-import { getExamplesByTag, getAllTags } from '~/lib/content'
+import { createFileRoute } from '@tanstack/react-router'
+import { getExamplesByTagFn } from '~/lib/server-fns'
 import { ExampleCard } from '~/components/ExampleCard'
 
 export const Route = createFileRoute('/tags/$tag')({
-  loader: async ({ params: { tag } }) => {
-    const examples = await getExamplesByTag(tag)
-    if (examples.length === 0) {
-      const allTags = await getAllTags()
-      if (!allTags.includes(tag)) {
-        throw notFound()
-      }
-    }
-    return { tag, examples }
-  },
+  loader: ({ params: { tag } }) => getExamplesByTagFn({ data: tag }),
   notFoundComponent: () => <div>Tag not found.</div>,
   component: TagPage,
 })
