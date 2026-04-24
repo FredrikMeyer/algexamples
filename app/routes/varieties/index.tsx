@@ -7,8 +7,8 @@ import type { VarietyExample } from '~/lib/schema'
 const SearchSchema = z.object({
   dimension: z.coerce.number().int().nonnegative().optional(),
   is_rational: z
-    .enum(['true', 'false'])
-    .transform((v) => v === 'true')
+    .union([z.literal('true'), z.literal('false'), z.literal(true), z.literal(false)])
+    .transform((v) => v === 'true' || v === true)
     .optional(),
   ambient_space: z.string().optional(),
 })

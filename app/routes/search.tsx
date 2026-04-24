@@ -24,10 +24,13 @@ const SearchSchema = z.object({
   field: FieldEnum.optional(),
   tag: z.string().optional(),
   dim: z.coerce.number().int().nonnegative().optional(),
-  rational: z.enum(['true', 'false']).transform((v) => v === 'true').optional(),
+  rational: z
+    .union([z.literal('true'), z.literal('false'), z.literal(true), z.literal(false)])
+    .transform((v) => v === 'true' || v === true)
+    .optional(),
   smooth: z
-    .union([z.literal('true'), z.literal(true)])
-    .transform(() => true as const)
+    .union([z.literal('true'), z.literal(true), z.literal('false'), z.literal(false)])
+    .transform((v) => v === 'true' || v === true)
     .optional(),
 })
 
