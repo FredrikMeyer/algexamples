@@ -41,8 +41,8 @@ function HomePage() {
         ).map(({ type, label, count }) => (
           <Link
             key={type}
-            to="/examples"
-            search={{ type } as any}
+            to="/examples/"
+            search={{ type }}
             className="border border-gray-200 rounded-lg p-4 bg-white text-center hover:border-blue-300 transition-colors block"
           >
             <div className="text-2xl font-bold text-blue-600">{count}</div>

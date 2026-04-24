@@ -58,17 +58,17 @@ export function Sidebar({ allTags }: SidebarProps) {
               </p>
               <ul className="space-y-1">
                 <li>
-                  <Link to={'/examples' as any} className="block text-sm text-gray-700 hover:text-blue-600 py-0.5">
+                  <Link to="/examples/" search={{ type: 'variety' }} className="block text-sm text-gray-700 hover:text-blue-600 py-0.5">
                     Varieties
                   </Link>
                 </li>
                 <li>
-                  <Link to={'/examples' as any} className="block text-sm text-gray-700 hover:text-blue-600 py-0.5">
+                  <Link to="/examples/" search={{ type: 'computation' }} className="block text-sm text-gray-700 hover:text-blue-600 py-0.5">
                     Computations
                   </Link>
                 </li>
                 <li>
-                  <Link to={'/examples' as any} className="block text-sm text-gray-700 hover:text-blue-600 py-0.5">
+                  <Link to="/examples/" search={{ type: 'counterexample' }} className="block text-sm text-gray-700 hover:text-blue-600 py-0.5">
                     Counterexamples
                   </Link>
                 </li>
@@ -83,7 +83,7 @@ export function Sidebar({ allTags }: SidebarProps) {
                 {FIELDS.map((f) => (
                   <li key={f.id}>
                     <Link
-                      to={'/fields/$field' as any}
+                      to="/fields/$field"
                       params={{ field: f.id }}
                       className="block text-sm text-gray-700 hover:text-blue-600 py-0.5"
                     >
@@ -103,7 +103,7 @@ export function Sidebar({ allTags }: SidebarProps) {
                   {visibleTags.map((tag) => (
                     <Link
                       key={tag}
-                      to={'/tags/$tag' as any}
+                      to="/tags/$tag"
                       params={{ tag }}
                       className="text-xs bg-gray-100 hover:bg-blue-50 hover:text-blue-700 text-gray-600 px-2 py-0.5 rounded"
                     >

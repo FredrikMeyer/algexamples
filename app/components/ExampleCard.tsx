@@ -16,7 +16,7 @@ export function ExampleCard({ example }: ExampleCardProps) {
     <div className="border border-gray-200 rounded-lg p-4 bg-white hover:border-blue-300 transition-colors">
       <div className="flex items-start justify-between gap-2 mb-1">
         <Link
-          to={'/examples/$slug' as any}
+          to="/examples/$slug"
           params={{ slug: example.slug }}
           className="font-medium text-gray-900 hover:text-blue-600"
         >
@@ -31,7 +31,7 @@ export function ExampleCard({ example }: ExampleCardProps) {
         {example.tags.slice(0, 4).map((tag) => (
           <Link
             key={tag}
-            to={'/tags/$tag' as any}
+            to="/tags/$tag"
             params={{ tag }}
             className="text-xs bg-gray-100 text-gray-500 hover:text-blue-600 px-2 py-0.5 rounded"
           >
