@@ -37,7 +37,7 @@ function formatValue(key: keyof Properties, value: NonNullable<Properties[keyof 
 }
 
 export function PropertiesTable({ properties }: PropertiesTableProps) {
-  const rows = PROPERTY_LABELS.filter(({ key }) => properties[key] !== undefined)
+  const rows = PROPERTY_LABELS.filter(({ key }) => properties[key] !== undefined && properties[key] !== null)
 
   if (rows.length === 0) return null
 

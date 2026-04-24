@@ -1,5 +1,5 @@
 import { createFileRoute, notFound } from '@tanstack/react-router'
-import { getAllExamples, getExampleBySlug } from '~/lib/content'
+import { getAllExamples } from '~/lib/content'
 import { computeBacklinks } from '~/lib/backlinks'
 import { processMarkdown } from '~/lib/markdown'
 import { PropertiesTable } from '~/components/PropertiesTable'
@@ -8,14 +8,10 @@ import type { VarietyExample } from '~/lib/schema'
 
 export const Route = createFileRoute('/examples/$slug')({
   loader: async ({ params: { slug } }) => {
-    let example
-    try {
-      example = getExampleBySlug(slug)
-    } catch {
-      throw notFound()
-    }
-
     const allExamples = getAllExamples()
+    const example = allExamples.find((e) => e.slug === slug)
+    if (!example) throw notFound()
+
     const backlinkMap = computeBacklinks(allExamples)
     const html = await processMarkdown(example.body)
 
