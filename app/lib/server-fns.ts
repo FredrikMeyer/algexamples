@@ -9,7 +9,55 @@ import { computeBacklinks } from './backlinks'
 import { processMarkdown } from './markdown'
 import { notFound } from '@tanstack/react-router'
 import { FieldEnum } from './schema'
-import type { ExampleFrontmatter } from './schema'
+import type { ExampleFrontmatter, VarietyExample } from './schema'
+
+export type SearchParams = {
+  q?: string
+  type?: 'variety' | 'computation' | 'counterexample'
+  field?: ExampleFrontmatter['field']
+  tag?: string
+  dim?: number
+  rational?: boolean
+  smooth?: boolean
+}
+
+export const searchExamplesFn = createServerFn({ method: 'GET' })
+  .inputValidator((p: SearchParams) => p)
+  .handler(({ data: p }) => {
+    let results = getAllExamples()
+
+    if (p.q) {
+      const term = p.q.toLowerCase()
+      results = results.filter(
+        (e) =>
+          e.title.toLowerCase().includes(term) ||
+          e.summary.toLowerCase().includes(term) ||
+          e.body.toLowerCase().includes(term),
+      )
+    }
+    if (p.type) results = results.filter((e) => e.type === p.type)
+    if (p.field) results = results.filter((e) => e.field === p.field)
+    if (p.tag) results = results.filter((e) => e.tags.includes(p.tag!))
+    if (p.dim !== undefined) {
+      results = results.filter(
+        (e) => e.type === 'variety' && (e as VarietyExample).properties?.dimension === p.dim,
+      )
+    }
+    if (p.rational !== undefined) {
+      results = results.filter(
+        (e) => e.type === 'variety' && (e as VarietyExample).properties?.is_rational === p.rational,
+      )
+    }
+    if (p.smooth) {
+      results = results.filter(
+        (e) =>
+          e.type === 'variety' &&
+          (e as VarietyExample).properties?.singularities?.toLowerCase() === 'smooth',
+      )
+    }
+
+    return results
+  })
 
 export const getAllExamplesFn = createServerFn({ method: 'GET' })
   .handler(() => getAllExamples())

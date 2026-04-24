@@ -9,7 +9,7 @@ export function SearchBox() {
     e.preventDefault()
     const q = query.trim()
     navigate({
-      to: '/examples/',
+      to: '/search',
       search: q ? { q } : {},
     })
   }

@@ -25,6 +25,7 @@ export default defineConfig({
               '/',
               '/examples/',
               '/varieties/',
+              '/search',
               ...examples.map((e) => `/examples/${e.slug}`),
               ...fields.map((f) => `/fields/${f}`),
               ...tags.map((t) => `/tags/${t}`),

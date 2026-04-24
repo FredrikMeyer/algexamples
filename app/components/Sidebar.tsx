@@ -69,6 +69,16 @@ export function Sidebar({ allTags }: SidebarProps) {
 
             <SearchBox />
 
+            {/* Search page link */}
+            <Link
+              to="/search"
+              className="block text-sm py-1 px-2 rounded text-indigo-200 hover:text-white hover:bg-indigo-800 transition-colors"
+            >
+              Advanced search
+            </Link>
+
+            <div style={{ borderTop: '1px solid #312e81' }} />
+
             {/* Browse by type */}
             <nav>
               <p className="text-xs font-medium text-indigo-400 mb-2 uppercase tracking-widest">Type</p>
