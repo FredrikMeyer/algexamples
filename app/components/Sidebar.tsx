@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link } from '@tanstack/react-router'
+import { SearchWidget } from './SearchWidget'
 
 const FIELDS = [
   { id: 'algebraic-geometry', label: 'Algebraic Geometry' },
@@ -52,6 +53,8 @@ export function Sidebar({ allTags }: SidebarProps) {
 
         {open && (
           <>
+            <SearchWidget />
+
             <nav className="mb-6">
               <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">
                 Browse by type

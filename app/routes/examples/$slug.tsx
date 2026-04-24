@@ -42,7 +42,7 @@ function ExampleDetailPage() {
   const varietyExample = isVariety ? (example as VarietyExample) : null
 
   return (
-    <div>
+    <div data-pagefind-body>
       <h1 className="text-3xl font-bold text-gray-900 mb-6">{example.title}</h1>
 
       <div className="flex flex-col lg:flex-row gap-8">
