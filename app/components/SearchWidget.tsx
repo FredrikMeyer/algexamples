@@ -11,7 +11,9 @@ export function SearchWidget() {
     const script = document.createElement('script')
     script.src = '/pagefind/pagefind-ui.js'
     script.onload = () => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       if (containerRef.current && (window as any).PagefindUI) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         new (window as any).PagefindUI({
           element: containerRef.current,
           showImages: false,

@@ -66,7 +66,7 @@ export function ExampleMeta({ example, backlinks }: ExampleMetaProps) {
             {example.tags.map((tag) => (
               <Link
                 key={tag}
-                to={'/tags/$tag' as any}
+                to="/tags/$tag"
                 params={{ tag }}
                 className="text-xs bg-gray-100 text-gray-600 hover:text-blue-600 hover:bg-blue-50 px-2 py-0.5 rounded transition-colors"
               >

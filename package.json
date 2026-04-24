@@ -8,7 +8,8 @@
     "build": "vite build",
     "postbuild": "pagefind --site dist/client",
     "start": "node .output/server/index.mjs",
-    "test": "vitest run"
+    "test": "vitest run",
+    "lint": "eslint app"
   },
   "dependencies": {
     "@rsbuild/core": "^2.0.1",
@@ -28,14 +29,18 @@
     "zod": "^4.3.6"
   },
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "@tailwindcss/vite": "^4.2.4",
     "@types/node": "^25.6.0",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.1",
+    "eslint": "^10.2.1",
+    "eslint-plugin-react-hooks": "^7.1.1",
     "pagefind": "^1.5.2",
     "tailwindcss": "^4.2.4",
     "typescript": "^6.0.3",
+    "typescript-eslint": "^8.59.0",
     "vitest": "^4.1.5"
   }
 }
