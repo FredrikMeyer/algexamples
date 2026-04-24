@@ -97,6 +97,7 @@ function VarietiesPage() {
                     ...prev,
                     dimension: raw === '' || isNaN(parsed) ? undefined : parsed,
                   }),
+                  replace: true,
                 })
               }}
               className="w-24 rounded border border-gray-300 bg-white px-3 py-1.5 text-sm text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
@@ -130,6 +131,7 @@ function VarietiesPage() {
                         ? undefined
                         : (val as 'true' | 'false'),
                   }),
+                  replace: true,
                 })
               }}
               className="rounded border border-gray-300 bg-white px-3 py-1.5 text-sm text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
@@ -160,6 +162,7 @@ function VarietiesPage() {
                     ...prev,
                     ambient_space: val === '' ? undefined : val,
                   }),
+                  replace: true,
                 })
               }}
               className="w-36 rounded border border-gray-300 bg-white px-3 py-1.5 text-sm text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
