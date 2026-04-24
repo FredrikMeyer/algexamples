@@ -5,7 +5,10 @@ import viteReact from '@vitejs/plugin-react'
 import { resolve } from 'path'
 import { getAllExamples, getAllTags, getAllFields } from './app/lib/content'
 
+const base = process.env.VITE_BASE_PATH ?? '/'
+
 export default defineConfig({
+  base,
   resolve: {
     alias: { '~': resolve(__dirname, 'app') },
   },

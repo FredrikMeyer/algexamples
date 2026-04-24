@@ -5,6 +5,7 @@ export function getRouter() {
   return createRouter({
     routeTree,
     scrollRestoration: true,
+    basepath: import.meta.env.VITE_BASE_PATH?.replace(/\/$/, '') ?? '',
   })
 }
 
