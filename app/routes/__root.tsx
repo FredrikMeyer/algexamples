@@ -1,12 +1,10 @@
-import type { ReactNode } from 'react'
-import {
-  Outlet,
-  createRootRoute,
-  HeadContent,
-  Scripts,
-} from '@tanstack/react-router'
+import { createRootRoute, Outlet, HeadContent, Scripts } from '@tanstack/react-router'
+import { getAllTags } from '~/lib/content'
+import { Sidebar } from '~/components/Sidebar'
+import '~/styles/global.css'
 
 export const Route = createRootRoute({
+  loader: () => ({ allTags: getAllTags() }),
   head: () => ({
     meta: [
       { charSet: 'utf-8' },
@@ -14,25 +12,24 @@ export const Route = createRootRoute({
       { title: 'Algebraic Geometry Examples' },
     ],
   }),
-  component: RootComponent,
+  component: RootLayout,
 })
 
-function RootComponent() {
-  return (
-    <RootDocument>
-      <Outlet />
-    </RootDocument>
-  )
-}
+function RootLayout() {
+  const { allTags } = Route.useLoaderData()
 
-function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
   return (
     <html lang="en">
       <head>
         <HeadContent />
       </head>
-      <body>
-        {children}
+      <body className="bg-gray-50 min-h-screen">
+        <div className="flex min-h-screen">
+          <Sidebar allTags={allTags} />
+          <main className="flex-1 min-w-0 p-6 md:p-8 max-w-4xl">
+            <Outlet />
+          </main>
+        </div>
         <Scripts />
       </body>
     </html>
