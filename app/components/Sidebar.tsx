@@ -32,7 +32,7 @@ export function Sidebar({ allTags }: SidebarProps) {
 
       <aside
         data-open={open}
-        className="sidebar fixed md:static top-0 left-0 h-full z-40 flex flex-col overflow-hidden flex-shrink-0"
+        className="sidebar fixed md:static top-0 left-0 min-h-screen md:min-h-0 z-40 flex flex-col overflow-hidden flex-shrink-0"
         style={{ background: '#1e1b4b', color: '#c7d2fe' }}
       >
         {/* Header row */}
