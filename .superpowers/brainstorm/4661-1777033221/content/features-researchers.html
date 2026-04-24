@@ -1,0 +1,84 @@
+<h2>Potential features for researchers</h2>
+<p class="subtitle">Select any that appeal to you — multi-select is on</p>
+
+<h3 style="margin-top:1.5rem;font-size:0.85em;text-transform:uppercase;color:var(--label);letter-spacing:.05em">Computation & verification</h3>
+<div class="options" data-multiselect>
+  <div class="option" data-choice="cas" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>CAS code snippets</h3>
+      <p>Attach Macaulay2 / SageMath code blocks to examples. A researcher can copy-paste to verify or extend the computation. E.g. "compute the Hilbert series of the twisted cubic in Macaulay2".</p>
+    </div>
+  </div>
+  <div class="option" data-choice="diagrams" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>Commutative diagrams</h3>
+      <p>Render commutative diagrams inline using <a href="https://tikzjax.com" onclick="event.stopPropagation()">TikZJax</a> or quiver-style markup. Essential for exact sequences, morphisms, and functors — currently impossible with KaTeX alone.</p>
+    </div>
+  </div>
+  <div class="option" data-choice="hodge" onclick="toggleSelect(this)">
+    <div class="letter">C</div>
+    <div class="content">
+      <h3>Hodge diamond visualisation</h3>
+      <p>For varieties with known Hodge numbers, render the Hodge diamond as an SVG alongside the properties table. Makes h^{pq} data scannable at a glance.</p>
+    </div>
+  </div>
+</div>
+
+<h3 style="margin-top:1.5rem;font-size:0.85em;text-transform:uppercase;color:var(--label);letter-spacing:.05em">Navigation & cross-referencing</h3>
+<div class="options" data-multiselect>
+  <div class="option" data-choice="backlinks" onclick="toggleSelect(this)">
+    <div class="letter">D</div>
+    <div class="content">
+      <h3>Automatic backlinks</h3>
+      <p>"Referenced by" section computed at build time — if example B lists A in its <code>related</code> field, A's page automatically shows B as a backlink. No manual maintenance.</p>
+    </div>
+  </div>
+  <div class="option" data-choice="stacks" onclick="toggleSelect(this)">
+    <div class="letter">E</div>
+    <div class="content">
+      <h3>Stacks Project tag links</h3>
+      <p>Special syntax like <code>[SP 01AB]</code> renders as a linked tag with hover tooltip showing the statement. Direct bridge to the authoritative reference.</p>
+    </div>
+  </div>
+  <div class="option" data-choice="concepts" onclick="toggleSelect(this)">
+    <div class="letter">F</div>
+    <div class="content">
+      <h3>"Is an example of" concept tags</h3>
+      <p>Tag examples with the abstract concepts they instantiate — e.g. twisted cubic: <em>rational curve · non-complete-intersection · Veronese embedding</em>. Separate from free-form tags; concepts are a controlled vocabulary linking to a definition.</p>
+    </div>
+  </div>
+  <div class="option" data-choice="compare" onclick="toggleSelect(this)">
+    <div class="letter">G</div>
+    <div class="content">
+      <h3>Side-by-side variety comparison</h3>
+      <p>Select 2–3 varieties and view their properties tables side-by-side. Useful for understanding what distinguishes similar objects (e.g. twisted cubic vs rational normal curve in ℙ⁴).</p>
+    </div>
+  </div>
+</div>
+
+<h3 style="margin-top:1.5rem;font-size:0.85em;text-transform:uppercase;color:var(--label);letter-spacing:.05em">Authoring & presentation</h3>
+<div class="options" data-multiselect>
+  <div class="option" data-choice="macros" onclick="toggleSelect(this)">
+    <div class="letter">H</div>
+    <div class="content">
+      <h3>Site-wide LaTeX macros</h3>
+      <p>Define macros once (<code>\PP</code> → <code>\mathbb{P}</code>, <code>\OO</code> → <code>\mathcal{O}</code>, <code>\Spec</code> → <code>\operatorname{Spec}</code>) and use them in any entry. Consistent notation across the whole database.</p>
+    </div>
+  </div>
+  <div class="option" data-choice="export" onclick="toggleSelect(this)">
+    <div class="letter">I</div>
+    <div class="content">
+      <h3>Export to LaTeX / PDF</h3>
+      <p>Each example page has a "Download as .tex" button. The source markdown is already close to LaTeX — this makes it easy to include examples in notes or papers.</p>
+    </div>
+  </div>
+  <div class="option" data-choice="notation" onclick="toggleSelect(this)">
+    <div class="letter">J</div>
+    <div class="content">
+      <h3>Notation / conventions page</h3>
+      <p>A static page declaring site-wide conventions: field is always algebraically closed, schemes are Noetherian, etc. Resolves ambiguity for readers who land on a specific example directly.</p>
+    </div>
+  </div>
+</div>

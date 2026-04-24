@@ -1,0 +1,93 @@
+<h2>Design: Variety Properties</h2>
+<p class="subtitle">Structured properties in frontmatter → filterable table on example page + query UI</p>
+
+<div class="split">
+  <div class="mockup">
+    <div class="mockup-header">Frontmatter for a variety</div>
+    <div class="mockup-body" style="font-family:monospace;font-size:0.8em;line-height:1.7;white-space:pre-wrap;">---
+title: "The Twisted Cubic"
+slug: "twisted-cubic"
+type: "variety"
+field: "algebraic-geometry"
+tags: ["curves", "projective-space"]
+summary: "Degree-3 rational curve in ℙ³"
+related: ["veronese-surface"]
+
+properties:
+  dimension: 1
+  ambient_space: "P^3"
+  degree: 3
+  singularities: "smooth"
+  genus: 0
+  is_rational: true
+  kodaira_dimension: "-inf"
+  picard_group: "ℤ"
+---</div>
+  </div>
+
+  <div class="mockup">
+    <div class="mockup-header">Rendered on the example page</div>
+    <div class="mockup-body">
+      <div style="font-size:1.1em;font-weight:600;margin-bottom:0.75rem">The Twisted Cubic</div>
+      <div style="font-size:0.8em;color:var(--label);margin-bottom:0.4rem;text-transform:uppercase;letter-spacing:.05em">Properties</div>
+      <table style="width:100%;border-collapse:collapse;font-size:0.85em">
+        <tr style="border-bottom:1px solid var(--border)"><td style="padding:4px 8px;color:var(--label)">Dimension</td><td style="padding:4px 8px;font-weight:500">1</td></tr>
+        <tr style="border-bottom:1px solid var(--border)"><td style="padding:4px 8px;color:var(--label)">Ambient space</td><td style="padding:4px 8px;font-weight:500">ℙ³</td></tr>
+        <tr style="border-bottom:1px solid var(--border)"><td style="padding:4px 8px;color:var(--label)">Degree</td><td style="padding:4px 8px;font-weight:500">3</td></tr>
+        <tr style="border-bottom:1px solid var(--border)"><td style="padding:4px 8px;color:var(--label)">Singularities</td><td style="padding:4px 8px;font-weight:500">smooth</td></tr>
+        <tr style="border-bottom:1px solid var(--border)"><td style="padding:4px 8px;color:var(--label)">Genus</td><td style="padding:4px 8px;font-weight:500">0</td></tr>
+        <tr style="border-bottom:1px solid var(--border)"><td style="padding:4px 8px;color:var(--label)">Rational?</td><td style="padding:4px 8px;font-weight:500">yes</td></tr>
+        <tr><td style="padding:4px 8px;color:var(--label)">Kodaira dim.</td><td style="padding:4px 8px;font-weight:500">−∞</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="section" style="margin-top:1.5rem">
+  <h3>Filter / browse page — <code>/varieties</code></h3>
+  <div class="mockup">
+    <div class="mockup-header">Find varieties by property</div>
+    <div class="mockup-body">
+      <div style="display:flex;gap:0.75rem;flex-wrap:wrap;margin-bottom:1rem;align-items:flex-end">
+        <div>
+          <div style="font-size:0.75em;color:var(--label);margin-bottom:4px">DIMENSION</div>
+          <select style="border:1px solid var(--border);border-radius:4px;padding:4px 8px;background:var(--bg);color:var(--fg);font-size:0.85em">
+            <option>Any</option><option selected>1</option><option>2</option><option>3</option>
+          </select>
+        </div>
+        <div>
+          <div style="font-size:0.75em;color:var(--label);margin-bottom:4px">AMBIENT SPACE</div>
+          <select style="border:1px solid var(--border);border-radius:4px;padding:4px 8px;background:var(--bg);color:var(--fg);font-size:0.85em">
+            <option>Any</option><option selected>ℙ³</option><option>ℙ²</option><option>ℙⁿ</option><option>𝔸²</option>
+          </select>
+        </div>
+        <div>
+          <div style="font-size:0.75em;color:var(--label);margin-bottom:4px">SINGULARITIES</div>
+          <select style="border:1px solid var(--border);border-radius:4px;padding:4px 8px;background:var(--bg);color:var(--fg);font-size:0.85em">
+            <option>Any</option><option>smooth</option><option>nodal</option><option>cuspidal</option>
+          </select>
+        </div>
+        <div>
+          <div style="font-size:0.75em;color:var(--label);margin-bottom:4px">RATIONAL?</div>
+          <select style="border:1px solid var(--border);border-radius:4px;padding:4px 8px;background:var(--bg);color:var(--fg);font-size:0.85em">
+            <option>Any</option><option selected>yes</option><option>no</option>
+          </select>
+        </div>
+        <div style="font-size:0.8em;color:var(--accent);align-self:center">2 results</div>
+      </div>
+      <div style="border:1px solid var(--border);border-radius:6px;overflow:hidden">
+        <div style="display:grid;grid-template-columns:1fr 60px 80px 90px 80px;font-size:0.75em;color:var(--label);padding:6px 12px;border-bottom:1px solid var(--border);text-transform:uppercase">
+          <span>Name</span><span>Dim.</span><span>Ambient</span><span>Degree</span><span>Singular</span>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 60px 80px 90px 80px;font-size:0.85em;padding:8px 12px;border-bottom:1px solid var(--border)">
+          <span style="color:var(--accent)">Twisted Cubic</span><span>1</span><span>ℙ³</span><span>3</span><span>smooth</span>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 60px 80px 90px 80px;font-size:0.85em;padding:8px 12px">
+          <span style="color:var(--accent)">Line in ℙ³</span><span>1</span><span>ℙ³</span><span>1</span><span>smooth</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<p style="margin-top:1rem;color:var(--label);font-size:0.9em">Filtering is purely client-side — all variety data is embedded as JSON at build time. Fast, no server needed. Properties are optional per-variety; missing ones simply don't appear in the table or filters.</p>

@@ -1,0 +1,93 @@
+<h2>Homepage layout</h2>
+<p class="subtitle">Pick the overall feel — both have the same content, different emphasis</p>
+
+<div class="cards">
+  <div class="card" data-choice="a" onclick="toggleSelect(this)">
+    <div class="card-image" style="padding:1rem;background:var(--bg)">
+      <div style="max-width:420px;margin:0 auto;font-size:0.8em">
+        <div style="text-align:center;padding:1.5rem 0 1rem">
+          <div style="font-size:1.6em;font-weight:700;letter-spacing:-0.02em">Algebraic Geometry Examples</div>
+          <div style="color:var(--label);margin-top:0.3rem;font-size:0.95em">A reference database of concrete examples</div>
+          <div style="margin-top:1rem;display:flex;gap:0.5rem;justify-content:center">
+            <input class="mock-input" placeholder="Search examples… e.g. "elliptic curve"" style="width:260px">
+            <button class="mock-button" style="padding:6px 14px">Search</button>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.5rem;margin-bottom:1rem">
+          <div style="border:1px solid var(--border);border-radius:6px;padding:0.6rem;text-align:center">
+            <div style="font-size:1.4em;font-weight:700;color:var(--accent)">—</div>
+            <div style="font-size:0.75em;color:var(--label)">Varieties</div>
+          </div>
+          <div style="border:1px solid var(--border);border-radius:6px;padding:0.6rem;text-align:center">
+            <div style="font-size:1.4em;font-weight:700;color:var(--accent)">—</div>
+            <div style="font-size:0.75em;color:var(--label)">Computations</div>
+          </div>
+          <div style="border:1px solid var(--border);border-radius:6px;padding:0.6rem;text-align:center">
+            <div style="font-size:1.4em;font-weight:700;color:var(--accent)">—</div>
+            <div style="font-size:0.75em;color:var(--label)">Counterexamples</div>
+          </div>
+        </div>
+        <div style="font-size:0.75em;color:var(--label);text-transform:uppercase;margin-bottom:0.4rem">Browse by field</div>
+        <div style="display:flex;gap:0.4rem;flex-wrap:wrap;margin-bottom:1rem">
+          <span style="border:1px solid var(--border);border-radius:20px;padding:3px 10px;font-size:0.8em">Algebraic Geometry</span>
+          <span style="border:1px solid var(--border);border-radius:20px;padding:3px 10px;font-size:0.8em">Comm. Algebra</span>
+          <span style="border:1px solid var(--border);border-radius:20px;padding:3px 10px;font-size:0.8em">Number Theory</span>
+          <span style="border:1px solid var(--border);border-radius:20px;padding:3px 10px;font-size:0.8em">+2 more</span>
+        </div>
+        <div style="font-size:0.75em;color:var(--label);text-transform:uppercase;margin-bottom:0.4rem">Recently added</div>
+        <div style="border:1px solid var(--border);border-radius:6px;overflow:hidden">
+          <div style="padding:6px 10px;border-bottom:1px solid var(--border);font-size:0.8em;display:flex;justify-content:space-between"><span style="color:var(--accent)">Twisted Cubic</span><span style="color:var(--label)">variety</span></div>
+          <div style="padding:6px 10px;font-size:0.8em;display:flex;justify-content:space-between"><span style="color:var(--accent)">Quintic threefold cohomology</span><span style="color:var(--label)">computation</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>A — Centered / portal</h3>
+      <p>Search-first with type counts and field pills. Feels like a reference tool. Clean, minimal.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="b" onclick="toggleSelect(this)">
+    <div class="card-image" style="padding:1rem;background:var(--bg)">
+      <div style="max-width:420px;margin:0 auto;font-size:0.8em">
+        <div class="mock-nav" style="margin-bottom:1rem">Alg. Geo. Examples &nbsp;|&nbsp; Varieties &nbsp;|&nbsp; Computations &nbsp;|&nbsp; Counterexamples &nbsp;|&nbsp; 🔍</div>
+        <div style="display:grid;grid-template-columns:160px 1fr;gap:1rem">
+          <div>
+            <div style="font-size:0.75em;color:var(--label);text-transform:uppercase;margin-bottom:0.4rem">Fields</div>
+            <div style="font-size:0.8em;line-height:2;border-right:1px solid var(--border);padding-right:0.75rem">
+              <div style="color:var(--accent)">Algebraic Geometry</div>
+              <div>Comm. Algebra</div>
+              <div>Alg. Topology</div>
+              <div>Number Theory</div>
+              <div>Complex Geometry</div>
+            </div>
+            <div style="font-size:0.75em;color:var(--label);text-transform:uppercase;margin:0.75rem 0 0.4rem">Popular tags</div>
+            <div style="font-size:0.75em;line-height:2;border-right:1px solid var(--border);padding-right:0.75rem">
+              <div>curves · surfaces</div>
+              <div>projective · toric</div>
+              <div>cohomology</div>
+            </div>
+          </div>
+          <div>
+            <input class="mock-input" placeholder="Search…" style="width:100%;margin-bottom:0.75rem">
+            <div style="font-size:0.75em;color:var(--label);text-transform:uppercase;margin-bottom:0.4rem">All examples</div>
+            <div style="border:1px solid var(--border);border-radius:6px;overflow:hidden">
+              <div style="padding:8px 10px;border-bottom:1px solid var(--border)">
+                <div style="display:flex;justify-content:space-between"><span style="color:var(--accent);font-size:0.85em">Twisted Cubic</span><span style="background:var(--accent);color:#fff;border-radius:4px;padding:1px 6px;font-size:0.7em">variety</span></div>
+                <div style="font-size:0.75em;color:var(--label);margin-top:2px">Degree-3 rational curve in ℙ³</div>
+              </div>
+              <div style="padding:8px 10px">
+                <div style="display:flex;justify-content:space-between"><span style="color:var(--accent);font-size:0.85em">Quintic threefold cohomology</span><span style="background:#6c757d;color:#fff;border-radius:4px;padding:1px 6px;font-size:0.7em">computation</span></div>
+                <div style="font-size:0.75em;color:var(--label);margin-top:2px">H*(Y,O_Y) and Hodge numbers</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>B — Sidebar / browser</h3>
+      <p>Persistent sidebar navigation with fields and tags. Feels like a wiki or docs site. Better for browsing when you don't know what you're looking for.</p>
+    </div>
+  </div>
+</div>

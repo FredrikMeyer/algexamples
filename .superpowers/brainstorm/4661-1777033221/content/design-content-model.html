@@ -1,0 +1,47 @@
+<h2>Design: Content Model</h2>
+<p class="subtitle">Each example is a <code>.md</code> file in <code>src/content/examples/</code> with structured YAML frontmatter</p>
+
+<div class="section">
+  <h3>Example file: <code>twisted-cubic.md</code></h3>
+  <div class="mockup">
+    <div class="mockup-header">src/content/examples/twisted-cubic.md</div>
+    <div class="mockup-body" style="font-family:monospace;font-size:0.85em;line-height:1.7;white-space:pre-wrap;">---
+title: "The Twisted Cubic"
+slug: "twisted-cubic"
+type: "variety"
+field: "algebraic-geometry"
+tags: ["curves", "projective-space", "rational-curves", "degree-3"]
+difficulty: "undergraduate"
+summary: "The image of the degree-3 Veronese embedding of ℙ¹ into ℙ³."
+related: ["veronese-surface", "rational-normal-curve"]
+references: ["Hartshorne Ex. I.2.9", "Eisenbud-Harris §1.1"]
+---
+
+The twisted cubic is the curve $C \subset \mathbb{P}^3$ parametrized by
+$$[s:t] \mapsto [s^3 : s^2 t : s t^2 : t^3].$$
+
+It is the simplest example of a curve that is not a complete intersection...</div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>Schema fields</h3>
+  <table style="width:100%;border-collapse:collapse;font-size:0.9em">
+    <tr style="border-bottom:1px solid var(--border)">
+      <th style="text-align:left;padding:6px 12px;color:var(--label)">Field</th>
+      <th style="text-align:left;padding:6px 12px;color:var(--label)">Type</th>
+      <th style="text-align:left;padding:6px 12px;color:var(--label)">Values / notes</th>
+    </tr>
+    <tr style="border-bottom:1px solid var(--border)"><td style="padding:6px 12px"><code>title</code></td><td style="padding:6px 12px">string</td><td style="padding:6px 12px">Display name</td></tr>
+    <tr style="border-bottom:1px solid var(--border)"><td style="padding:6px 12px"><code>slug</code></td><td style="padding:6px 12px">string</td><td style="padding:6px 12px">URL: <code>/examples/twisted-cubic</code> — stable permalink</td></tr>
+    <tr style="border-bottom:1px solid var(--border)"><td style="padding:6px 12px"><code>type</code></td><td style="padding:6px 12px">enum</td><td style="padding:6px 12px"><code>variety</code> · <code>computation</code> · <code>counterexample</code></td></tr>
+    <tr style="border-bottom:1px solid var(--border)"><td style="padding:6px 12px"><code>field</code></td><td style="padding:6px 12px">enum</td><td style="padding:6px 12px"><code>algebraic-geometry</code> · <code>commutative-algebra</code> · <code>algebraic-topology</code> · <code>number-theory</code> · <code>complex-geometry</code></td></tr>
+    <tr style="border-bottom:1px solid var(--border)"><td style="padding:6px 12px"><code>tags</code></td><td style="padding:6px 12px">string[]</td><td style="padding:6px 12px">Free-form keywords for cross-linking</td></tr>
+    <tr style="border-bottom:1px solid var(--border)"><td style="padding:6px 12px"><code>difficulty</code></td><td style="padding:6px 12px">enum</td><td style="padding:6px 12px"><code>undergraduate</code> · <code>graduate</code></td></tr>
+    <tr style="border-bottom:1px solid var(--border)"><td style="padding:6px 12px"><code>summary</code></td><td style="padding:6px 12px">string</td><td style="padding:6px 12px">One-line description shown in listings and search results</td></tr>
+    <tr style="border-bottom:1px solid var(--border)"><td style="padding:6px 12px"><code>related</code></td><td style="padding:6px 12px">string[]</td><td style="padding:6px 12px">Slugs of related examples — rendered as cross-links</td></tr>
+    <tr><td style="padding:6px 12px"><code>references</code></td><td style="padding:6px 12px">string[]?</td><td style="padding:6px 12px">Optional citations (textbook, paper, Stacks tag)</td></tr>
+  </table>
+</div>
+
+<p style="margin-top:1.5rem;color:var(--label)">Astro validates this schema with Zod at build time — missing required fields or wrong types are caught before the site builds.</p>

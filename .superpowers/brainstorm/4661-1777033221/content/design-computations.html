@@ -1,0 +1,84 @@
+<h2>Design: Computation entries</h2>
+<p class="subtitle">Narrative, step-by-step mathematical arguments — like section 7 of your buzzlist</p>
+
+<div class="split">
+  <div class="mockup">
+    <div class="mockup-header">quintic-threefold-cohomology.md</div>
+    <div class="mockup-body" style="font-family:monospace;font-size:0.8em;line-height:1.7;white-space:pre-wrap;">---
+title: "Cohomology of the quintic threefold"
+slug: "quintic-threefold-cohomology"
+type: "computation"
+field: "algebraic-geometry"
+tags: ["calabi-yau", "hodge-numbers", "hypersurface"]
+summary: "Compute H*(Y,O_Y) and Hodge numbers
+  for a degree-5 hypersurface in ℙ⁴."
+
+object: "quintic-threefold"   # links to variety entry
+computes: "cohomology groups, Hodge numbers"
+techniques:
+  - "ideal sheaf sequence"
+  - "adjunction formula"
+  - "Serre duality"
+  - "conormal sequence"
+related: ["non-flat-morphism"]
+references:
+  - "Cox–Katz, Mirror Symmetry §1"
+---
+
+Let $Y \subset \mathbb{P}^4$ be the zero locus of a general
+degree-5 polynomial. We compute $H^*(Y, \mathcal{O}_Y)$
+and the Hodge numbers $h^{pq}$.
+
+**Step 1.** From the ideal sheaf sequence
+$0 \to \mathcal{O}_P(-5) \to \mathcal{O}_P \to i_*\mathcal{O}_Y \to 0$ ...</div>
+  </div>
+
+  <div class="mockup">
+    <div class="mockup-header">Rendered example page</div>
+    <div class="mockup-body">
+      <div style="font-size:1.1em;font-weight:600;margin-bottom:0.5rem">Cohomology of the quintic threefold</div>
+      <div style="display:flex;gap:0.4rem;flex-wrap:wrap;margin-bottom:0.75rem">
+        <span style="background:var(--accent);color:#fff;border-radius:4px;padding:2px 8px;font-size:0.75em">computation</span>
+        <span style="background:var(--border);border-radius:4px;padding:2px 8px;font-size:0.75em">calabi-yau</span>
+        <span style="background:var(--border);border-radius:4px;padding:2px 8px;font-size:0.75em">hodge-numbers</span>
+      </div>
+
+      <div style="font-size:0.8em;margin-bottom:0.75rem">
+        <div style="color:var(--label);font-size:0.75em;text-transform:uppercase;margin-bottom:4px">Object studied</div>
+        <span style="border:1px solid var(--border);border-radius:4px;padding:2px 8px;font-size:0.95em">→ Quintic threefold</span>
+      </div>
+
+      <div style="font-size:0.8em;margin-bottom:0.75rem">
+        <div style="color:var(--label);font-size:0.75em;text-transform:uppercase;margin-bottom:4px">Computes</div>
+        <div>cohomology groups, Hodge numbers</div>
+      </div>
+
+      <div style="font-size:0.8em;margin-bottom:0.75rem">
+        <div style="color:var(--label);font-size:0.75em;text-transform:uppercase;margin-bottom:4px">Techniques</div>
+        <div style="display:flex;gap:0.4rem;flex-wrap:wrap">
+          <span style="background:var(--border);border-radius:4px;padding:2px 8px">ideal sheaf sequence</span>
+          <span style="background:var(--border);border-radius:4px;padding:2px 8px">adjunction formula</span>
+          <span style="background:var(--border);border-radius:4px;padding:2px 8px">Serre duality</span>
+        </div>
+      </div>
+
+      <div style="border-top:1px solid var(--border);padding-top:0.75rem;font-size:0.88em;line-height:1.7">
+        Let <em>Y ⊂ ℙ⁴</em> be the zero locus of a general degree-5 polynomial. We compute <em>H*(Y, O_Y)</em> and the Hodge numbers <em>h^pq</em>.<br><br>
+        <strong>Step 1.</strong> From the ideal sheaf sequence 0 → O_P(−5) → O_P → i_*O_Y → 0 ...
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section" style="margin-top:1.5rem">
+  <h3>Computation-specific schema fields</h3>
+  <table style="width:100%;border-collapse:collapse;font-size:0.9em">
+    <tr style="border-bottom:1px solid var(--border)">
+      <th style="text-align:left;padding:6px 12px;color:var(--label)">Field</th>
+      <th style="text-align:left;padding:6px 12px;color:var(--label)">Notes</th>
+    </tr>
+    <tr style="border-bottom:1px solid var(--border)"><td style="padding:6px 12px"><code>object</code></td><td style="padding:6px 12px">Optional slug of a variety entry — renders as a cross-link</td></tr>
+    <tr style="border-bottom:1px solid var(--border)"><td style="padding:6px 12px"><code>computes</code></td><td style="padding:6px 12px">Free text: what the computation produces (searchable)</td></tr>
+    <tr><td style="padding:6px 12px"><code>techniques</code></td><td style="padding:6px 12px">String list of tools used — filterable, e.g. "show all that use adjunction"</td></tr>
+  </table>
+</div>

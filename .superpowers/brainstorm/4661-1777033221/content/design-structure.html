@@ -1,0 +1,63 @@
+<h2>Design: Site Structure</h2>
+<p class="subtitle">Pages generated at build time from Markdown files, served as static HTML</p>
+
+<div class="section">
+  <div class="mockup">
+    <div class="mockup-header">Route tree</div>
+    <div class="mockup-body" style="font-family:monospace;font-size:0.9em;line-height:2">
+      <span style="color:var(--accent)">/</span> — Homepage: search bar + recent additions + browse by field<br>
+      <span style="color:var(--accent)">/examples</span> — Full listing, filterable by type/field/tags<br>
+      <span style="color:var(--accent)">/examples/$slug</span> — Individual example (the permalink)<br>
+      <span style="color:var(--accent)">/tags/$tag</span> — All examples with a given tag<br>
+      <span style="color:var(--accent)">/fields/$field</span> — All examples in a field (e.g. commutative algebra)<br>
+      <span style="color:var(--accent)">/types/$type</span> — Browse by type: variety · computation · counterexample<br>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>Individual example page — <code>/examples/twisted-cubic</code></h3>
+  <div class="mockup">
+    <div class="mockup-header">Example page layout</div>
+    <div class="mockup-body">
+      <div style="border-bottom:1px solid var(--border);padding-bottom:0.75rem;margin-bottom:0.75rem">
+        <div style="font-size:1.3em;font-weight:600">The Twisted Cubic</div>
+        <div style="display:flex;gap:0.5rem;margin-top:0.4rem;flex-wrap:wrap">
+          <span style="background:var(--accent);color:#fff;border-radius:4px;padding:2px 8px;font-size:0.75em">variety</span>
+          <span style="background:var(--border);border-radius:4px;padding:2px 8px;font-size:0.75em">algebraic-geometry</span>
+          <span style="background:var(--border);border-radius:4px;padding:2px 8px;font-size:0.75em">curves</span>
+          <span style="background:var(--border);border-radius:4px;padding:2px 8px;font-size:0.75em">projective-space</span>
+        </div>
+      </div>
+      <div style="font-size:0.9em;line-height:1.7;margin-bottom:1rem">
+        The twisted cubic is the curve <em>C ⊂ ℙ³</em> parametrized by <em>[s:t] ↦ [s³:s²t:st²:t³]</em>. It is the simplest example of a curve that is not a complete intersection...
+      </div>
+      <div style="border-top:1px solid var(--border);padding-top:0.75rem">
+        <div style="font-size:0.8em;color:var(--label);margin-bottom:0.4rem">RELATED EXAMPLES</div>
+        <div style="display:flex;gap:0.5rem">
+          <span style="border:1px solid var(--border);border-radius:4px;padding:3px 10px;font-size:0.85em">→ Veronese Surface</span>
+          <span style="border:1px solid var(--border);border-radius:4px;padding:3px 10px;font-size:0.85em">→ Rational Normal Curve</span>
+        </div>
+      </div>
+      <div style="border-top:1px solid var(--border);padding-top:0.75rem;margin-top:0.75rem">
+        <div style="font-size:0.8em;color:var(--label);margin-bottom:0.4rem">REFERENCES</div>
+        <div style="font-size:0.85em">Hartshorne Ex. I.2.9 · Eisenbud–Harris §1.1</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>Key technical pieces</h3>
+  <table style="width:100%;border-collapse:collapse;font-size:0.9em">
+    <tr style="border-bottom:1px solid var(--border)">
+      <th style="text-align:left;padding:6px 12px;color:var(--label)">Concern</th>
+      <th style="text-align:left;padding:6px 12px;color:var(--label)">Solution</th>
+    </tr>
+    <tr style="border-bottom:1px solid var(--border)"><td style="padding:6px 12px">Math rendering</td><td style="padding:6px 12px">KaTeX via <code>remark-math</code> + <code>rehype-katex</code></td></tr>
+    <tr style="border-bottom:1px solid var(--border)"><td style="padding:6px 12px">Search</td><td style="padding:6px 12px">Pagefind — indexes built HTML, runs fully client-side</td></tr>
+    <tr style="border-bottom:1px solid var(--border)"><td style="padding:6px 12px">Frontmatter parsing</td><td style="padding:6px 12px"><code>gray-matter</code> + Zod schema validation at build time</td></tr>
+    <tr style="border-bottom:1px solid var(--border)"><td style="padding:6px 12px">Permalinks</td><td style="padding:6px 12px"><code>slug</code> field in frontmatter → stable <code>/examples/$slug</code> URLs</td></tr>
+    <tr><td style="padding:6px 12px">Deployment</td><td style="padding:6px 12px">GitHub Pages / Netlify / Vercel — static output, free tier</td></tr>
+  </table>
+</div>

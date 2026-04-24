@@ -1,0 +1,67 @@
+<h2>Full design summary</h2>
+<p class="subtitle">Review the complete picture before we write the spec</p>
+
+<div class="section">
+  <h3>Stack</h3>
+  <table style="width:100%;border-collapse:collapse;font-size:0.9em">
+    <tr style="border-bottom:1px solid var(--border)"><td style="padding:6px 12px;color:var(--label);width:160px">Framework</td><td style="padding:6px 12px">TanStack Start (React) with static prerendering</td></tr>
+    <tr style="border-bottom:1px solid var(--border)"><td style="padding:6px 12px;color:var(--label)">Content</td><td style="padding:6px 12px">Markdown files + YAML frontmatter, validated with Zod at build time</td></tr>
+    <tr style="border-bottom:1px solid var(--border)"><td style="padding:6px 12px;color:var(--label)">Math</td><td style="padding:6px 12px">KaTeX via remark-math + rehype-katex</td></tr>
+    <tr style="border-bottom:1px solid var(--border)"><td style="padding:6px 12px;color:var(--label)">Search</td><td style="padding:6px 12px">Pagefind — indexes static HTML, runs fully client-side</td></tr>
+    <tr><td style="padding:6px 12px;color:var(--label)">Deployment</td><td style="padding:6px 12px">Static output → GitHub Pages / Netlify / Vercel</td></tr>
+  </table>
+</div>
+
+<div class="section">
+  <h3>Content types &amp; schema</h3>
+  <table style="width:100%;border-collapse:collapse;font-size:0.9em">
+    <tr style="border-bottom:1px solid var(--border)">
+      <th style="text-align:left;padding:6px 12px;color:var(--label)">Type</th>
+      <th style="text-align:left;padding:6px 12px;color:var(--label)">Key extra fields</th>
+      <th style="text-align:left;padding:6px 12px;color:var(--label)">Special UI</th>
+    </tr>
+    <tr style="border-bottom:1px solid var(--border)">
+      <td style="padding:6px 12px"><strong>variety</strong></td>
+      <td style="padding:6px 12px"><code>properties</code> object: dimension, ambient_space, degree, singularities, genus, is_rational, kodaira_dimension, …</td>
+      <td style="padding:6px 12px">Properties table + filterable browse page at <code>/varieties</code></td>
+    </tr>
+    <tr style="border-bottom:1px solid var(--border)">
+      <td style="padding:6px 12px"><strong>computation</strong></td>
+      <td style="padding:6px 12px"><code>object</code> (slug link), <code>computes</code> (text), <code>techniques</code> (list)</td>
+      <td style="padding:6px 12px">Linked object, technique tags, filterable</td>
+    </tr>
+    <tr>
+      <td style="padding:6px 12px"><strong>counterexample</strong></td>
+      <td style="padding:6px 12px"><code>refutes</code> (what statement it disproves)</td>
+      <td style="padding:6px 12px">Prominent "refutes" banner at top</td>
+    </tr>
+  </table>
+  <div style="margin-top:0.75rem;font-size:0.85em;color:var(--label)">Shared fields on all types: title · slug · field · tags · summary · related · references</div>
+</div>
+
+<div class="section">
+  <h3>Routes</h3>
+  <div style="font-family:monospace;font-size:0.85em;line-height:2">
+    <span style="color:var(--accent)">/</span> — Homepage: search bar, type counts, foldable sidebar (fields + tags), recent entries<br>
+    <span style="color:var(--accent)">/examples</span> — Full listing, filter by type/field/tag<br>
+    <span style="color:var(--accent)">/examples/$slug</span> — Individual example (stable permalink)<br>
+    <span style="color:var(--accent)">/varieties</span> — Filter varieties by property (dimension, ambient space, etc.)<br>
+    <span style="color:var(--accent)">/tags/$tag</span> — All examples with a tag<br>
+    <span style="color:var(--accent)">/fields/$field</span> — All examples in a field<br>
+  </div>
+</div>
+
+<div class="section">
+  <h3>Layout</h3>
+  <div style="font-size:0.9em;line-height:1.7">
+    Sidebar layout (option B) with a <strong>foldable sidebar</strong> containing field links and popular tags.
+    Sidebar collapses on mobile and can be toggled on desktop. Main content area holds the search bar and example listings/detail pages.
+  </div>
+</div>
+
+<div class="section">
+  <h3>Authoring workflow</h3>
+  <div style="font-size:0.9em;line-height:1.7">
+    Create a <code>.md</code> file in <code>content/examples/</code> → build validates schema → static site rebuilds → new example is live with permalink. No CMS, no database. Git is the source of truth.
+  </div>
+</div>

@@ -1,0 +1,64 @@
+<h2>Three approaches for the example database</h2>
+<p class="subtitle">All use Markdown + YAML frontmatter, KaTeX for math, Pagefind for search, and generate permalinks automatically.</p>
+
+<div class="options">
+  <div class="option" data-choice="a" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>Hugo (recommended)</h3>
+      <p>Battle-tested static site generator with first-class taxonomy support — fields and tags become filterable taxonomies automatically. Extremely fast builds. Strong math support via KaTeX. Large community of math/academic sites built on it. Content model in YAML frontmatter, permalinks via slug field.</p>
+      <div class="pros-cons">
+        <div class="pros"><h4>Pros</h4><ul>
+          <li>Built-in taxonomies (perfect for field/tag filtering)</li>
+          <li>Blazing fast, scales to thousands of examples</li>
+          <li>Mature, stable, widely used in academia</li>
+          <li>Single binary — easy to install and deploy</li>
+        </ul></div>
+        <div class="cons"><h4>Cons</h4><ul>
+          <li>Go templating syntax is quirky to learn</li>
+          <li>Less flexible for custom UI components</li>
+        </ul></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="b" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>Astro + Content Collections</h3>
+      <p>Modern JS framework with typed content collections — define a Zod schema for your YAML frontmatter and get validation errors if you forget a required field. Great component model for building rich UI. Excellent Pagefind integration. More code to write upfront, but very flexible.</p>
+      <div class="pros-cons">
+        <div class="pros"><h4>Pros</h4><ul>
+          <li>Schema-validated frontmatter catches mistakes at build time</li>
+          <li>Modern, component-based — easy to build rich filtering UI</li>
+          <li>TypeScript-native, great DX</li>
+          <li>Easy to extend toward community features later</li>
+        </ul></div>
+        <div class="cons"><h4>Cons</h4><ul>
+          <li>More boilerplate to set up</li>
+          <li>Node.js dependency</li>
+        </ul></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="c" onclick="toggleSelect(this)">
+    <div class="letter">C</div>
+    <div class="content">
+      <h3>Eleventy (11ty)</h3>
+      <p>Minimal, highly configurable static site generator. You define everything yourself — good if you want total control, but requires more upfront design work. Good math support, Pagefind works well with it.</p>
+      <div class="pros-cons">
+        <div class="pros"><h4>Pros</h4><ul>
+          <li>Extremely flexible — no opinions imposed</li>
+          <li>Lightweight, fast</li>
+          <li>JavaScript ecosystem</li>
+        </ul></div>
+        <div class="cons"><h4>Cons</h4><ul>
+          <li>No built-in content schema or taxonomy system</li>
+          <li>More work to build filtering, browse-by-tag, etc.</li>
+          <li>Smaller community than Hugo/Astro for math sites</li>
+        </ul></div>
+      </div>
+    </div>
+  </div>
+</div>
