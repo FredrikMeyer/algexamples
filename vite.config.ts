@@ -3,6 +3,7 @@ import { tanstackStart } from '@tanstack/react-start/plugin/vite'
 import tailwindcss from '@tailwindcss/vite'
 import viteReact from '@vitejs/plugin-react'
 import { resolve } from 'path'
+import { getAllExamples, getAllTags, getAllFields } from './app/lib/content'
 
 export default defineConfig({
   resolve: {
@@ -14,6 +15,24 @@ export default defineConfig({
       prerender: {
         enabled: true,
         crawlLinks: true,
+        filter: (page) => !page.path.includes('?'),
+        routes: () => {
+          try {
+            const examples = getAllExamples()
+            const tags = getAllTags()
+            const fields = getAllFields()
+            return [
+              '/',
+              '/examples/',
+              '/varieties/',
+              ...examples.map((e) => `/examples/${e.slug}`),
+              ...fields.map((f) => `/fields/${f}`),
+              ...tags.map((t) => `/tags/${t}`),
+            ]
+          } catch {
+            return ['/', '/examples/', '/varieties/']
+          }
+        },
       },
     }),
     viteReact(),
