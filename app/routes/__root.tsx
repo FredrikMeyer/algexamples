@@ -1,6 +1,8 @@
 import { createRootRoute, Outlet, HeadContent, Scripts } from '@tanstack/react-router'
+import { useEffect } from 'react'
 import { getAllTags } from '~/lib/content'
 import { Sidebar } from '~/components/Sidebar'
+import { initCopyCodeButtons } from '~/lib/copy-code'
 import '~/styles/global.css'
 
 export const Route = createRootRoute({
@@ -17,6 +19,7 @@ export const Route = createRootRoute({
 
 function RootLayout() {
   const { allTags } = Route.useLoaderData()
+  useEffect(() => { initCopyCodeButtons() }, [])
 
   return (
     <html lang="en">

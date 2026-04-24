@@ -6,6 +6,7 @@ import rehypeKatex from 'rehype-katex'
 import rehypeHighlight from 'rehype-highlight'
 import rehypeStringify from 'rehype-stringify'
 import { katexMacros } from './katex-macros'
+import rehypeCodeBlocks from './rehype-code-blocks'
 
 export async function processMarkdown(content: string): Promise<string> {
   const result = await unified()
@@ -14,6 +15,7 @@ export async function processMarkdown(content: string): Promise<string> {
     .use(remarkRehype, { allowDangerousHtml: false })
     .use(rehypeKatex, { macros: katexMacros, throwOnError: false })
     .use(rehypeHighlight, { detect: true })
+    .use(rehypeCodeBlocks)
     .use(rehypeStringify)
     .process(content)
   return String(result)
