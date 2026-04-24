@@ -19,7 +19,7 @@ export const Route = createRootRoute({
 
 function RootLayout() {
   const { allTags } = Route.useLoaderData()
-  useEffect(() => { initCopyCodeButtons() }, [])
+  useEffect(() => initCopyCodeButtons(), [])
 
   return (
     <html lang="en">

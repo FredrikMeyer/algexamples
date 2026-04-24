@@ -1,5 +1,5 @@
-export function initCopyCodeButtons() {
-  document.addEventListener('click', (e) => {
+export function initCopyCodeButtons(): () => void {
+  const handler = (e: Event) => {
     const btn = (e.target as Element).closest('[data-copy-code]') as HTMLElement | null
     if (!btn) return
     const code = btn.getAttribute('data-copy-code') ?? ''
@@ -8,5 +8,7 @@ export function initCopyCodeButtons() {
       btn.textContent = 'Copied!'
       setTimeout(() => { btn.textContent = original }, 1500)
     })
-  })
+  }
+  document.addEventListener('click', handler)
+  return () => document.removeEventListener('click', handler)
 }
