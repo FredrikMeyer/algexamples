@@ -2,3 +2,4 @@ node_modules/
 .output/
 dist/
 app/routeTree.gen.ts
+e2e/screenshots/*.png

@@ -9,7 +9,9 @@
     "postbuild": "pagefind --site dist/client",
     "start": "node .output/server/index.mjs",
     "test": "vitest run",
-    "lint": "eslint app"
+    "lint": "eslint app",
+    "e2e": "playwright test",
+    "e2e:headed": "playwright test --headed"
   },
   "dependencies": {
     "@rsbuild/core": "^2.0.1",
@@ -30,6 +32,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
+    "@playwright/test": "^1.59.1",
     "@tailwindcss/vite": "^4.2.4",
     "@types/node": "^25.6.0",
     "@types/react": "^19.2.14",
