@@ -1,0 +1,16 @@
+export const katexMacros: Record<string, string> = {
+  '\\PP': '\\mathbb{P}',
+  '\\AA': '\\mathbb{A}',
+  '\\OO': '\\mathcal{O}',
+  '\\kk': '\\mathbb{k}',
+  '\\ZZ': '\\mathbb{Z}',
+  '\\QQ': '\\mathbb{Q}',
+  '\\RR': '\\mathbb{R}',
+  '\\CC': '\\mathbb{C}',
+  '\\Spec': '\\operatorname{Spec}',
+  '\\Proj': '\\operatorname{Proj}',
+  '\\Hom': '\\operatorname{Hom}',
+  '\\End': '\\operatorname{End}',
+  '\\Ext': '\\operatorname{Ext}',
+  '\\Tor': '\\operatorname{Tor}',
+}
