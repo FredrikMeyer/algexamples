@@ -23,6 +23,11 @@ npm run lint       # ESLint
 npm run e2e        # Playwright screenshot tests
 ```
 
+## Documentation
+
+For a full authoring reference — frontmatter schema, LaTeX macros, commutative
+diagrams, and CAS code blocks — see [`docs/authoring.md`](docs/authoring.md).
+
 ## Adding a new post
 
 Run the interactive CLI:
