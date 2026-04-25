@@ -15,7 +15,16 @@ Let $A = k[x]$ and $B = k[x,y]/(xy)$. The inclusion $A \hookrightarrow B$ given 
 
 **Claim:** $B$ is not flat as an $A$-module.
 
-Start with the exact sequence $0 \to (x) \to A \to k \to 0$ and tensor with $B$:
-$$0 \to (x) \otimes_A B \to B \to k \otimes_A B \to 0.$$
+Start with the exact sequence
+
+$$
+0 \to (x) \to A \to k \to 0
+$$
+
+and tensor with $B$.
+
+$$
+0 \to (x) \otimes_A B \to B \to k \otimes_A B \to 0.
+$$
 
 The element $x \otimes y \in (x) \otimes_A B$ maps to $xy = 0 \in B$. Since $B$ has $k$-basis $\{x^i, y^j\}_{i,j \geq 0}$, the element $x \otimes y$ is nonzero in $(x) \otimes_A B$. Hence the map is not injective, so $B$ is not flat.

@@ -104,7 +104,10 @@ properties:
 ---
 
 The **twisted cubic** is the curve $C \subset \PP^3$ parametrized by
-$$[s:t] \mapsto [s^3 : s^2 t : s t^2 : t^3].$$
+
+$$
+[s:t] \mapsto [s^3 : s^2 t : s t^2 : t^3].
+$$
 ```
 
 ### Computation
@@ -152,7 +155,15 @@ Body here.
 Math is rendered by **KaTeX**. Use standard LaTeX delimiters:
 
 - Inline: `$f: X \to Y$`
-- Display: `$$H^*(X, \mathbb{Z})$$`
+- Display: content must be on its own line between `$$` fences:
+
+  ```
+  $$
+  H^*(X, \mathbb{Z})
+  $$
+  ```
+
+  A single-line `$$...$$` is parsed as inline math and will **not** be centred.
 
 ### Custom macros
 
