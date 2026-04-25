@@ -9,9 +9,14 @@ related: []
 references:
   - "Hartshorne, Ex. I.2.9"
   - "Eisenbud–Harris §1.1"
+links:
+  - url: "https://en.wikipedia.org/wiki/Twisted_cubic"
+    label: "Wikipedia — Twisted cubic"
+  - url: "https://stacks.math.columbia.edu/tag/0A22"
+    label: "Stacks Project — Curves"
 properties:
   dimension: 1
-  ambient_space: "P^3"
+  ambient_space: '$\PP^3$'
   degree: 3
   singularities: smooth
   genus: 0

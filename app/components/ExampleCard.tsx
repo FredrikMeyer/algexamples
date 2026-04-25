@@ -1,5 +1,6 @@
 import { Link } from '@tanstack/react-router'
 import type { Example } from '~/lib/schema'
+import { MathText } from '~/components/MathText'
 
 const TYPE_COLOURS: Record<Example['type'], string> = {
   variety: 'bg-teal-100 text-teal-800',
@@ -26,7 +27,7 @@ export function ExampleCard({ example }: ExampleCardProps) {
           {example.type}
         </span>
       </div>
-      <p className="text-sm text-gray-500 mb-2 leading-relaxed">{example.summary}</p>
+      <p className="text-sm text-gray-500 mb-2 leading-relaxed"><MathText text={example.summary} /></p>
       <div className="flex flex-wrap gap-1">
         {example.tags.slice(0, 5).map((tag) => (
           <Link

@@ -4,7 +4,7 @@ slug: "quintic-threefold-cohomology"
 type: computation
 field: algebraic-geometry
 tags: [calabi-yau, hodge-numbers, hypersurface, cohomology]
-summary: "Compute H*(Y, O_Y) and Hodge numbers for a degree-5 hypersurface in ℙ⁴."
+summary: 'Compute $H_*(Y, \OO_Y)$ and Hodge numbers for a degree-5 hypersurface in $\PP^4$.'
 related: []
 object: ""
 computes: "sheaf cohomology H*(Y, O_Y) and Hodge numbers h^{pq}"

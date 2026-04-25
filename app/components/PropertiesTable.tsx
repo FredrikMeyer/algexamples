@@ -1,4 +1,6 @@
+import type React from 'react'
 import type { VarietyFrontmatter } from '~/lib/schema'
+import { MathText } from '~/components/MathText'
 
 type Properties = NonNullable<VarietyFrontmatter['properties']>
 
@@ -18,7 +20,7 @@ const PROPERTY_LABELS: { key: keyof Properties; label: string }[] = [
   { key: 'hodge_numbers', label: 'Hodge numbers' },
 ]
 
-function formatValue(key: keyof Properties, value: NonNullable<Properties[keyof Properties]>): string {
+function formatValue(key: keyof Properties, value: NonNullable<Properties[keyof Properties]>): React.ReactNode {
   if (key === 'is_rational') return (value as boolean) ? 'Yes' : 'No'
   if (key === 'kodaira_dimension') {
     const v = value as number | '-inf'
@@ -26,9 +28,10 @@ function formatValue(key: keyof Properties, value: NonNullable<Properties[keyof 
   }
   if (key === 'hodge_numbers') {
     const hn = value as Record<string, number>
-    return Object.entries(hn).map(([pq, n]) => `h^{${pq}} = ${n}`).join(', ')
+    const tex = Object.entries(hn).map(([pq, n]) => `h^{${pq}} = ${n}`).join(',\\, ')
+    return <MathText text={`$${tex}$`} />
   }
-  return String(value)
+  return <MathText text={String(value)} />
 }
 
 export function PropertiesTable({ properties }: PropertiesTableProps) {

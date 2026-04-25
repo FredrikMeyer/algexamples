@@ -13,6 +13,11 @@ export const SlugSchema = z
   .min(1)
   .regex(/^[a-z0-9-]+$/, 'Slug must be lowercase alphanumeric with hyphens')
 
+export const LinkSchema = z.object({
+  url: z.string().url(),
+  label: z.string().min(1),
+})
+
 const BaseSchema = z.object({
   title: z.string().min(1),
   slug: SlugSchema,
@@ -22,6 +27,7 @@ const BaseSchema = z.object({
   related: z.array(z.string()).default([]),
   references: z.array(z.string()).optional(),
   concepts: z.array(z.string()).optional(),
+  links: z.array(LinkSchema).optional(),
 })
 
 export const VarietyPropertiesSchema = z.object({

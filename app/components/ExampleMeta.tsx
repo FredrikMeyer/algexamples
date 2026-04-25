@@ -1,5 +1,6 @@
 import { Link } from '@tanstack/react-router'
 import type { Example, ComputationFrontmatter, CounterexampleFrontmatter } from '~/lib/schema'
+import { MathText } from '~/components/MathText'
 
 const TYPE_COLOURS: Record<Example['type'], string> = {
   variety: 'bg-teal-100 text-teal-800',
@@ -42,20 +43,20 @@ export function ExampleMeta({ example, backlinks }: ExampleMetaProps) {
       </div>
 
       {/* Summary */}
-      <p className="text-sm text-gray-600 leading-relaxed">{example.summary}</p>
+      <p className="text-sm text-gray-600 leading-relaxed"><MathText text={example.summary} /></p>
 
       {/* Computation-specific */}
       {example.type === 'computation' && (
         <>
           <MetaSection label="Computes">
-            <p className="text-sm text-gray-700">{(example as ComputationFrontmatter & { body: string }).computes}</p>
+            <p className="text-sm text-gray-700"><MathText text={(example as ComputationFrontmatter & { body: string }).computes} /></p>
           </MetaSection>
           {(example as ComputationFrontmatter & { body: string }).techniques.length > 0 && (
             <MetaSection label="Techniques">
               <div className="flex flex-wrap gap-1">
                 {(example as ComputationFrontmatter & { body: string }).techniques.map((t) => (
                   <span key={t} className="text-xs bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded">
-                    {t}
+                    <MathText text={t} />
                   </span>
                 ))}
               </div>
@@ -67,7 +68,7 @@ export function ExampleMeta({ example, backlinks }: ExampleMetaProps) {
       {/* Counterexample-specific */}
       {example.type === 'counterexample' && (
         <MetaSection label="Refutes">
-          <p className="text-sm text-gray-700">{(example as CounterexampleFrontmatter & { body: string }).refutes}</p>
+          <p className="text-sm text-gray-700"><MathText text={(example as CounterexampleFrontmatter & { body: string }).refutes} /></p>
         </MetaSection>
       )}
 
