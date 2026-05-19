@@ -17,7 +17,7 @@
   "dependencies": {
     "@rsbuild/core": "^2.0.1",
     "@tanstack/react-router": "^1.169.1",
-    "@tanstack/react-start": "^1.167.57",
+    "@tanstack/react-start": "^1.168.6",
     "gray-matter": "^4.0.3",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
