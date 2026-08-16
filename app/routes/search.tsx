@@ -1,22 +1,22 @@
-import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
-import { z } from 'zod'
-import { searchExamplesFn } from '~/lib/server-fns'
-import { FieldEnum } from '~/lib/schema'
-import { ExampleCard } from '~/components/ExampleCard'
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { z } from "zod";
+import { searchExamplesFn } from "~/lib/server-fns";
+import { FieldEnum } from "~/lib/schema";
+import { ExampleCard } from "~/components/ExampleCard";
 
-const TYPES = ['variety', 'computation', 'counterexample'] as const
+const TYPES = ["variety", "computation", "counterexample"] as const;
 const TYPE_LABELS: Record<(typeof TYPES)[number], string> = {
-  variety: 'Varieties',
-  computation: 'Computations',
-  counterexample: 'Counterexamples',
-}
+  variety: "Varieties",
+  computation: "Computations",
+  counterexample: "Counterexamples",
+};
 const FIELD_LABELS: Record<string, string> = {
-  'algebraic-geometry': 'Algebraic Geometry',
-  'commutative-algebra': 'Commutative Algebra',
-  'algebraic-topology': 'Algebraic Topology',
-  'number-theory': 'Number Theory',
-  'complex-geometry': 'Complex Geometry',
-}
+  "algebraic-geometry": "Algebraic Geometry",
+  "commutative-algebra": "Commutative Algebra",
+  "algebraic-topology": "Algebraic Topology",
+  "number-theory": "Number Theory",
+  "complex-geometry": "Complex Geometry",
+};
 
 const SearchSchema = z.object({
   q: z.string().optional(),
@@ -25,16 +25,26 @@ const SearchSchema = z.object({
   tag: z.string().optional(),
   dim: z.coerce.number().int().nonnegative().optional(),
   rational: z
-    .union([z.literal('true'), z.literal('false'), z.literal(true), z.literal(false)])
-    .transform((v) => v === 'true' || v === true)
+    .union([
+      z.literal("true"),
+      z.literal("false"),
+      z.literal(true),
+      z.literal(false),
+    ])
+    .transform((v) => v === "true" || v === true)
     .optional(),
   smooth: z
-    .union([z.literal('true'), z.literal(true), z.literal('false'), z.literal(false)])
-    .transform((v) => v === 'true' || v === true)
+    .union([
+      z.literal("true"),
+      z.literal(true),
+      z.literal("false"),
+      z.literal(false),
+    ])
+    .transform((v) => v === "true" || v === true)
     .optional(),
-})
+});
 
-export const Route = createFileRoute('/search')({
+export const Route = createFileRoute("/search")({
   validateSearch: SearchSchema,
   loaderDeps: ({ search }) => search,
   loader: async ({ deps }) => {
@@ -46,18 +56,18 @@ export const Route = createFileRoute('/search')({
       dim: deps.dim,
       rational: deps.rational,
       smooth: deps.smooth,
-    })
-    return { results }
+    });
+    return { results };
   },
   component: SearchPage,
-})
+});
 
 function SearchPage() {
-  const { results } = Route.useLoaderData()
-  const search = Route.useSearch()
-  const navigate = useNavigate({ from: '/search' })
+  const { results } = Route.useLoaderData();
+  const search = Route.useSearch();
+  const navigate = useNavigate({ from: "/search" });
 
-  const showVarietyFilters = !search.type || search.type === 'variety'
+  const showVarietyFilters = !search.type || search.type === "variety";
   const hasFilters =
     search.q ||
     search.type ||
@@ -65,21 +75,21 @@ function SearchPage() {
     search.tag ||
     search.dim !== undefined ||
     search.rational !== undefined ||
-    search.smooth
+    search.smooth;
 
   function set(patch: Partial<typeof search>) {
-    navigate({ search: (prev) => ({ ...prev, ...patch }), replace: true })
+    navigate({ search: (prev) => ({ ...prev, ...patch }), replace: true });
   }
 
   function clear(key: keyof typeof search) {
     navigate({
       search: (prev) => {
-        const next = { ...prev }
-        delete next[key]
-        return next
+        const next = { ...prev };
+        delete next[key];
+        return next;
       },
       replace: true,
-    })
+    });
   }
 
   return (
@@ -87,19 +97,21 @@ function SearchPage() {
       <div className="mb-6">
         <h1
           className="text-4xl font-semibold text-gray-900 mb-1"
-          style={{ fontFamily: "'EB Garamond', Georgia, serif", letterSpacing: '-0.01em' }}
+          style={{
+            fontFamily: "'EB Garamond', Georgia, serif",
+            letterSpacing: "-0.01em",
+          }}
         >
           Search
         </h1>
         <p className="text-gray-500 text-sm">
-          {results.length} result{results.length === 1 ? '' : 's'}
-          {hasFilters ? ' matching current filters' : ''}
+          {results.length} result{results.length === 1 ? "" : "s"}
+          {hasFilters ? " matching current filters" : ""}
         </p>
       </div>
 
       {/* Filter panel */}
       <div className="bg-white border border-gray-200 rounded-lg p-5 mb-6 space-y-5">
-
         {/* Text search */}
         <div>
           <label className="text-xs font-medium text-gray-400 uppercase tracking-widest block mb-1.5">
@@ -107,13 +119,13 @@ function SearchPage() {
           </label>
           <input
             type="search"
-            value={search.q ?? ''}
+            value={search.q ?? ""}
             onChange={(e) => {
-              const v = e.target.value
+              const v = e.target.value;
               if (v) {
-                set({ q: v })
+                set({ q: v });
               } else {
-                clear('q')
+                clear("q");
               }
             }}
             placeholder="Search titles, summaries, body text…"
@@ -123,12 +135,16 @@ function SearchPage() {
 
         {/* Type */}
         <div>
-          <p className="text-xs font-medium text-gray-400 uppercase tracking-widest mb-1.5">Type</p>
+          <p className="text-xs font-medium text-gray-400 uppercase tracking-widest mb-1.5">
+            Type
+          </p>
           <div className="flex flex-wrap gap-2">
             <button
-              onClick={() => clear('type')}
+              onClick={() => clear("type")}
               className={`px-3 py-1 rounded-full text-sm font-medium transition-colors ${
-                !search.type ? 'bg-indigo-700 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                !search.type
+                  ? "bg-indigo-700 text-white"
+                  : "bg-gray-100 text-gray-600 hover:bg-gray-200"
               }`}
             >
               All
@@ -136,15 +152,17 @@ function SearchPage() {
             {TYPES.map((t) => (
               <button
                 key={t}
-                onClick={() => (search.type === t ? clear('type') : set({ type: t }))}
+                onClick={() =>
+                  search.type === t ? clear("type") : set({ type: t })
+                }
                 className={`px-3 py-1 rounded-full text-sm font-medium transition-colors ${
                   search.type === t
-                    ? t === 'variety'
-                      ? 'bg-teal-700 text-white'
-                      : t === 'computation'
-                        ? 'bg-emerald-700 text-white'
-                        : 'bg-amber-600 text-white'
-                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                    ? t === "variety"
+                      ? "bg-teal-700 text-white"
+                      : t === "computation"
+                        ? "bg-emerald-700 text-white"
+                        : "bg-amber-600 text-white"
+                    : "bg-gray-100 text-gray-600 hover:bg-gray-200"
                 }`}
               >
                 {TYPE_LABELS[t]}
@@ -155,12 +173,16 @@ function SearchPage() {
 
         {/* Field */}
         <div>
-          <p className="text-xs font-medium text-gray-400 uppercase tracking-widest mb-1.5">Field</p>
+          <p className="text-xs font-medium text-gray-400 uppercase tracking-widest mb-1.5">
+            Field
+          </p>
           <div className="flex flex-wrap gap-2">
             <button
-              onClick={() => clear('field')}
+              onClick={() => clear("field")}
               className={`px-3 py-1 rounded-full text-sm font-medium transition-colors ${
-                !search.field ? 'bg-indigo-700 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                !search.field
+                  ? "bg-indigo-700 text-white"
+                  : "bg-gray-100 text-gray-600 hover:bg-gray-200"
               }`}
             >
               All
@@ -168,11 +190,13 @@ function SearchPage() {
             {FieldEnum.options.map((f) => (
               <button
                 key={f}
-                onClick={() => (search.field === f ? clear('field') : set({ field: f }))}
+                onClick={() =>
+                  search.field === f ? clear("field") : set({ field: f })
+                }
                 className={`px-3 py-1 rounded-full text-sm font-medium transition-colors ${
                   search.field === f
-                    ? 'bg-indigo-700 text-white'
-                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                    ? "bg-indigo-700 text-white"
+                    : "bg-gray-100 text-gray-600 hover:bg-gray-200"
                 }`}
               >
                 {FIELD_LABELS[f]}
@@ -188,13 +212,13 @@ function SearchPage() {
           </label>
           <input
             type="text"
-            value={search.tag ?? ''}
+            value={search.tag ?? ""}
             onChange={(e) => {
-              const v = e.target.value
+              const v = e.target.value;
               if (v) {
-                set({ tag: v })
+                set({ tag: v });
               } else {
-                clear('tag')
+                clear("tag");
               }
             }}
             placeholder="e.g. projective-space"
@@ -218,20 +242,21 @@ function SearchPage() {
               Variety properties
             </p>
             <div className="flex flex-wrap gap-5 items-end">
-
               {/* Dimension */}
               <div>
-                <label className="text-xs text-gray-500 block mb-1">Dimension</label>
+                <label className="text-xs text-gray-500 block mb-1">
+                  Dimension
+                </label>
                 <input
                   type="number"
                   min={0}
-                  value={search.dim ?? ''}
+                  value={search.dim ?? ""}
                   onChange={(e) => {
-                    const v = parseInt(e.target.value, 10)
-                    if (isNaN(v) || e.target.value === '') {
-                      clear('dim')
+                    const v = parseInt(e.target.value, 10);
+                    if (isNaN(v) || e.target.value === "") {
+                      clear("dim");
                     } else {
-                      set({ dim: v })
+                      set({ dim: v });
                     }
                   }}
                   placeholder="Any"
@@ -243,27 +268,37 @@ function SearchPage() {
               <div>
                 <p className="text-xs text-gray-500 mb-1">Rational</p>
                 <div className="flex rounded border border-gray-200 overflow-hidden text-sm">
-                  {(['', 'true', 'false'] as const).map((val) => {
-                    const label = val === '' ? 'Any' : val === 'true' ? 'Yes' : 'No'
+                  {(["", "true", "false"] as const).map((val) => {
+                    const label =
+                      val === "" ? "Any" : val === "true" ? "Yes" : "No";
                     const current =
-                      search.rational === undefined ? '' : search.rational ? 'true' : 'false'
-                    const active = current === val
+                      search.rational === undefined
+                        ? ""
+                        : search.rational
+                          ? "true"
+                          : "false";
+                    const active = current === val;
                     return (
                       <button
                         key={val}
                         onClick={() =>
-                          val === ''
-                            ? clear('rational')
-                            : set({ rational: val === 'true' })
+                          val === ""
+                            ? clear("rational")
+                            : set({ rational: val === "true" })
                         }
                         className={`px-3 py-1.5 transition-colors ${
-                          active ? 'bg-indigo-700 text-white' : 'bg-white text-gray-600 hover:bg-gray-50'
+                          active
+                            ? "bg-indigo-700 text-white"
+                            : "bg-white text-gray-600 hover:bg-gray-50"
                         }`}
-                        style={{ borderRight: val !== 'false' ? '1px solid #e5e7eb' : undefined }}
+                        style={{
+                          borderRight:
+                            val !== "false" ? "1px solid #e5e7eb" : undefined,
+                        }}
                       >
                         {label}
                       </button>
-                    )
+                    );
                   })}
                 </div>
               </div>
@@ -272,11 +307,13 @@ function SearchPage() {
               <div>
                 <p className="text-xs text-gray-500 mb-1">Singularities</p>
                 <button
-                  onClick={() => (search.smooth ? clear('smooth') : set({ smooth: true }))}
+                  onClick={() =>
+                    search.smooth ? clear("smooth") : set({ smooth: true })
+                  }
                   className={`px-3 py-1.5 rounded text-sm font-medium border transition-colors ${
                     search.smooth
-                      ? 'bg-indigo-700 text-white border-indigo-700'
-                      : 'bg-white text-gray-600 border-gray-200 hover:bg-gray-50'
+                      ? "bg-indigo-700 text-white border-indigo-700"
+                      : "bg-white text-gray-600 border-gray-200 hover:bg-gray-50"
                   }`}
                 >
                   Smooth only
@@ -305,8 +342,12 @@ function SearchPage() {
         <div className="text-center py-16 text-gray-400">
           <p className="text-base font-medium mb-1">No examples match</p>
           <p className="text-sm">
-            Try adjusting the filters or{' '}
-            <Link to="/search" search={{}} className="text-indigo-600 hover:underline">
+            Try adjusting the filters or{" "}
+            <Link
+              to="/search"
+              search={{}}
+              className="text-indigo-600 hover:underline"
+            >
               start over
             </Link>
             .
@@ -320,5 +361,5 @@ function SearchPage() {
         </div>
       )}
     </div>
-  )
+  );
 }

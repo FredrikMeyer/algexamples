@@ -1,36 +1,50 @@
-import { Link } from '@tanstack/react-router'
-import type { Example, ComputationFrontmatter, CounterexampleFrontmatter } from '~/lib/schema'
-import { MathText } from '~/components/MathText'
+import { Link } from "@tanstack/react-router";
+import type {
+  Example,
+  ComputationFrontmatter,
+  CounterexampleFrontmatter,
+} from "~/lib/schema";
+import { MathText } from "~/components/MathText";
 
-const TYPE_COLOURS: Record<Example['type'], string> = {
-  variety: 'bg-teal-100 text-teal-800',
-  computation: 'bg-emerald-100 text-emerald-800',
-  counterexample: 'bg-amber-100 text-amber-800',
-}
+const TYPE_COLOURS: Record<Example["type"], string> = {
+  variety: "bg-teal-100 text-teal-800",
+  computation: "bg-emerald-100 text-emerald-800",
+  counterexample: "bg-amber-100 text-amber-800",
+};
 
 interface ExampleMetaProps {
-  example: Example
-  backlinks: Example[]
+  example: Example;
+  backlinks: Example[];
 }
 
-function MetaSection({ label, children }: { label: string; children: React.ReactNode }) {
+function MetaSection({
+  label,
+  children,
+}: {
+  label: string;
+  children: React.ReactNode;
+}) {
   return (
     <div>
-      <p className="text-xs font-medium text-gray-400 uppercase tracking-widest mb-1.5">{label}</p>
+      <p className="text-xs font-medium text-gray-400 uppercase tracking-widest mb-1.5">
+        {label}
+      </p>
       {children}
     </div>
-  )
+  );
 }
 
 export function ExampleMeta({ example, backlinks }: ExampleMetaProps) {
   return (
     <div
       className="rounded-lg p-4 space-y-4"
-      style={{ background: '#f5f4f1', border: '1px solid #e5e7eb' }}
+      style={{ background: "#f5f4f1", border: "1px solid #e5e7eb" }}
     >
       {/* Type + field */}
       <div className="flex flex-wrap gap-2">
-        <span className={`text-xs px-2.5 py-1 rounded-full font-medium ${TYPE_COLOURS[example.type]}`}>
+        <span
+          className={`text-xs px-2.5 py-1 rounded-full font-medium ${TYPE_COLOURS[example.type]}`}
+        >
           {example.type}
         </span>
         <Link
@@ -43,19 +57,34 @@ export function ExampleMeta({ example, backlinks }: ExampleMetaProps) {
       </div>
 
       {/* Summary */}
-      <p className="text-sm text-gray-600 leading-relaxed"><MathText text={example.summary} /></p>
+      <p className="text-sm text-gray-600 leading-relaxed">
+        <MathText text={example.summary} />
+      </p>
 
       {/* Computation-specific */}
-      {example.type === 'computation' && (
+      {example.type === "computation" && (
         <>
           <MetaSection label="Computes">
-            <p className="text-sm text-gray-700"><MathText text={(example as ComputationFrontmatter & { body: string }).computes} /></p>
+            <p className="text-sm text-gray-700">
+              <MathText
+                text={
+                  (example as ComputationFrontmatter & { body: string })
+                    .computes
+                }
+              />
+            </p>
           </MetaSection>
-          {(example as ComputationFrontmatter & { body: string }).techniques.length > 0 && (
+          {(example as ComputationFrontmatter & { body: string }).techniques
+            .length > 0 && (
             <MetaSection label="Techniques">
               <div className="flex flex-wrap gap-1">
-                {(example as ComputationFrontmatter & { body: string }).techniques.map((t) => (
-                  <span key={t} className="text-xs bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded">
+                {(
+                  example as ComputationFrontmatter & { body: string }
+                ).techniques.map((t) => (
+                  <span
+                    key={t}
+                    className="text-xs bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded"
+                  >
                     <MathText text={t} />
                   </span>
                 ))}
@@ -66,9 +95,16 @@ export function ExampleMeta({ example, backlinks }: ExampleMetaProps) {
       )}
 
       {/* Counterexample-specific */}
-      {example.type === 'counterexample' && (
+      {example.type === "counterexample" && (
         <MetaSection label="Refutes">
-          <p className="text-sm text-gray-700"><MathText text={(example as CounterexampleFrontmatter & { body: string }).refutes} /></p>
+          <p className="text-sm text-gray-700">
+            <MathText
+              text={
+                (example as CounterexampleFrontmatter & { body: string })
+                  .refutes
+              }
+            />
+          </p>
         </MetaSection>
       )}
 
@@ -96,7 +132,11 @@ export function ExampleMeta({ example, backlinks }: ExampleMetaProps) {
           <ul className="space-y-1">
             {example.related.map((slug) => (
               <li key={slug}>
-                <Link to="/examples/$slug" params={{ slug }} className="text-sm text-indigo-600 hover:underline">
+                <Link
+                  to="/examples/$slug"
+                  params={{ slug }}
+                  className="text-sm text-indigo-600 hover:underline"
+                >
                   {slug}
                 </Link>
               </li>
@@ -111,7 +151,11 @@ export function ExampleMeta({ example, backlinks }: ExampleMetaProps) {
           <ul className="space-y-1">
             {backlinks.map((bl) => (
               <li key={bl.slug}>
-                <Link to="/examples/$slug" params={{ slug: bl.slug }} className="text-sm text-indigo-600 hover:underline">
+                <Link
+                  to="/examples/$slug"
+                  params={{ slug: bl.slug }}
+                  className="text-sm text-indigo-600 hover:underline"
+                >
                   <MathText text={bl.title} />
                 </Link>
               </li>
@@ -120,5 +164,5 @@ export function ExampleMeta({ example, backlinks }: ExampleMetaProps) {
         </MetaSection>
       )}
     </div>
-  )
+  );
 }

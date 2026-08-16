@@ -1,22 +1,22 @@
-import { z } from 'zod'
+import { z } from "zod";
 
 export const FieldEnum = z.enum([
-  'algebraic-geometry',
-  'commutative-algebra',
-  'algebraic-topology',
-  'number-theory',
-  'complex-geometry',
-])
+  "algebraic-geometry",
+  "commutative-algebra",
+  "algebraic-topology",
+  "number-theory",
+  "complex-geometry",
+]);
 
 export const SlugSchema = z
   .string()
   .min(1)
-  .regex(/^[a-z0-9-]+$/, 'Slug must be lowercase alphanumeric with hyphens')
+  .regex(/^[a-z0-9-]+$/, "Slug must be lowercase alphanumeric with hyphens");
 
 export const LinkSchema = z.object({
   url: z.string().url(),
   label: z.string().min(1),
-})
+});
 
 const BaseSchema = z.object({
   title: z.string().min(1),
@@ -28,7 +28,7 @@ const BaseSchema = z.object({
   references: z.array(z.string()).optional(),
   concepts: z.array(z.string()).optional(),
   links: z.array(LinkSchema).optional(),
-})
+});
 
 export const VarietyPropertiesSchema = z.object({
   dimension: z.number().int().nonnegative().optional(),
@@ -38,40 +38,42 @@ export const VarietyPropertiesSchema = z.object({
   genus: z.number().int().nonnegative().optional(),
   is_rational: z.boolean().optional(),
   kodaira_dimension: z
-    .union([z.number().int(), z.literal('-inf')])
+    .union([z.number().int(), z.literal("-inf")])
     .nullable()
     .optional(),
   picard_group: z.string().optional(),
-  hodge_numbers: z.record(z.string(), z.number().int().nonnegative()).optional(),
-})
+  hodge_numbers: z
+    .record(z.string(), z.number().int().nonnegative())
+    .optional(),
+});
 
 export const VarietySchema = BaseSchema.extend({
-  type: z.literal('variety'),
+  type: z.literal("variety"),
   properties: VarietyPropertiesSchema.optional(),
-})
+});
 
 export const ComputationSchema = BaseSchema.extend({
-  type: z.literal('computation'),
+  type: z.literal("computation"),
   object: z.string().optional(),
   computes: z.string().min(1),
   techniques: z.array(z.string()).default([]),
-})
+});
 
 export const CounterexampleSchema = BaseSchema.extend({
-  type: z.literal('counterexample'),
+  type: z.literal("counterexample"),
   refutes: z.string().min(1),
-})
+});
 
-export const ExampleFrontmatterSchema = z.discriminatedUnion('type', [
+export const ExampleFrontmatterSchema = z.discriminatedUnion("type", [
   VarietySchema,
   ComputationSchema,
   CounterexampleSchema,
-])
+]);
 
-export type ExampleFrontmatter = z.infer<typeof ExampleFrontmatterSchema>
-export type VarietyFrontmatter = z.infer<typeof VarietySchema>
-export type ComputationFrontmatter = z.infer<typeof ComputationSchema>
-export type CounterexampleFrontmatter = z.infer<typeof CounterexampleSchema>
+export type ExampleFrontmatter = z.infer<typeof ExampleFrontmatterSchema>;
+export type VarietyFrontmatter = z.infer<typeof VarietySchema>;
+export type ComputationFrontmatter = z.infer<typeof ComputationSchema>;
+export type CounterexampleFrontmatter = z.infer<typeof CounterexampleSchema>;
 
-export type Example = ExampleFrontmatter & { body: string }
-export type VarietyExample = VarietyFrontmatter & { body: string }
+export type Example = ExampleFrontmatter & { body: string };
+export type VarietyExample = VarietyFrontmatter & { body: string };

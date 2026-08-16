@@ -10,7 +10,7 @@ A web-based reference database of concrete examples in algebraic geometry and re
 ## Stack
 
 | Concern           | Choice                                                        |
-|-------------------|---------------------------------------------------------------|
+| ----------------- | ------------------------------------------------------------- |
 | Framework         | TanStack Start (React) with static prerendering               |
 | Content           | Markdown files + YAML frontmatter in `content/examples/`      |
 | Schema validation | Zod — validates frontmatter at build time                     |
@@ -27,14 +27,14 @@ Each example is a single `.md` file in `content/examples/`. YAML frontmatter car
 ### Shared fields (all types)
 
 ```yaml
-title: string           # display name
-slug: string            # stable URL segment → /examples/$slug
+title: string # display name
+slug: string # stable URL segment → /examples/$slug
 type: variety | computation | counterexample
 field: algebraic-geometry | commutative-algebra | algebraic-topology | number-theory | complex-geometry
-tags: string[]          # free-form keywords
-summary: string         # one-line description shown in listings and search results
-related: string[]       # slugs of related examples — rendered as cross-links
-references: string[]?   # optional citations (textbook, paper, Stacks tag)
+tags: string[] # free-form keywords
+summary: string # one-line description shown in listings and search results
+related: string[] # slugs of related examples — rendered as cross-links
+references: string[]? # optional citations (textbook, paper, Stacks tag)
 ```
 
 ### Variety — extra fields
@@ -42,9 +42,9 @@ references: string[]?   # optional citations (textbook, paper, Stacks tag)
 ```yaml
 properties:
   dimension: number?
-  ambient_space: string?   # e.g. "P^3", "A^2"
+  ambient_space: string? # e.g. "P^3", "A^2"
   degree: number?
-  singularities: string?   # e.g. "smooth", "nodal", "cuspidal"
+  singularities: string? # e.g. "smooth", "nodal", "cuspidal"
   genus: number?
   is_rational: boolean?
   kodaira_dimension: number | "-inf" | null
@@ -57,9 +57,9 @@ Properties are all optional — entries don't need every field filled in. The re
 ### Computation — extra fields
 
 ```yaml
-object: string?        # slug of a variety entry — renders as a cross-link
-computes: string       # free text describing what is produced, e.g. "Hodge numbers"
-techniques: string[]   # tools used, e.g. ["adjunction formula", "Serre duality"]
+object: string? # slug of a variety entry — renders as a cross-link
+computes: string # free text describing what is produced, e.g. "Hodge numbers"
+techniques: string[] # tools used, e.g. ["adjunction formula", "Serre duality"]
 ```
 
 Computations are narrative step-by-step mathematical arguments in the style of worked examples (setup → argument → conclusion), as in the Algebraic Geometry Buzzlist (section 7).
@@ -67,7 +67,7 @@ Computations are narrative step-by-step mathematical arguments in the style of w
 ### Counterexample — extra fields
 
 ```yaml
-refutes: string   # the statement this example disproves
+refutes: string # the statement this example disproves
 ```
 
 The rendered page shows a prominent "Refutes: …" banner at the top.
@@ -75,7 +75,7 @@ The rendered page shows a prominent "Refutes: …" banner at the top.
 ## Routes
 
 | Route             | Description                                                                          |
-|-------------------|--------------------------------------------------------------------------------------|
+| ----------------- | ------------------------------------------------------------------------------------ |
 | `/`               | Homepage: search bar, type counts, foldable sidebar, recently added                  |
 | `/examples`       | Full listing, filterable by type / field / tag                                       |
 | `/examples/$slug` | Individual example page (stable permalink)                                           |
@@ -86,6 +86,7 @@ The rendered page shows a prominent "Refutes: …" banner at the top.
 ## Layout
 
 Sidebar layout with a **foldable sidebar** containing:
+
 - Field navigation links
 - Popular / all tags
 
@@ -94,9 +95,9 @@ Sidebar collapses on mobile automatically and can be toggled on desktop. The mai
 ### Individual example page structure
 
 1. Title + type badge + field badge + tags
-2. *(varieties only)* Properties table
-3. *(computations only)* Object link, "Computes" line, Techniques tags
-4. *(counterexamples only)* "Refutes" banner
+2. _(varieties only)_ Properties table
+3. _(computations only)_ Object link, "Computes" line, Techniques tags
+4. _(counterexamples only)_ "Refutes" banner
 5. Markdown body (prose + LaTeX math rendered with KaTeX)
 6. Related examples (cross-links by slug)
 7. References
@@ -121,28 +122,37 @@ No CMS, no database. Git is the source of truth. The `slug` field in frontmatter
 ## Additional features
 
 ### A — CAS code snippets
+
 Macaulay2 and SageMath code blocks attached to any example. Authors use fenced code blocks tagged `macaulay2` or `sage` in the markdown body. Rendered with syntax highlighting and a copy button.
 
 ### B — Commutative diagrams
+
 TikZJax loaded as a client-side script. Authors write standard `tikzcd` environments in fenced code blocks tagged `tikzcd`; TikZJax renders them as SVG in the browser. Must coexist with KaTeX on the same page.
 
 ### C — Hodge diamond visualisation
+
 Varieties may include a `hodge_numbers` object in their `properties` (keyed `h00`, `h01`, `h10`, `h11`, etc.). When present, the properties section renders an SVG Hodge diamond alongside the table.
 
 ### D — Automatic backlinks
+
 At build time, scan all `related` fields across every entry and invert the graph. Each example page gets a "Referenced by" section listing entries that point to it. No author action required.
 
 ### E — Stacks Project tag links
+
 A custom remark plugin transforms `[SP XXXX]` syntax into a hyperlink to `stacks.math.columbia.edu/tag/XXXX`. At build time, the plugin fetches the tag's statement from the Stacks API and embeds it as a `data-tooltip` attribute; a CSS/JS tooltip renders it on hover. Fetch results are cached to avoid repeated build-time requests.
 
 ### F — Concept tags (controlled vocabulary)
+
 A separate `content/concepts/` collection where each concept is a short `.md` file (slug, title, brief definition). Examples reference concepts via a `concepts: string[]` frontmatter field (slugs). On an example page, concept tags render as links to the concept definition. On a concept page, all examples tagged with it are listed. Distinct from free-form `tags`.
 
 ### G — Side-by-side variety comparison
+
 On `/varieties`, checkboxes allow selecting 2–4 varieties. A "Compare" button opens a panel showing their properties tables side-by-side with differing values highlighted. Purely client-side using the build-time variety JSON.
 
 ### H — Site-wide LaTeX macros
+
 A single `src/lib/katex-macros.ts` file defines macros applied globally via KaTeX's `macros` option:
+
 - `\PP` → `\mathbb{P}`
 - `\AA` → `\mathbb{A}`
 - `\OO` → `\mathcal{O}`

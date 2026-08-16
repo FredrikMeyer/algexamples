@@ -53,7 +53,7 @@ The file is written to `content/examples/{slug}.md`. Open it and fill in the bod
 
 Each example is a Markdown file with YAML frontmatter:
 
-```markdown
+````markdown
 ---
 type: variety
 title: "The Twisted Cubic"
@@ -81,4 +81,8 @@ R = QQ[x,y,z,w]
 I = minors(2, matrix{{x,y,z},{y,z,w}})
 degree I
 ```
+````
+
+```
+
 ```

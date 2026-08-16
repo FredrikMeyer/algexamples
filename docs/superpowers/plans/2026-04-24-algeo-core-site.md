@@ -58,6 +58,7 @@ package.json
 ## Task 1: Scaffold the project
 
 **Files:**
+
 - Create: `package.json`
 - Create: `tsconfig.json`
 - Create: `app.config.ts`
@@ -114,36 +115,36 @@ Replace the scripts section of `package.json`:
 - [ ] **Step 4: Write `app.config.ts`**
 
 ```ts
-import { defineConfig } from '@tanstack/react-start/config'
-import tailwindcss from '@tailwindcss/vite'
+import { defineConfig } from "@tanstack/react-start/config";
+import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig({
   vite: {
     plugins: [tailwindcss()],
   },
   server: {
-    preset: 'static',
+    preset: "static",
     prerender: {
       crawlLinks: true,
-      routes: ['/'],
+      routes: ["/"],
     },
   },
-})
+});
 ```
 
 - [ ] **Step 5: Write `app/router.tsx`**
 
 ```tsx
-import { createRouter as createTanStackRouter } from '@tanstack/react-router'
-import { routeTree } from './routeTree.gen'
+import { createRouter as createTanStackRouter } from "@tanstack/react-router";
+import { routeTree } from "./routeTree.gen";
 
 export function createRouter() {
-  return createTanStackRouter({ routeTree })
+  return createTanStackRouter({ routeTree });
 }
 
-declare module '@tanstack/react-router' {
+declare module "@tanstack/react-router" {
   interface Register {
-    router: ReturnType<typeof createRouter>
+    router: ReturnType<typeof createRouter>;
   }
 }
 ```
@@ -151,47 +152,50 @@ declare module '@tanstack/react-router' {
 - [ ] **Step 6: Write `app/client.tsx`**
 
 ```tsx
-import { StartClient } from '@tanstack/react-start'
-import { createRouter } from './router'
-import { hydrateRoot } from 'react-dom/client'
+import { StartClient } from "@tanstack/react-start";
+import { createRouter } from "./router";
+import { hydrateRoot } from "react-dom/client";
 
-const router = createRouter()
-hydrateRoot(document, <StartClient router={router} />)
+const router = createRouter();
+hydrateRoot(document, <StartClient router={router} />);
 ```
 
 - [ ] **Step 7: Write `app/server.tsx`**
 
 ```tsx
-import { createStartHandler, defaultStreamHandler } from '@tanstack/react-start/server'
-import { createRouter } from './router'
+import {
+  createStartHandler,
+  defaultStreamHandler,
+} from "@tanstack/react-start/server";
+import { createRouter } from "./router";
 
-export default createStartHandler({ createRouter })(defaultStreamHandler)
+export default createStartHandler({ createRouter })(defaultStreamHandler);
 ```
 
 - [ ] **Step 8: Write `tailwind.config.ts`**
 
 ```ts
-import type { Config } from 'tailwindcss'
+import type { Config } from "tailwindcss";
 
 export default {
-  content: ['./app/**/*.{tsx,ts,html}'],
-} satisfies Config
+  content: ["./app/**/*.{tsx,ts,html}"],
+} satisfies Config;
 ```
 
 - [ ] **Step 9: Write `vitest.config.ts`**
 
 ```ts
-import { defineConfig } from 'vitest/config'
-import { resolve } from 'path'
+import { defineConfig } from "vitest/config";
+import { resolve } from "path";
 
 export default defineConfig({
   test: {
-    environment: 'node',
+    environment: "node",
   },
   resolve: {
-    alias: { '~': resolve(__dirname, 'app') },
+    alias: { "~": resolve(__dirname, "app") },
   },
-})
+});
 ```
 
 - [ ] **Step 10: Create content directory**
@@ -220,26 +224,27 @@ git commit -m "feat: scaffold TanStack Start project with TypeScript and Tailwin
 ## Task 2: Define Zod schemas and types
 
 **Files:**
+
 - Create: `app/lib/schema.ts`
 - Create: `app/lib/schema.test.ts`
 
 - [ ] **Step 1: Write `app/lib/schema.ts`**
 
 ```ts
-import { z } from 'zod'
+import { z } from "zod";
 
 export const FieldEnum = z.enum([
-  'algebraic-geometry',
-  'commutative-algebra',
-  'algebraic-topology',
-  'number-theory',
-  'complex-geometry',
-])
+  "algebraic-geometry",
+  "commutative-algebra",
+  "algebraic-topology",
+  "number-theory",
+  "complex-geometry",
+]);
 
 export const SlugSchema = z
   .string()
   .min(1)
-  .regex(/^[a-z0-9-]+$/, 'Slug must be lowercase alphanumeric with hyphens')
+  .regex(/^[a-z0-9-]+$/, "Slug must be lowercase alphanumeric with hyphens");
 
 const BaseSchema = z.object({
   title: z.string().min(1),
@@ -250,7 +255,7 @@ const BaseSchema = z.object({
   related: z.array(z.string()).default([]),
   references: z.array(z.string()).optional(),
   concepts: z.array(z.string()).optional(),
-})
+});
 
 export const VarietyPropertiesSchema = z.object({
   dimension: z.number().int().nonnegative().optional(),
@@ -260,119 +265,121 @@ export const VarietyPropertiesSchema = z.object({
   genus: z.number().int().nonnegative().optional(),
   is_rational: z.boolean().optional(),
   kodaira_dimension: z
-    .union([z.number().int(), z.literal('-inf')])
+    .union([z.number().int(), z.literal("-inf")])
     .nullable()
     .optional(),
   picard_group: z.string().optional(),
-  hodge_numbers: z.record(z.string(), z.number().int().nonnegative()).optional(),
-})
+  hodge_numbers: z
+    .record(z.string(), z.number().int().nonnegative())
+    .optional(),
+});
 
 export const VarietySchema = BaseSchema.extend({
-  type: z.literal('variety'),
+  type: z.literal("variety"),
   properties: VarietyPropertiesSchema.optional(),
-})
+});
 
 export const ComputationSchema = BaseSchema.extend({
-  type: z.literal('computation'),
+  type: z.literal("computation"),
   object: z.string().optional(),
   computes: z.string().min(1),
   techniques: z.array(z.string()).default([]),
-})
+});
 
 export const CounterexampleSchema = BaseSchema.extend({
-  type: z.literal('counterexample'),
+  type: z.literal("counterexample"),
   refutes: z.string().min(1),
-})
+});
 
-export const ExampleFrontmatterSchema = z.discriminatedUnion('type', [
+export const ExampleFrontmatterSchema = z.discriminatedUnion("type", [
   VarietySchema,
   ComputationSchema,
   CounterexampleSchema,
-])
+]);
 
-export type ExampleFrontmatter = z.infer<typeof ExampleFrontmatterSchema>
-export type VarietyFrontmatter = z.infer<typeof VarietySchema>
-export type ComputationFrontmatter = z.infer<typeof ComputationSchema>
-export type CounterexampleFrontmatter = z.infer<typeof CounterexampleSchema>
+export type ExampleFrontmatter = z.infer<typeof ExampleFrontmatterSchema>;
+export type VarietyFrontmatter = z.infer<typeof VarietySchema>;
+export type ComputationFrontmatter = z.infer<typeof ComputationSchema>;
+export type CounterexampleFrontmatter = z.infer<typeof CounterexampleSchema>;
 
-export type Example = ExampleFrontmatter & { body: string }
-export type VarietyExample = VarietyFrontmatter & { body: string }
+export type Example = ExampleFrontmatter & { body: string };
+export type VarietyExample = VarietyFrontmatter & { body: string };
 ```
 
 - [ ] **Step 2: Write `app/lib/schema.test.ts`**
 
 ```ts
-import { describe, it, expect } from 'vitest'
-import { ExampleFrontmatterSchema } from './schema'
+import { describe, it, expect } from "vitest";
+import { ExampleFrontmatterSchema } from "./schema";
 
 const validVariety = {
-  title: 'Twisted Cubic',
-  slug: 'twisted-cubic',
-  type: 'variety' as const,
-  field: 'algebraic-geometry' as const,
-  tags: ['curves', 'projective-space'],
-  summary: 'Degree-3 rational curve in P^3',
+  title: "Twisted Cubic",
+  slug: "twisted-cubic",
+  type: "variety" as const,
+  field: "algebraic-geometry" as const,
+  tags: ["curves", "projective-space"],
+  summary: "Degree-3 rational curve in P^3",
   related: [],
   properties: {
     dimension: 1,
-    ambient_space: 'P^3',
+    ambient_space: "P^3",
     degree: 3,
-    singularities: 'smooth',
+    singularities: "smooth",
     is_rational: true,
   },
-}
+};
 
-describe('ExampleFrontmatterSchema', () => {
-  it('parses a valid variety', () => {
-    const result = ExampleFrontmatterSchema.safeParse(validVariety)
-    expect(result.success).toBe(true)
+describe("ExampleFrontmatterSchema", () => {
+  it("parses a valid variety", () => {
+    const result = ExampleFrontmatterSchema.safeParse(validVariety);
+    expect(result.success).toBe(true);
     if (result.success) {
-      expect(result.data.title).toBe('Twisted Cubic')
-      expect(result.data.type).toBe('variety')
+      expect(result.data.title).toBe("Twisted Cubic");
+      expect(result.data.type).toBe("variety");
     }
-  })
+  });
 
-  it('defaults tags and related to empty arrays when omitted', () => {
-    const input = { ...validVariety, tags: undefined, related: undefined }
-    const result = ExampleFrontmatterSchema.safeParse(input)
-    expect(result.success).toBe(true)
-    if (result.success && result.data.type === 'variety') {
-      expect(result.data.tags).toEqual([])
-      expect(result.data.related).toEqual([])
+  it("defaults tags and related to empty arrays when omitted", () => {
+    const input = { ...validVariety, tags: undefined, related: undefined };
+    const result = ExampleFrontmatterSchema.safeParse(input);
+    expect(result.success).toBe(true);
+    if (result.success && result.data.type === "variety") {
+      expect(result.data.tags).toEqual([]);
+      expect(result.data.related).toEqual([]);
     }
-  })
+  });
 
-  it('rejects a variety with an invalid slug', () => {
+  it("rejects a variety with an invalid slug", () => {
     const result = ExampleFrontmatterSchema.safeParse({
       ...validVariety,
-      slug: 'Twisted Cubic',
-    })
-    expect(result.success).toBe(false)
-  })
+      slug: "Twisted Cubic",
+    });
+    expect(result.success).toBe(false);
+  });
 
-  it('rejects a computation missing computes', () => {
+  it("rejects a computation missing computes", () => {
     const result = ExampleFrontmatterSchema.safeParse({
-      title: 'Test',
-      slug: 'test',
-      type: 'computation',
-      field: 'algebraic-geometry',
-      summary: 'Test',
-    })
-    expect(result.success).toBe(false)
-  })
+      title: "Test",
+      slug: "test",
+      type: "computation",
+      field: "algebraic-geometry",
+      summary: "Test",
+    });
+    expect(result.success).toBe(false);
+  });
 
-  it('parses a counterexample', () => {
+  it("parses a counterexample", () => {
     const result = ExampleFrontmatterSchema.safeParse({
-      title: 'Non-flat morphism',
-      slug: 'non-flat-morphism',
-      type: 'counterexample',
-      field: 'algebraic-geometry',
-      summary: 'A morphism that is not flat',
-      refutes: 'A finite morphism is always flat',
-    })
-    expect(result.success).toBe(true)
-  })
-})
+      title: "Non-flat morphism",
+      slug: "non-flat-morphism",
+      type: "counterexample",
+      field: "algebraic-geometry",
+      summary: "A morphism that is not flat",
+      refutes: "A finite morphism is always flat",
+    });
+    expect(result.success).toBe(true);
+  });
+});
 ```
 
 - [ ] **Step 3: Run tests**
@@ -395,6 +402,7 @@ git commit -m "feat: add Zod schemas for all three content types"
 ## Task 3: KaTeX macros and Markdown pipeline
 
 **Files:**
+
 - Create: `app/lib/katex-macros.ts`
 - Create: `app/lib/markdown.ts`
 - Create: `app/lib/markdown.test.ts`
@@ -403,34 +411,34 @@ git commit -m "feat: add Zod schemas for all three content types"
 
 ```ts
 export const katexMacros: Record<string, string> = {
-  '\\PP': '\\mathbb{P}',
-  '\\AA': '\\mathbb{A}',
-  '\\OO': '\\mathcal{O}',
-  '\\kk': '\\mathbb{k}',
-  '\\ZZ': '\\mathbb{Z}',
-  '\\QQ': '\\mathbb{Q}',
-  '\\RR': '\\mathbb{R}',
-  '\\CC': '\\mathbb{C}',
-  '\\Spec': '\\operatorname{Spec}',
-  '\\Proj': '\\operatorname{Proj}',
-  '\\Hom': '\\operatorname{Hom}',
-  '\\End': '\\operatorname{End}',
-  '\\Ext': '\\operatorname{Ext}',
-  '\\Tor': '\\operatorname{Tor}',
-}
+  "\\PP": "\\mathbb{P}",
+  "\\AA": "\\mathbb{A}",
+  "\\OO": "\\mathcal{O}",
+  "\\kk": "\\mathbb{k}",
+  "\\ZZ": "\\mathbb{Z}",
+  "\\QQ": "\\mathbb{Q}",
+  "\\RR": "\\mathbb{R}",
+  "\\CC": "\\mathbb{C}",
+  "\\Spec": "\\operatorname{Spec}",
+  "\\Proj": "\\operatorname{Proj}",
+  "\\Hom": "\\operatorname{Hom}",
+  "\\End": "\\operatorname{End}",
+  "\\Ext": "\\operatorname{Ext}",
+  "\\Tor": "\\operatorname{Tor}",
+};
 ```
 
 - [ ] **Step 2: Write `app/lib/markdown.ts`**
 
 ```ts
-import { unified } from 'unified'
-import remarkParse from 'remark-parse'
-import remarkMath from 'remark-math'
-import remarkRehype from 'remark-rehype'
-import rehypeKatex from 'rehype-katex'
-import rehypeHighlight from 'rehype-highlight'
-import rehypeStringify from 'rehype-stringify'
-import { katexMacros } from './katex-macros'
+import { unified } from "unified";
+import remarkParse from "remark-parse";
+import remarkMath from "remark-math";
+import remarkRehype from "remark-rehype";
+import rehypeKatex from "rehype-katex";
+import rehypeHighlight from "rehype-highlight";
+import rehypeStringify from "rehype-stringify";
+import { katexMacros } from "./katex-macros";
 
 export async function processMarkdown(content: string): Promise<string> {
   const result = await unified()
@@ -440,48 +448,48 @@ export async function processMarkdown(content: string): Promise<string> {
     .use(rehypeKatex, { macros: katexMacros, throwOnError: false })
     .use(rehypeHighlight, { detect: true })
     .use(rehypeStringify)
-    .process(content)
-  return String(result)
+    .process(content);
+  return String(result);
 }
 ```
 
 - [ ] **Step 3: Write `app/lib/markdown.test.ts`**
 
-```ts
-import { describe, it, expect } from 'vitest'
-import { processMarkdown } from './markdown'
+````ts
+import { describe, it, expect } from "vitest";
+import { processMarkdown } from "./markdown";
 
-describe('processMarkdown', () => {
-  it('renders basic markdown to HTML', async () => {
-    const html = await processMarkdown('# Hello\n\nWorld')
-    expect(html).toContain('<h1>')
-    expect(html).toContain('Hello')
-    expect(html).toContain('<p>World</p>')
-  })
+describe("processMarkdown", () => {
+  it("renders basic markdown to HTML", async () => {
+    const html = await processMarkdown("# Hello\n\nWorld");
+    expect(html).toContain("<h1>");
+    expect(html).toContain("Hello");
+    expect(html).toContain("<p>World</p>");
+  });
 
-  it('renders inline math with KaTeX', async () => {
-    const html = await processMarkdown('The space $\\mathbb{P}^n$')
-    expect(html).toContain('katex')
-  })
+  it("renders inline math with KaTeX", async () => {
+    const html = await processMarkdown("The space $\\mathbb{P}^n$");
+    expect(html).toContain("katex");
+  });
 
-  it('renders display math with KaTeX', async () => {
-    const html = await processMarkdown('$$f: X \\to Y$$')
-    expect(html).toContain('katex-display')
-  })
+  it("renders display math with KaTeX", async () => {
+    const html = await processMarkdown("$$f: X \\to Y$$");
+    expect(html).toContain("katex-display");
+  });
 
-  it('expands site-wide macro \\PP', async () => {
-    const html = await processMarkdown('The space $\\PP^n$')
+  it("expands site-wide macro \\PP", async () => {
+    const html = await processMarkdown("The space $\\PP^n$");
     // KaTeX expands \PP to \mathbb{P} — check rendered output contains P
-    expect(html).toContain('katex')
-    expect(html).not.toContain('undefined')
-  })
+    expect(html).toContain("katex");
+    expect(html).not.toContain("undefined");
+  });
 
-  it('syntax-highlights a code block', async () => {
-    const html = await processMarkdown('```python\nx = 1\n```')
-    expect(html).toContain('hljs')
-  })
-})
-```
+  it("syntax-highlights a code block", async () => {
+    const html = await processMarkdown("```python\nx = 1\n```");
+    expect(html).toContain("hljs");
+  });
+});
+````
 
 - [ ] **Step 4: Run tests**
 
@@ -503,6 +511,7 @@ git commit -m "feat: markdown pipeline with KaTeX macros and syntax highlighting
 ## Task 4: Content loader
 
 **Files:**
+
 - Create: `app/lib/content.ts`
 - Create: `app/lib/content.test.ts`
 - Create: `content/examples/twisted-cubic.md` (seed)
@@ -608,110 +617,116 @@ Using the conormal and Euler sequences: $h^{11} = 1$ and $h^{12} = 101$.
 - [ ] **Step 4: Write `app/lib/content.ts`**
 
 ```ts
-import fs from 'fs'
-import path from 'path'
-import matter from 'gray-matter'
-import { ExampleFrontmatterSchema, type Example, type ExampleFrontmatter } from './schema'
+import fs from "fs";
+import path from "path";
+import matter from "gray-matter";
+import {
+  ExampleFrontmatterSchema,
+  type Example,
+  type ExampleFrontmatter,
+} from "./schema";
 
-const EXAMPLES_DIR = path.join(process.cwd(), 'content', 'examples')
+const EXAMPLES_DIR = path.join(process.cwd(), "content", "examples");
 
 function parseExampleFile(filePath: string): Example {
-  const raw = fs.readFileSync(filePath, 'utf-8')
-  const { data, content } = matter(raw)
-  const frontmatter = ExampleFrontmatterSchema.parse(data)
-  return { ...frontmatter, body: content.trim() }
+  const raw = fs.readFileSync(filePath, "utf-8");
+  const { data, content } = matter(raw);
+  const frontmatter = ExampleFrontmatterSchema.parse(data);
+  return { ...frontmatter, body: content.trim() };
 }
 
 export function getAllExamples(): Example[] {
   const files = fs
     .readdirSync(EXAMPLES_DIR)
-    .filter((f) => f.endsWith('.md'))
-    .sort()
-  return files.map((f) => parseExampleFile(path.join(EXAMPLES_DIR, f)))
+    .filter((f) => f.endsWith(".md"))
+    .sort();
+  return files.map((f) => parseExampleFile(path.join(EXAMPLES_DIR, f)));
 }
 
 export function getExampleBySlug(slug: string): Example {
-  const all = getAllExamples()
-  const example = all.find((e) => e.slug === slug)
-  if (!example) throw new Error(`Example not found: ${slug}`)
-  return example
+  const all = getAllExamples();
+  const example = all.find((e) => e.slug === slug);
+  if (!example) throw new Error(`Example not found: ${slug}`);
+  return example;
 }
 
-export function getExamplesByField(field: ExampleFrontmatter['field']): Example[] {
-  return getAllExamples().filter((e) => e.field === field)
+export function getExamplesByField(
+  field: ExampleFrontmatter["field"],
+): Example[] {
+  return getAllExamples().filter((e) => e.field === field);
 }
 
 export function getExamplesByTag(tag: string): Example[] {
-  return getAllExamples().filter((e) => e.tags.includes(tag))
+  return getAllExamples().filter((e) => e.tags.includes(tag));
 }
 
 export function getAllTags(): string[] {
-  const tagSet = new Set<string>()
-  getAllExamples().forEach((e) => e.tags.forEach((t) => tagSet.add(t)))
-  return Array.from(tagSet).sort()
+  const tagSet = new Set<string>();
+  getAllExamples().forEach((e) => e.tags.forEach((t) => tagSet.add(t)));
+  return Array.from(tagSet).sort();
 }
 
-export function getAllFields(): ExampleFrontmatter['field'][] {
-  const fieldSet = new Set<ExampleFrontmatter['field']>()
-  getAllExamples().forEach((e) => fieldSet.add(e.field))
-  return Array.from(fieldSet).sort()
+export function getAllFields(): ExampleFrontmatter["field"][] {
+  const fieldSet = new Set<ExampleFrontmatter["field"]>();
+  getAllExamples().forEach((e) => fieldSet.add(e.field));
+  return Array.from(fieldSet).sort();
 }
 ```
 
 - [ ] **Step 5: Write `app/lib/content.test.ts`**
 
 ```ts
-import { describe, it, expect } from 'vitest'
-import { getAllExamples, getExampleBySlug, getAllTags } from './content'
+import { describe, it, expect } from "vitest";
+import { getAllExamples, getExampleBySlug, getAllTags } from "./content";
 
-describe('content loader', () => {
-  it('loads at least the three seed examples', () => {
-    const examples = getAllExamples()
-    expect(examples.length).toBeGreaterThanOrEqual(3)
-  })
+describe("content loader", () => {
+  it("loads at least the three seed examples", () => {
+    const examples = getAllExamples();
+    expect(examples.length).toBeGreaterThanOrEqual(3);
+  });
 
-  it('parses the twisted-cubic variety correctly', () => {
-    const e = getExampleBySlug('twisted-cubic')
-    expect(e.title).toBe('The Twisted Cubic')
-    expect(e.type).toBe('variety')
-    if (e.type === 'variety') {
-      expect(e.properties?.dimension).toBe(1)
-      expect(e.properties?.is_rational).toBe(true)
+  it("parses the twisted-cubic variety correctly", () => {
+    const e = getExampleBySlug("twisted-cubic");
+    expect(e.title).toBe("The Twisted Cubic");
+    expect(e.type).toBe("variety");
+    if (e.type === "variety") {
+      expect(e.properties?.dimension).toBe(1);
+      expect(e.properties?.is_rational).toBe(true);
     }
-  })
+  });
 
-  it('parses the counterexample refutes field', () => {
-    const e = getExampleBySlug('non-flat-morphism')
-    expect(e.type).toBe('counterexample')
-    if (e.type === 'counterexample') {
-      expect(e.refutes).toMatch(/flat/)
+  it("parses the counterexample refutes field", () => {
+    const e = getExampleBySlug("non-flat-morphism");
+    expect(e.type).toBe("counterexample");
+    if (e.type === "counterexample") {
+      expect(e.refutes).toMatch(/flat/);
     }
-  })
+  });
 
-  it('parses the computation computes field', () => {
-    const e = getExampleBySlug('quintic-threefold-cohomology')
-    expect(e.type).toBe('computation')
-    if (e.type === 'computation') {
-      expect(e.computes).toMatch(/cohomology/)
+  it("parses the computation computes field", () => {
+    const e = getExampleBySlug("quintic-threefold-cohomology");
+    expect(e.type).toBe("computation");
+    if (e.type === "computation") {
+      expect(e.computes).toMatch(/cohomology/);
     }
-  })
+  });
 
-  it('body is non-empty for all seed examples', () => {
+  it("body is non-empty for all seed examples", () => {
     getAllExamples().forEach((e) => {
-      expect(e.body.length).toBeGreaterThan(10)
-    })
-  })
+      expect(e.body.length).toBeGreaterThan(10);
+    });
+  });
 
-  it('getAllTags returns non-empty array', () => {
-    const tags = getAllTags()
-    expect(tags.length).toBeGreaterThan(0)
-    expect(tags).toContain('curves')
-  })
+  it("getAllTags returns non-empty array", () => {
+    const tags = getAllTags();
+    expect(tags.length).toBeGreaterThan(0);
+    expect(tags).toContain("curves");
+  });
 
-  it('throws for unknown slug', () => {
-    expect(() => getExampleBySlug('does-not-exist')).toThrow()
-  })
-})
+  it("throws for unknown slug", () => {
+    expect(() => getExampleBySlug("does-not-exist")).toThrow();
+  });
+});
 ```
 
 - [ ] **Step 6: Run tests**
@@ -734,69 +749,70 @@ git commit -m "feat: content loader with filesystem reading and Zod validation"
 ## Task 5: Automatic backlinks
 
 **Files:**
+
 - Create: `app/lib/backlinks.ts`
 - Create: `app/lib/backlinks.test.ts`
 
 - [ ] **Step 1: Write `app/lib/backlinks.ts`**
 
 ```ts
-import type { Example } from './schema'
+import type { Example } from "./schema";
 
-export type BacklinkMap = Map<string, Example[]>
+export type BacklinkMap = Map<string, Example[]>;
 
 export function computeBacklinks(examples: Example[]): BacklinkMap {
-  const map: BacklinkMap = new Map()
+  const map: BacklinkMap = new Map();
   for (const example of examples) {
     for (const relatedSlug of example.related) {
-      if (!map.has(relatedSlug)) map.set(relatedSlug, [])
-      map.get(relatedSlug)!.push(example)
+      if (!map.has(relatedSlug)) map.set(relatedSlug, []);
+      map.get(relatedSlug)!.push(example);
     }
   }
-  return map
+  return map;
 }
 ```
 
 - [ ] **Step 2: Write `app/lib/backlinks.test.ts`**
 
 ```ts
-import { describe, it, expect } from 'vitest'
-import { computeBacklinks } from './backlinks'
-import type { Example } from './schema'
+import { describe, it, expect } from "vitest";
+import { computeBacklinks } from "./backlinks";
+import type { Example } from "./schema";
 
 const makeVariety = (slug: string, related: string[] = []): Example => ({
-  type: 'variety',
+  type: "variety",
   title: slug,
   slug,
-  field: 'algebraic-geometry',
+  field: "algebraic-geometry",
   tags: [],
-  summary: 'test',
+  summary: "test",
   related,
-  body: '',
-})
+  body: "",
+});
 
-describe('computeBacklinks', () => {
-  it('returns empty map when no related entries', () => {
-    const map = computeBacklinks([makeVariety('a'), makeVariety('b')])
-    expect(map.size).toBe(0)
-  })
+describe("computeBacklinks", () => {
+  it("returns empty map when no related entries", () => {
+    const map = computeBacklinks([makeVariety("a"), makeVariety("b")]);
+    expect(map.size).toBe(0);
+  });
 
-  it('inverts the related graph correctly', () => {
-    const a = makeVariety('a', ['b'])
-    const c = makeVariety('c', ['b'])
-    const b = makeVariety('b')
-    const map = computeBacklinks([a, b, c])
-    expect(map.get('b')).toHaveLength(2)
-    expect(map.get('b')!.map((e) => e.slug)).toContain('a')
-    expect(map.get('b')!.map((e) => e.slug)).toContain('c')
-  })
+  it("inverts the related graph correctly", () => {
+    const a = makeVariety("a", ["b"]);
+    const c = makeVariety("c", ["b"]);
+    const b = makeVariety("b");
+    const map = computeBacklinks([a, b, c]);
+    expect(map.get("b")).toHaveLength(2);
+    expect(map.get("b")!.map((e) => e.slug)).toContain("a");
+    expect(map.get("b")!.map((e) => e.slug)).toContain("c");
+  });
 
-  it('does not create backlinks for entries that are not referenced', () => {
-    const a = makeVariety('a', ['b'])
-    const b = makeVariety('b')
-    const map = computeBacklinks([a, b])
-    expect(map.has('a')).toBe(false)
-  })
-})
+  it("does not create backlinks for entries that are not referenced", () => {
+    const a = makeVariety("a", ["b"]);
+    const b = makeVariety("b");
+    const map = computeBacklinks([a, b]);
+    expect(map.has("a")).toBe(false);
+  });
+});
 ```
 
 - [ ] **Step 3: Run tests**
@@ -819,6 +835,7 @@ git commit -m "feat: build-time backlink graph computation"
 ## Task 6: Root layout and foldable sidebar
 
 **Files:**
+
 - Create: `app/styles/global.css`
 - Create: `app/components/Sidebar.tsx`
 - Create: `app/routes/__root.tsx`
@@ -834,41 +851,63 @@ git commit -m "feat: build-time backlink graph computation"
 .prose {
   @apply max-w-none text-gray-900;
 }
-.prose h1 { @apply text-2xl font-bold mt-6 mb-3; }
-.prose h2 { @apply text-xl font-semibold mt-5 mb-2; }
-.prose h3 { @apply text-lg font-semibold mt-4 mb-2; }
-.prose p  { @apply my-3 leading-relaxed; }
-.prose ul { @apply list-disc pl-6 my-3; }
-.prose ol { @apply list-decimal pl-6 my-3; }
-.prose pre { @apply bg-gray-50 rounded p-4 overflow-x-auto my-4 text-sm; }
-.prose code { @apply bg-gray-100 rounded px-1 text-sm font-mono; }
-.prose pre code { @apply bg-transparent p-0; }
-.prose a { @apply text-blue-600 hover:underline; }
-.prose blockquote { @apply border-l-4 border-gray-300 pl-4 italic my-4 text-gray-700; }
+.prose h1 {
+  @apply text-2xl font-bold mt-6 mb-3;
+}
+.prose h2 {
+  @apply text-xl font-semibold mt-5 mb-2;
+}
+.prose h3 {
+  @apply text-lg font-semibold mt-4 mb-2;
+}
+.prose p {
+  @apply my-3 leading-relaxed;
+}
+.prose ul {
+  @apply list-disc pl-6 my-3;
+}
+.prose ol {
+  @apply list-decimal pl-6 my-3;
+}
+.prose pre {
+  @apply bg-gray-50 rounded p-4 overflow-x-auto my-4 text-sm;
+}
+.prose code {
+  @apply bg-gray-100 rounded px-1 text-sm font-mono;
+}
+.prose pre code {
+  @apply bg-transparent p-0;
+}
+.prose a {
+  @apply text-blue-600 hover:underline;
+}
+.prose blockquote {
+  @apply border-l-4 border-gray-300 pl-4 italic my-4 text-gray-700;
+}
 ```
 
 - [ ] **Step 2: Write `app/components/Sidebar.tsx`**
 
 ```tsx
-import { useState } from 'react'
-import { Link } from '@tanstack/react-router'
+import { useState } from "react";
+import { Link } from "@tanstack/react-router";
 
 const FIELDS = [
-  { id: 'algebraic-geometry', label: 'Algebraic Geometry' },
-  { id: 'commutative-algebra', label: 'Commutative Algebra' },
-  { id: 'algebraic-topology', label: 'Algebraic Topology' },
-  { id: 'number-theory', label: 'Number Theory' },
-  { id: 'complex-geometry', label: 'Complex Geometry' },
-] as const
+  { id: "algebraic-geometry", label: "Algebraic Geometry" },
+  { id: "commutative-algebra", label: "Commutative Algebra" },
+  { id: "algebraic-topology", label: "Algebraic Topology" },
+  { id: "number-theory", label: "Number Theory" },
+  { id: "complex-geometry", label: "Complex Geometry" },
+] as const;
 
 interface SidebarProps {
-  allTags: string[]
+  allTags: string[];
 }
 
 export function Sidebar({ allTags }: SidebarProps) {
-  const [open, setOpen] = useState(true)
-  const [showAllTags, setShowAllTags] = useState(false)
-  const visibleTags = showAllTags ? allTags : allTags.slice(0, 12)
+  const [open, setOpen] = useState(true);
+  const [showAllTags, setShowAllTags] = useState(false);
+  const visibleTags = showAllTags ? allTags : allTags.slice(0, 12);
 
   return (
     <>
@@ -878,12 +917,12 @@ export function Sidebar({ allTags }: SidebarProps) {
         onClick={() => setOpen((o) => !o)}
         aria-label="Toggle sidebar"
       >
-        {open ? '✕' : '☰'}
+        {open ? "✕" : "☰"}
       </button>
 
       <aside
         className={`
-          ${open ? 'translate-x-0' : '-translate-x-full'}
+          ${open ? "translate-x-0" : "-translate-x-full"}
           transition-transform duration-200
           md:translate-x-0 md:static
           fixed top-0 left-0 h-full z-40
@@ -894,7 +933,10 @@ export function Sidebar({ allTags }: SidebarProps) {
       >
         {/* Desktop collapse button */}
         <div className="hidden md:flex justify-between items-center mb-4">
-          <Link to="/" className="font-semibold text-gray-800 hover:text-blue-600">
+          <Link
+            to="/"
+            className="font-semibold text-gray-800 hover:text-blue-600"
+          >
             AG Examples
           </Link>
           <button
@@ -902,7 +944,7 @@ export function Sidebar({ allTags }: SidebarProps) {
             className="text-gray-400 hover:text-gray-600 text-sm"
             aria-label="Collapse sidebar"
           >
-            {open ? '◀' : '▶'}
+            {open ? "◀" : "▶"}
           </button>
         </div>
 
@@ -914,17 +956,29 @@ export function Sidebar({ allTags }: SidebarProps) {
               </p>
               <ul className="space-y-1">
                 <li>
-                  <Link to="/examples" search={{ type: 'variety' }} className="block text-sm text-gray-700 hover:text-blue-600 py-0.5">
+                  <Link
+                    to="/examples"
+                    search={{ type: "variety" }}
+                    className="block text-sm text-gray-700 hover:text-blue-600 py-0.5"
+                  >
                     Varieties
                   </Link>
                 </li>
                 <li>
-                  <Link to="/examples" search={{ type: 'computation' }} className="block text-sm text-gray-700 hover:text-blue-600 py-0.5">
+                  <Link
+                    to="/examples"
+                    search={{ type: "computation" }}
+                    className="block text-sm text-gray-700 hover:text-blue-600 py-0.5"
+                  >
                     Computations
                   </Link>
                 </li>
                 <li>
-                  <Link to="/examples" search={{ type: 'counterexample' }} className="block text-sm text-gray-700 hover:text-blue-600 py-0.5">
+                  <Link
+                    to="/examples"
+                    search={{ type: "counterexample" }}
+                    className="block text-sm text-gray-700 hover:text-blue-600 py-0.5"
+                  >
                     Counterexamples
                   </Link>
                 </li>
@@ -972,7 +1026,9 @@ export function Sidebar({ allTags }: SidebarProps) {
                     onClick={() => setShowAllTags((s) => !s)}
                     className="mt-1 text-xs text-blue-500 hover:underline"
                   >
-                    {showAllTags ? 'Show fewer' : `+${allTags.length - 12} more`}
+                    {showAllTags
+                      ? "Show fewer"
+                      : `+${allTags.length - 12} more`}
                   </button>
                 )}
               </div>
@@ -981,33 +1037,37 @@ export function Sidebar({ allTags }: SidebarProps) {
         )}
       </aside>
     </>
-  )
+  );
 }
 ```
 
 - [ ] **Step 3: Write `app/routes/__root.tsx`**
 
 ```tsx
-import { createRootRoute, Outlet, ScrollRestoration } from '@tanstack/react-router'
-import { Meta, Scripts } from '@tanstack/react-start'
-import { getAllTags } from '~/lib/content'
-import { Sidebar } from '~/components/Sidebar'
-import '~/styles/global.css'
+import {
+  createRootRoute,
+  Outlet,
+  ScrollRestoration,
+} from "@tanstack/react-router";
+import { Meta, Scripts } from "@tanstack/react-start";
+import { getAllTags } from "~/lib/content";
+import { Sidebar } from "~/components/Sidebar";
+import "~/styles/global.css";
 
 export const Route = createRootRoute({
   loader: () => ({ allTags: getAllTags() }),
   head: () => ({
     meta: [
-      { charSet: 'utf-8' },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { title: 'Algebraic Geometry Examples' },
+      { charSet: "utf-8" },
+      { name: "viewport", content: "width=device-width, initial-scale=1" },
+      { title: "Algebraic Geometry Examples" },
     ],
   }),
   component: RootLayout,
-})
+});
 
 function RootLayout() {
-  const { allTags } = Route.useLoaderData()
+  const { allTags } = Route.useLoaderData();
 
   return (
     <html lang="en">
@@ -1025,7 +1085,7 @@ function RootLayout() {
         <Scripts />
       </body>
     </html>
-  )
+  );
 }
 ```
 
@@ -1049,23 +1109,24 @@ git commit -m "feat: root layout with foldable sidebar"
 ## Task 7: Example card component and homepage
 
 **Files:**
+
 - Create: `app/components/ExampleCard.tsx`
 - Create: `app/routes/index.tsx`
 
 - [ ] **Step 1: Write `app/components/ExampleCard.tsx`**
 
 ```tsx
-import { Link } from '@tanstack/react-router'
-import type { Example } from '~/lib/schema'
+import { Link } from "@tanstack/react-router";
+import type { Example } from "~/lib/schema";
 
-const TYPE_COLOURS: Record<Example['type'], string> = {
-  variety: 'bg-blue-100 text-blue-700',
-  computation: 'bg-green-100 text-green-700',
-  counterexample: 'bg-orange-100 text-orange-700',
-}
+const TYPE_COLOURS: Record<Example["type"], string> = {
+  variety: "bg-blue-100 text-blue-700",
+  computation: "bg-green-100 text-green-700",
+  counterexample: "bg-orange-100 text-orange-700",
+};
 
 interface ExampleCardProps {
-  example: Example
+  example: Example;
 }
 
 export function ExampleCard({ example }: ExampleCardProps) {
@@ -1079,7 +1140,9 @@ export function ExampleCard({ example }: ExampleCardProps) {
         >
           {example.title}
         </Link>
-        <span className={`text-xs px-2 py-0.5 rounded-full whitespace-nowrap ${TYPE_COLOURS[example.type]}`}>
+        <span
+          className={`text-xs px-2 py-0.5 rounded-full whitespace-nowrap ${TYPE_COLOURS[example.type]}`}
+        >
           {example.type}
         </span>
       </div>
@@ -1097,34 +1160,34 @@ export function ExampleCard({ example }: ExampleCardProps) {
         ))}
       </div>
     </div>
-  )
+  );
 }
 ```
 
 - [ ] **Step 2: Write `app/routes/index.tsx`**
 
 ```tsx
-import { createFileRoute, Link } from '@tanstack/react-router'
-import { getAllExamples } from '~/lib/content'
-import { ExampleCard } from '~/components/ExampleCard'
-import type { Example } from '~/lib/schema'
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { getAllExamples } from "~/lib/content";
+import { ExampleCard } from "~/components/ExampleCard";
+import type { Example } from "~/lib/schema";
 
-export const Route = createFileRoute('/')({
+export const Route = createFileRoute("/")({
   loader: () => {
-    const all = getAllExamples()
+    const all = getAllExamples();
     const counts = {
-      variety: all.filter((e) => e.type === 'variety').length,
-      computation: all.filter((e) => e.type === 'computation').length,
-      counterexample: all.filter((e) => e.type === 'counterexample').length,
-    }
-    const recent = all.slice(-5).reverse()
-    return { counts, recent, total: all.length }
+      variety: all.filter((e) => e.type === "variety").length,
+      computation: all.filter((e) => e.type === "computation").length,
+      counterexample: all.filter((e) => e.type === "counterexample").length,
+    };
+    const recent = all.slice(-5).reverse();
+    return { counts, recent, total: all.length };
   },
   component: HomePage,
-})
+});
 
 function HomePage() {
-  const { counts, recent, total } = Route.useLoaderData()
+  const { counts, recent, total } = Route.useLoaderData();
 
   return (
     <div>
@@ -1133,7 +1196,8 @@ function HomePage() {
           Algebraic Geometry Examples
         </h1>
         <p className="text-gray-600">
-          A reference database of concrete examples in algebraic geometry and related fields.
+          A reference database of concrete examples in algebraic geometry and
+          related fields.
           {total > 0 && ` ${total} entries.`}
         </p>
       </div>
@@ -1141,9 +1205,17 @@ function HomePage() {
       <div className="grid grid-cols-3 gap-3 mb-8">
         {(
           [
-            { type: 'variety', label: 'Varieties', count: counts.variety },
-            { type: 'computation', label: 'Computations', count: counts.computation },
-            { type: 'counterexample', label: 'Counterexamples', count: counts.counterexample },
+            { type: "variety", label: "Varieties", count: counts.variety },
+            {
+              type: "computation",
+              label: "Computations",
+              count: counts.computation,
+            },
+            {
+              type: "counterexample",
+              label: "Counterexamples",
+              count: counts.counterexample,
+            },
           ] as const
         ).map(({ type, label, count }) => (
           <Link
@@ -1158,7 +1230,9 @@ function HomePage() {
         ))}
       </div>
 
-      <h2 className="text-lg font-semibold text-gray-800 mb-3">Recently added</h2>
+      <h2 className="text-lg font-semibold text-gray-800 mb-3">
+        Recently added
+      </h2>
       <div className="space-y-3">
         {recent.map((e) => (
           <ExampleCard key={e.slug} example={e} />
@@ -1171,7 +1245,7 @@ function HomePage() {
         </p>
       )}
     </div>
-  )
+  );
 }
 ```
 
@@ -1195,52 +1269,53 @@ git commit -m "feat: homepage with type counts and recent entries"
 ## Task 8: Examples listing page
 
 **Files:**
+
 - Create: `app/routes/examples/index.tsx`
 
 - [ ] **Step 1: Write `app/routes/examples/index.tsx`**
 
 ```tsx
-import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
-import { z } from 'zod'
-import { getAllExamples, getAllTags } from '~/lib/content'
-import { ExampleCard } from '~/components/ExampleCard'
-import { FieldEnum } from '~/lib/schema'
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { z } from "zod";
+import { getAllExamples, getAllTags } from "~/lib/content";
+import { ExampleCard } from "~/components/ExampleCard";
+import { FieldEnum } from "~/lib/schema";
 
 const searchSchema = z.object({
-  type: z.enum(['variety', 'computation', 'counterexample']).optional(),
+  type: z.enum(["variety", "computation", "counterexample"]).optional(),
   field: FieldEnum.optional(),
   tag: z.string().optional(),
   q: z.string().optional(),
-})
+});
 
-export const Route = createFileRoute('/examples/')({
+export const Route = createFileRoute("/examples/")({
   validateSearch: searchSchema,
   loader: () => ({
     examples: getAllExamples(),
     tags: getAllTags(),
   }),
   component: ExamplesPage,
-})
+});
 
 function ExamplesPage() {
-  const { examples, tags } = Route.useLoaderData()
-  const { type, field, tag, q } = Route.useSearch()
-  const navigate = useNavigate({ from: '/examples/' })
+  const { examples, tags } = Route.useLoaderData();
+  const { type, field, tag, q } = Route.useSearch();
+  const navigate = useNavigate({ from: "/examples/" });
 
   const filtered = examples.filter((e) => {
-    if (type && e.type !== type) return false
-    if (field && e.field !== field) return false
-    if (tag && !e.tags.includes(tag)) return false
+    if (type && e.type !== type) return false;
+    if (field && e.field !== field) return false;
+    if (tag && !e.tags.includes(tag)) return false;
     if (q) {
-      const lower = q.toLowerCase()
+      const lower = q.toLowerCase();
       return (
         e.title.toLowerCase().includes(lower) ||
         e.summary.toLowerCase().includes(lower) ||
         e.tags.some((t) => t.toLowerCase().includes(lower))
-      )
+      );
     }
-    return true
-  })
+    return true;
+  });
 
   return (
     <div>
@@ -1254,14 +1329,25 @@ function ExamplesPage() {
         <input
           type="search"
           placeholder="Filter by title or tag…"
-          value={q ?? ''}
-          onChange={(e) => navigate({ search: (s) => ({ ...s, q: e.target.value || undefined }) })}
+          value={q ?? ""}
+          onChange={(e) =>
+            navigate({
+              search: (s) => ({ ...s, q: e.target.value || undefined }),
+            })
+          }
           className="border border-gray-300 rounded px-3 py-1.5 text-sm w-48"
         />
 
         <select
-          value={type ?? ''}
-          onChange={(e) => navigate({ search: (s) => ({ ...s, type: (e.target.value as any) || undefined }) })}
+          value={type ?? ""}
+          onChange={(e) =>
+            navigate({
+              search: (s) => ({
+                ...s,
+                type: (e.target.value as any) || undefined,
+              }),
+            })
+          }
           className="border border-gray-300 rounded px-3 py-1.5 text-sm"
         >
           <option value="">All types</option>
@@ -1271,8 +1357,15 @@ function ExamplesPage() {
         </select>
 
         <select
-          value={field ?? ''}
-          onChange={(e) => navigate({ search: (s) => ({ ...s, field: (e.target.value as any) || undefined }) })}
+          value={field ?? ""}
+          onChange={(e) =>
+            navigate({
+              search: (s) => ({
+                ...s,
+                field: (e.target.value as any) || undefined,
+              }),
+            })
+          }
           className="border border-gray-300 rounded px-3 py-1.5 text-sm"
         >
           <option value="">All fields</option>
@@ -1304,11 +1397,13 @@ function ExamplesPage() {
           <ExampleCard key={e.slug} example={e} />
         ))}
         {filtered.length === 0 && (
-          <p className="text-gray-500 text-sm">No examples match these filters.</p>
+          <p className="text-gray-500 text-sm">
+            No examples match these filters.
+          </p>
         )}
       </div>
     </div>
-  )
+  );
 }
 ```
 
@@ -1328,6 +1423,7 @@ git commit -m "feat: examples listing page with client-side filtering"
 ## Task 9: Example detail page
 
 **Files:**
+
 - Create: `app/components/PropertiesTable.tsx`
 - Create: `app/components/ExampleMeta.tsx`
 - Create: `app/components/MarkdownBody.tsx`
@@ -1336,36 +1432,37 @@ git commit -m "feat: examples listing page with client-side filtering"
 - [ ] **Step 1: Write `app/components/PropertiesTable.tsx`**
 
 ```tsx
-import type { VarietyFrontmatter } from '~/lib/schema'
+import type { VarietyFrontmatter } from "~/lib/schema";
 
-type Props = { properties: NonNullable<VarietyFrontmatter['properties']> }
+type Props = { properties: NonNullable<VarietyFrontmatter["properties"]> };
 
 const LABELS: Record<string, string> = {
-  dimension: 'Dimension',
-  ambient_space: 'Ambient space',
-  degree: 'Degree',
-  singularities: 'Singularities',
-  genus: 'Genus',
-  is_rational: 'Rational?',
-  kodaira_dimension: 'Kodaira dimension',
-  picard_group: 'Picard group',
-}
+  dimension: "Dimension",
+  ambient_space: "Ambient space",
+  degree: "Degree",
+  singularities: "Singularities",
+  genus: "Genus",
+  is_rational: "Rational?",
+  kodaira_dimension: "Kodaira dimension",
+  picard_group: "Picard group",
+};
 
 function formatValue(key: string, value: unknown): string {
-  if (key === 'is_rational') return value ? 'yes' : 'no'
-  if (key === 'ambient_space') {
-    const s = String(value)
-    return s.replace(/^P\^?(\d+)$/, 'ℙ$1').replace(/^A\^?(\d+)$/, '𝔸$1')
+  if (key === "is_rational") return value ? "yes" : "no";
+  if (key === "ambient_space") {
+    const s = String(value);
+    return s.replace(/^P\^?(\d+)$/, "ℙ$1").replace(/^A\^?(\d+)$/, "𝔸$1");
   }
-  if (key === 'kodaira_dimension') return value === '-inf' ? '−∞' : String(value)
-  return String(value)
+  if (key === "kodaira_dimension")
+    return value === "-inf" ? "−∞" : String(value);
+  return String(value);
 }
 
 export function PropertiesTable({ properties }: Props) {
   const entries = Object.entries(properties).filter(
-    ([k, v]) => k !== 'hodge_numbers' && v !== undefined && v !== null
-  )
-  if (entries.length === 0) return null
+    ([k, v]) => k !== "hodge_numbers" && v !== undefined && v !== null,
+  );
+  if (entries.length === 0) return null;
 
   return (
     <div className="mb-6">
@@ -1376,32 +1473,36 @@ export function PropertiesTable({ properties }: Props) {
         <tbody>
           {entries.map(([key, val]) => (
             <tr key={key} className="border-b border-gray-100 last:border-0">
-              <td className="py-1.5 px-3 text-gray-500 w-40">{LABELS[key] ?? key}</td>
-              <td className="py-1.5 px-3 font-medium text-gray-900">{formatValue(key, val)}</td>
+              <td className="py-1.5 px-3 text-gray-500 w-40">
+                {LABELS[key] ?? key}
+              </td>
+              <td className="py-1.5 px-3 font-medium text-gray-900">
+                {formatValue(key, val)}
+              </td>
             </tr>
           ))}
         </tbody>
       </table>
     </div>
-  )
+  );
 }
 ```
 
 - [ ] **Step 2: Write `app/components/ExampleMeta.tsx`**
 
 ```tsx
-import { Link } from '@tanstack/react-router'
-import type { Example } from '~/lib/schema'
-import { PropertiesTable } from './PropertiesTable'
+import { Link } from "@tanstack/react-router";
+import type { Example } from "~/lib/schema";
+import { PropertiesTable } from "./PropertiesTable";
 
 export function ExampleMeta({ example }: { example: Example }) {
-  if (example.type === 'variety') {
+  if (example.type === "variety") {
     return example.properties ? (
       <PropertiesTable properties={example.properties} />
-    ) : null
+    ) : null;
   }
 
-  if (example.type === 'computation') {
+  if (example.type === "computation") {
     return (
       <div className="mb-6 space-y-3 text-sm border border-gray-200 rounded p-4 bg-gray-50">
         {example.object && (
@@ -1424,97 +1525,100 @@ export function ExampleMeta({ example }: { example: Example }) {
           <div className="flex flex-wrap gap-1 items-center">
             <span className="text-gray-500 mr-1">Techniques:</span>
             {example.techniques.map((t) => (
-              <span key={t} className="bg-white border border-gray-200 text-gray-700 text-xs px-2 py-0.5 rounded">
+              <span
+                key={t}
+                className="bg-white border border-gray-200 text-gray-700 text-xs px-2 py-0.5 rounded"
+              >
                 {t}
               </span>
             ))}
           </div>
         )}
       </div>
-    )
+    );
   }
 
-  if (example.type === 'counterexample') {
+  if (example.type === "counterexample") {
     return (
       <div className="mb-6 bg-orange-50 border border-orange-200 rounded p-4 text-sm">
         <span className="font-semibold text-orange-800">Refutes: </span>
         <span className="text-orange-900">{example.refutes}</span>
       </div>
-    )
+    );
   }
 
-  return null
+  return null;
 }
 ```
 
 - [ ] **Step 3: Write `app/components/MarkdownBody.tsx`**
 
 ```tsx
-interface Props { html: string }
+interface Props {
+  html: string;
+}
 
 export function MarkdownBody({ html }: Props) {
-  return (
-    <div
-      className="prose"
-      dangerouslySetInnerHTML={{ __html: html }}
-    />
-  )
+  return <div className="prose" dangerouslySetInnerHTML={{ __html: html }} />;
 }
 ```
 
 - [ ] **Step 4: Write `app/routes/examples/$slug.tsx`**
 
 ```tsx
-import { createFileRoute, Link, notFound } from '@tanstack/react-router'
-import { getAllExamples, getExampleBySlug } from '~/lib/content'
-import { computeBacklinks } from '~/lib/backlinks'
-import { processMarkdown } from '~/lib/markdown'
-import { ExampleMeta } from '~/components/ExampleMeta'
-import { MarkdownBody } from '~/components/MarkdownBody'
-import { ExampleCard } from '~/components/ExampleCard'
+import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { getAllExamples, getExampleBySlug } from "~/lib/content";
+import { computeBacklinks } from "~/lib/backlinks";
+import { processMarkdown } from "~/lib/markdown";
+import { ExampleMeta } from "~/components/ExampleMeta";
+import { MarkdownBody } from "~/components/MarkdownBody";
+import { ExampleCard } from "~/components/ExampleCard";
 
-export const Route = createFileRoute('/examples/$slug')({
+export const Route = createFileRoute("/examples/$slug")({
   loader: async ({ params }) => {
-    let example
+    let example;
     try {
-      example = getExampleBySlug(params.slug)
+      example = getExampleBySlug(params.slug);
     } catch {
-      throw notFound()
+      throw notFound();
     }
-    const all = getAllExamples()
-    const backlinks = computeBacklinks(all)
-    const referencedBy = backlinks.get(params.slug) ?? []
+    const all = getAllExamples();
+    const backlinks = computeBacklinks(all);
+    const referencedBy = backlinks.get(params.slug) ?? [];
     const relatedExamples = example.related
       .map((slug) => all.find((e) => e.slug === slug))
-      .filter(Boolean) as typeof all
-    const html = await processMarkdown(example.body)
-    return { example, html, referencedBy, relatedExamples }
+      .filter(Boolean) as typeof all;
+    const html = await processMarkdown(example.body);
+    return { example, html, referencedBy, relatedExamples };
   },
   component: ExamplePage,
   notFoundComponent: () => <p className="text-gray-500">Example not found.</p>,
-})
+});
 
 const TYPE_LABELS: Record<string, string> = {
-  variety: 'variety',
-  computation: 'computation',
-  counterexample: 'counterexample',
-}
+  variety: "variety",
+  computation: "computation",
+  counterexample: "counterexample",
+};
 
 const FIELD_LABELS: Record<string, string> = {
-  'algebraic-geometry': 'Algebraic Geometry',
-  'commutative-algebra': 'Commutative Algebra',
-  'algebraic-topology': 'Algebraic Topology',
-  'number-theory': 'Number Theory',
-  'complex-geometry': 'Complex Geometry',
-}
+  "algebraic-geometry": "Algebraic Geometry",
+  "commutative-algebra": "Commutative Algebra",
+  "algebraic-topology": "Algebraic Topology",
+  "number-theory": "Number Theory",
+  "complex-geometry": "Complex Geometry",
+};
 
 function ExamplePage() {
-  const { example, html, referencedBy, relatedExamples } = Route.useLoaderData()
+  const { example, html, referencedBy, relatedExamples } =
+    Route.useLoaderData();
 
   return (
     <article>
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-900 mb-3">{example.title}</h1>
+        <h1 className="text-2xl font-bold text-gray-900 mb-3">
+          {example.title}
+        </h1>
         <div className="flex flex-wrap gap-2 items-center">
           <span className="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full">
             {TYPE_LABELS[example.type]}
@@ -1582,7 +1686,7 @@ function ExamplePage() {
         </section>
       )}
     </article>
-  )
+  );
 }
 ```
 
@@ -1606,104 +1710,162 @@ git commit -m "feat: example detail page with type-specific metadata and backlin
 ## Task 10: Varieties filter page
 
 **Files:**
+
 - Create: `app/routes/varieties/index.tsx`
 
 - [ ] **Step 1: Write `app/routes/varieties/index.tsx`**
 
 ```tsx
-import { createFileRoute, useNavigate } from '@tanstack/react-router'
-import { z } from 'zod'
-import { Link } from '@tanstack/react-router'
-import { getAllExamples } from '~/lib/content'
-import type { VarietyFrontmatter } from '~/lib/schema'
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { z } from "zod";
+import { Link } from "@tanstack/react-router";
+import { getAllExamples } from "~/lib/content";
+import type { VarietyFrontmatter } from "~/lib/schema";
 
 const searchSchema = z.object({
   dimension: z.coerce.number().optional(),
   ambient_space: z.string().optional(),
   singularities: z.string().optional(),
-  is_rational: z.enum(['true', 'false']).optional(),
-})
+  is_rational: z.enum(["true", "false"]).optional(),
+});
 
-export const Route = createFileRoute('/varieties/')({
+export const Route = createFileRoute("/varieties/")({
   validateSearch: searchSchema,
   loader: () => {
     const varieties = getAllExamples().filter(
-      (e): e is VarietyFrontmatter & { body: string } => e.type === 'variety'
-    )
+      (e): e is VarietyFrontmatter & { body: string } => e.type === "variety",
+    );
     // Collect distinct filter values from data
-    const dimensions = [...new Set(varieties.map((v) => v.properties?.dimension).filter((d): d is number => d !== undefined))].sort((a, b) => a - b)
-    const ambientSpaces = [...new Set(varieties.map((v) => v.properties?.ambient_space).filter(Boolean) as string[])].sort()
-    const singularityTypes = [...new Set(varieties.map((v) => v.properties?.singularities).filter(Boolean) as string[])].sort()
-    return { varieties, dimensions, ambientSpaces, singularityTypes }
+    const dimensions = [
+      ...new Set(
+        varieties
+          .map((v) => v.properties?.dimension)
+          .filter((d): d is number => d !== undefined),
+      ),
+    ].sort((a, b) => a - b);
+    const ambientSpaces = [
+      ...new Set(
+        varieties
+          .map((v) => v.properties?.ambient_space)
+          .filter(Boolean) as string[],
+      ),
+    ].sort();
+    const singularityTypes = [
+      ...new Set(
+        varieties
+          .map((v) => v.properties?.singularities)
+          .filter(Boolean) as string[],
+      ),
+    ].sort();
+    return { varieties, dimensions, ambientSpaces, singularityTypes };
   },
   component: VarietiesPage,
-})
+});
 
 function formatAmbientSpace(s: string): string {
-  return s.replace(/^P\^?(\d+)$/, 'ℙ$1').replace(/^A\^?(\d+)$/, '𝔸$1')
+  return s.replace(/^P\^?(\d+)$/, "ℙ$1").replace(/^A\^?(\d+)$/, "𝔸$1");
 }
 
 function VarietiesPage() {
-  const { varieties, dimensions, ambientSpaces, singularityTypes } = Route.useLoaderData()
-  const { dimension, ambient_space, singularities, is_rational } = Route.useSearch()
-  const navigate = useNavigate({ from: '/varieties/' })
+  const { varieties, dimensions, ambientSpaces, singularityTypes } =
+    Route.useLoaderData();
+  const { dimension, ambient_space, singularities, is_rational } =
+    Route.useSearch();
+  const navigate = useNavigate({ from: "/varieties/" });
 
   const filtered = varieties.filter((v) => {
-    const p = v.properties ?? {}
-    if (dimension !== undefined && p.dimension !== dimension) return false
-    if (ambient_space && p.ambient_space !== ambient_space) return false
-    if (singularities && p.singularities !== singularities) return false
-    if (is_rational === 'true' && !p.is_rational) return false
-    if (is_rational === 'false' && p.is_rational) return false
-    return true
-  })
+    const p = v.properties ?? {};
+    if (dimension !== undefined && p.dimension !== dimension) return false;
+    if (ambient_space && p.ambient_space !== ambient_space) return false;
+    if (singularities && p.singularities !== singularities) return false;
+    if (is_rational === "true" && !p.is_rational) return false;
+    if (is_rational === "false" && p.is_rational) return false;
+    return true;
+  });
 
-  const hasFilters = dimension !== undefined || ambient_space || singularities || is_rational
+  const hasFilters =
+    dimension !== undefined || ambient_space || singularities || is_rational;
 
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-bold text-gray-900">Varieties</h1>
-        <span className="text-sm text-gray-500">{filtered.length} of {varieties.length}</span>
+        <span className="text-sm text-gray-500">
+          {filtered.length} of {varieties.length}
+        </span>
       </div>
 
       <div className="flex flex-wrap gap-3 mb-6">
         <select
-          value={dimension ?? ''}
-          onChange={(e) => navigate({ search: (s) => ({ ...s, dimension: e.target.value ? Number(e.target.value) : undefined }) })}
+          value={dimension ?? ""}
+          onChange={(e) =>
+            navigate({
+              search: (s) => ({
+                ...s,
+                dimension: e.target.value ? Number(e.target.value) : undefined,
+              }),
+            })
+          }
           className="border border-gray-300 rounded px-3 py-1.5 text-sm"
         >
           <option value="">Any dimension</option>
           {dimensions.map((d) => (
-            <option key={d} value={d}>dim {d}</option>
+            <option key={d} value={d}>
+              dim {d}
+            </option>
           ))}
         </select>
 
         <select
-          value={ambient_space ?? ''}
-          onChange={(e) => navigate({ search: (s) => ({ ...s, ambient_space: e.target.value || undefined }) })}
+          value={ambient_space ?? ""}
+          onChange={(e) =>
+            navigate({
+              search: (s) => ({
+                ...s,
+                ambient_space: e.target.value || undefined,
+              }),
+            })
+          }
           className="border border-gray-300 rounded px-3 py-1.5 text-sm"
         >
           <option value="">Any ambient space</option>
           {ambientSpaces.map((a) => (
-            <option key={a} value={a}>{formatAmbientSpace(a)}</option>
+            <option key={a} value={a}>
+              {formatAmbientSpace(a)}
+            </option>
           ))}
         </select>
 
         <select
-          value={singularities ?? ''}
-          onChange={(e) => navigate({ search: (s) => ({ ...s, singularities: e.target.value || undefined }) })}
+          value={singularities ?? ""}
+          onChange={(e) =>
+            navigate({
+              search: (s) => ({
+                ...s,
+                singularities: e.target.value || undefined,
+              }),
+            })
+          }
           className="border border-gray-300 rounded px-3 py-1.5 text-sm"
         >
           <option value="">Any singularities</option>
           {singularityTypes.map((s) => (
-            <option key={s} value={s}>{s}</option>
+            <option key={s} value={s}>
+              {s}
+            </option>
           ))}
         </select>
 
         <select
-          value={is_rational ?? ''}
-          onChange={(e) => navigate({ search: (s) => ({ ...s, is_rational: (e.target.value as any) || undefined }) })}
+          value={is_rational ?? ""}
+          onChange={(e) =>
+            navigate({
+              search: (s) => ({
+                ...s,
+                is_rational: (e.target.value as any) || undefined,
+              }),
+            })
+          }
           className="border border-gray-300 rounded px-3 py-1.5 text-sm"
         >
           <option value="">Any rationality</option>
@@ -1725,16 +1887,29 @@ function VarietiesPage() {
         <table className="w-full text-sm">
           <thead className="bg-gray-50 border-b border-gray-200">
             <tr>
-              <th className="text-left py-2 px-4 font-medium text-gray-500">Name</th>
-              <th className="text-left py-2 px-4 font-medium text-gray-500 hidden sm:table-cell">Dim</th>
-              <th className="text-left py-2 px-4 font-medium text-gray-500 hidden md:table-cell">Ambient</th>
-              <th className="text-left py-2 px-4 font-medium text-gray-500 hidden md:table-cell">Degree</th>
-              <th className="text-left py-2 px-4 font-medium text-gray-500 hidden lg:table-cell">Singularities</th>
+              <th className="text-left py-2 px-4 font-medium text-gray-500">
+                Name
+              </th>
+              <th className="text-left py-2 px-4 font-medium text-gray-500 hidden sm:table-cell">
+                Dim
+              </th>
+              <th className="text-left py-2 px-4 font-medium text-gray-500 hidden md:table-cell">
+                Ambient
+              </th>
+              <th className="text-left py-2 px-4 font-medium text-gray-500 hidden md:table-cell">
+                Degree
+              </th>
+              <th className="text-left py-2 px-4 font-medium text-gray-500 hidden lg:table-cell">
+                Singularities
+              </th>
             </tr>
           </thead>
           <tbody>
             {filtered.map((v) => (
-              <tr key={v.slug} className="border-b border-gray-100 last:border-0 hover:bg-gray-50">
+              <tr
+                key={v.slug}
+                className="border-b border-gray-100 last:border-0 hover:bg-gray-50"
+              >
                 <td className="py-2 px-4">
                   <Link
                     to="/examples/$slug"
@@ -1746,16 +1921,18 @@ function VarietiesPage() {
                   <p className="text-gray-400 text-xs mt-0.5">{v.summary}</p>
                 </td>
                 <td className="py-2 px-4 text-gray-700 hidden sm:table-cell">
-                  {v.properties?.dimension ?? '—'}
+                  {v.properties?.dimension ?? "—"}
                 </td>
                 <td className="py-2 px-4 text-gray-700 hidden md:table-cell">
-                  {v.properties?.ambient_space ? formatAmbientSpace(v.properties.ambient_space) : '—'}
+                  {v.properties?.ambient_space
+                    ? formatAmbientSpace(v.properties.ambient_space)
+                    : "—"}
                 </td>
                 <td className="py-2 px-4 text-gray-700 hidden md:table-cell">
-                  {v.properties?.degree ?? '—'}
+                  {v.properties?.degree ?? "—"}
                 </td>
                 <td className="py-2 px-4 text-gray-700 hidden lg:table-cell">
-                  {v.properties?.singularities ?? '—'}
+                  {v.properties?.singularities ?? "—"}
                 </td>
               </tr>
             ))}
@@ -1770,7 +1947,7 @@ function VarietiesPage() {
         </table>
       </div>
     </div>
-  )
+  );
 }
 ```
 
@@ -1790,91 +1967,94 @@ git commit -m "feat: varieties filter page with property-based filtering"
 ## Task 11: Tags and fields index pages
 
 **Files:**
+
 - Create: `app/routes/tags/$tag.tsx`
 - Create: `app/routes/fields/$field.tsx`
 
 - [ ] **Step 1: Write `app/routes/tags/$tag.tsx`**
 
 ```tsx
-import { createFileRoute, notFound } from '@tanstack/react-router'
-import { getAllExamples, getAllTags, getExamplesByTag } from '~/lib/content'
-import { ExampleCard } from '~/components/ExampleCard'
+import { createFileRoute, notFound } from "@tanstack/react-router";
+import { getAllExamples, getAllTags, getExamplesByTag } from "~/lib/content";
+import { ExampleCard } from "~/components/ExampleCard";
 
-export const Route = createFileRoute('/tags/$tag')({
+export const Route = createFileRoute("/tags/$tag")({
   loader: ({ params }) => {
-    const allTags = getAllTags()
-    if (!allTags.includes(params.tag)) throw notFound()
+    const allTags = getAllTags();
+    if (!allTags.includes(params.tag)) throw notFound();
     return {
       tag: params.tag,
       examples: getExamplesByTag(params.tag),
-    }
+    };
   },
   component: TagPage,
   notFoundComponent: () => <p className="text-gray-500">Tag not found.</p>,
-})
+});
 
 function TagPage() {
-  const { tag, examples } = Route.useLoaderData()
+  const { tag, examples } = Route.useLoaderData();
   return (
     <div>
-      <h1 className="text-2xl font-bold text-gray-900 mb-1">
-        #{tag}
-      </h1>
-      <p className="text-gray-500 text-sm mb-6">{examples.length} example{examples.length !== 1 ? 's' : ''}</p>
+      <h1 className="text-2xl font-bold text-gray-900 mb-1">#{tag}</h1>
+      <p className="text-gray-500 text-sm mb-6">
+        {examples.length} example{examples.length !== 1 ? "s" : ""}
+      </p>
       <div className="space-y-3">
         {examples.map((e) => (
           <ExampleCard key={e.slug} example={e} />
         ))}
       </div>
     </div>
-  )
+  );
 }
 ```
 
 - [ ] **Step 2: Write `app/routes/fields/$field.tsx`**
 
 ```tsx
-import { createFileRoute, notFound } from '@tanstack/react-router'
-import { getExamplesByField } from '~/lib/content'
-import { ExampleCard } from '~/components/ExampleCard'
-import { FieldEnum } from '~/lib/schema'
+import { createFileRoute, notFound } from "@tanstack/react-router";
+import { getExamplesByField } from "~/lib/content";
+import { ExampleCard } from "~/components/ExampleCard";
+import { FieldEnum } from "~/lib/schema";
 
 const FIELD_LABELS: Record<string, string> = {
-  'algebraic-geometry': 'Algebraic Geometry',
-  'commutative-algebra': 'Commutative Algebra',
-  'algebraic-topology': 'Algebraic Topology',
-  'number-theory': 'Number Theory',
-  'complex-geometry': 'Complex Geometry',
-}
+  "algebraic-geometry": "Algebraic Geometry",
+  "commutative-algebra": "Commutative Algebra",
+  "algebraic-topology": "Algebraic Topology",
+  "number-theory": "Number Theory",
+  "complex-geometry": "Complex Geometry",
+};
 
-export const Route = createFileRoute('/fields/$field')({
+export const Route = createFileRoute("/fields/$field")({
   loader: ({ params }) => {
-    const parsed = FieldEnum.safeParse(params.field)
-    if (!parsed.success) throw notFound()
+    const parsed = FieldEnum.safeParse(params.field);
+    if (!parsed.success) throw notFound();
     return {
       field: parsed.data,
       examples: getExamplesByField(parsed.data),
-    }
+    };
   },
   component: FieldPage,
   notFoundComponent: () => <p className="text-gray-500">Field not found.</p>,
-})
+});
 
 function FieldPage() {
-  const { field, examples } = Route.useLoaderData()
+  const { field, examples } = Route.useLoaderData();
   return (
     <div>
       <h1 className="text-2xl font-bold text-gray-900 mb-1">
         {FIELD_LABELS[field] ?? field}
       </h1>
-      <p className="text-gray-500 text-sm mb-6">{examples.length} example{examples.length !== 1 ? 's' : ''}</p>
+      <p className="text-gray-500 text-sm mb-6">
+        {examples.length} example{examples.length !== 1 ? "s" : ""}
+      </p>
       <div className="space-y-3">
         {examples.map((e) => (
           <ExampleCard key={e.slug} example={e} />
         ))}
       </div>
     </div>
-  )
+  );
 }
 ```
 
@@ -1895,39 +2075,40 @@ git commit -m "feat: tag and field index pages"
 ## Task 12: Static prerendering and build verification
 
 **Files:**
+
 - Modify: `app.config.ts`
 
 - [ ] **Step 1: Update `app.config.ts` to list all dynamic routes for prerendering**
 
 ```ts
-import { defineConfig } from '@tanstack/react-start/config'
-import tailwindcss from '@tailwindcss/vite'
-import { getAllExamples, getAllTags, getAllFields } from './app/lib/content'
+import { defineConfig } from "@tanstack/react-start/config";
+import tailwindcss from "@tailwindcss/vite";
+import { getAllExamples, getAllTags, getAllFields } from "./app/lib/content";
 
 export default defineConfig({
   vite: {
     plugins: [tailwindcss()],
   },
   server: {
-    preset: 'static',
+    preset: "static",
     prerender: {
       crawlLinks: true,
       routes: async () => {
-        const examples = getAllExamples()
-        const tags = getAllTags()
-        const fields = getAllFields()
+        const examples = getAllExamples();
+        const tags = getAllTags();
+        const fields = getAllFields();
         return [
-          '/',
-          '/examples',
-          '/varieties',
+          "/",
+          "/examples",
+          "/varieties",
           ...examples.map((e) => `/examples/${e.slug}`),
           ...tags.map((t) => `/tags/${t}`),
           ...fields.map((f) => `/fields/${f}`),
-        ]
+        ];
       },
     },
   },
-})
+});
 ```
 
 - [ ] **Step 2: Run build (without Pagefind for now)**
@@ -1950,6 +2131,7 @@ git commit -m "feat: static prerender config for all dynamic routes"
 ## Task 13: Pagefind search integration
 
 **Files:**
+
 - Modify: `package.json` (build script already correct from Task 1)
 - Create: `app/components/SearchWidget.tsx`
 - Modify: `app/routes/__root.tsx`
@@ -1963,58 +2145,60 @@ npm install -D pagefind
 - [ ] **Step 2: Write `app/components/SearchWidget.tsx`**
 
 ```tsx
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef } from "react";
 
 declare global {
   interface Window {
     pagefind?: {
-      init: () => Promise<void>
+      init: () => Promise<void>;
       search: (query: string) => Promise<{
         results: Array<{
           data: () => Promise<{
-            url: string
-            meta: { title: string }
-            excerpt: string
-          }>
-        }>
-      }>
-    }
+            url: string;
+            meta: { title: string };
+            excerpt: string;
+          }>;
+        }>;
+      }>;
+    };
   }
 }
 
 export function SearchWidget() {
-  const inputRef = useRef<HTMLInputElement>(null)
-  const resultsRef = useRef<HTMLDivElement>(null)
+  const inputRef = useRef<HTMLInputElement>(null);
+  const resultsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     // Pagefind is loaded from /pagefind/pagefind.js after build
-    const script = document.createElement('script')
-    script.type = 'module'
+    const script = document.createElement("script");
+    script.type = "module";
     script.textContent = `
       import * as pagefind from '/pagefind/pagefind.js';
       window.pagefind = pagefind;
       await pagefind.init();
-    `
-    document.head.appendChild(script)
-  }, [])
+    `;
+    document.head.appendChild(script);
+  }, []);
 
   async function handleSearch(query: string) {
-    if (!resultsRef.current) return
+    if (!resultsRef.current) return;
     if (!query.trim() || !window.pagefind) {
-      resultsRef.current.innerHTML = ''
-      return
+      resultsRef.current.innerHTML = "";
+      return;
     }
-    const search = await window.pagefind.search(query)
-    const items = await Promise.all(search.results.slice(0, 8).map((r) => r.data()))
+    const search = await window.pagefind.search(query);
+    const items = await Promise.all(
+      search.results.slice(0, 8).map((r) => r.data()),
+    );
     resultsRef.current.innerHTML = items
       .map(
         (item) =>
           `<a href="${item.url}" class="block p-3 hover:bg-gray-50 border-b border-gray-100 last:border-0">
             <div class="font-medium text-sm text-gray-900">${item.meta.title}</div>
             <div class="text-xs text-gray-500 mt-0.5">${item.excerpt}</div>
-          </a>`
+          </a>`,
       )
-      .join('')
+      .join("");
   }
 
   return (
@@ -2031,7 +2215,7 @@ export function SearchWidget() {
         className="absolute top-full left-0 right-0 z-50 bg-white border border-gray-200 rounded-lg shadow-lg mt-1 max-h-64 overflow-y-auto empty:hidden"
       />
     </div>
-  )
+  );
 }
 ```
 
@@ -2040,12 +2224,12 @@ export function SearchWidget() {
 Add the import and render the widget in `HomePage` above the counts grid:
 
 ```tsx
-import { SearchWidget } from '~/components/SearchWidget'
+import { SearchWidget } from "~/components/SearchWidget";
 
 // Inside HomePage, before the counts grid:
 <div className="mb-6 max-w-md">
   <SearchWidget />
-</div>
+</div>;
 ```
 
 - [ ] **Step 4: Run full build including Pagefind**
@@ -2076,6 +2260,7 @@ git commit -m "feat: Pagefind search integration"
 ## Task 14: CAS code snippets (Feature A)
 
 **Files:**
+
 - Modify: `app/lib/markdown.ts`
 - Modify: `app/styles/global.css`
 
@@ -2103,64 +2288,62 @@ After the existing styles, add:
 Replace the contents of `app/lib/markdown.ts`:
 
 ```ts
-import { unified } from 'unified'
-import remarkParse from 'remark-parse'
-import remarkMath from 'remark-math'
-import remarkRehype from 'remark-rehype'
-import rehypeKatex from 'rehype-katex'
-import rehypeHighlight from 'rehype-highlight'
-import rehypeStringify from 'rehype-stringify'
-import type { Root, Element } from 'hast'
-import type { Plugin } from 'unified'
-import { visit } from 'unist-util-visit'
-import { katexMacros } from './katex-macros'
+import { unified } from "unified";
+import remarkParse from "remark-parse";
+import remarkMath from "remark-math";
+import remarkRehype from "remark-rehype";
+import rehypeKatex from "rehype-katex";
+import rehypeHighlight from "rehype-highlight";
+import rehypeStringify from "rehype-stringify";
+import type { Root, Element } from "hast";
+import type { Plugin } from "unified";
+import { visit } from "unist-util-visit";
+import { katexMacros } from "./katex-macros";
 
-const CAS_LANGUAGES = new Set(['macaulay2', 'sage'])
+const CAS_LANGUAGES = new Set(["macaulay2", "sage"]);
 
 const rehypeCasBlocks: Plugin<[], Root> = () => (tree) => {
-  visit(tree, 'element', (node: Element, index, parent) => {
-    if (
-      node.tagName !== 'pre' ||
-      !parent ||
-      index === undefined
-    ) return
+  visit(tree, "element", (node: Element, index, parent) => {
+    if (node.tagName !== "pre" || !parent || index === undefined) return;
 
-    const code = node.children[0] as Element | undefined
-    if (!code || code.tagName !== 'code') return
+    const code = node.children[0] as Element | undefined;
+    if (!code || code.tagName !== "code") return;
 
-    const classes = (code.properties?.className as string[]) ?? []
-    const lang = classes.find((c) => c.startsWith('language-'))?.replace('language-', '')
-    if (!lang || !CAS_LANGUAGES.has(lang)) return
+    const classes = (code.properties?.className as string[]) ?? [];
+    const lang = classes
+      .find((c) => c.startsWith("language-"))
+      ?.replace("language-", "");
+    if (!lang || !CAS_LANGUAGES.has(lang)) return;
 
-    const label = lang === 'macaulay2' ? 'Macaulay2' : 'SageMath'
-    const codeText = (code.children[0] as any)?.value ?? ''
+    const label = lang === "macaulay2" ? "Macaulay2" : "SageMath";
+    const codeText = (code.children[0] as any)?.value ?? "";
 
     const wrapper: Element = {
-      type: 'element',
-      tagName: 'div',
-      properties: { className: ['cas-block'] },
+      type: "element",
+      tagName: "div",
+      properties: { className: ["cas-block"] },
       children: [
         {
-          type: 'element',
-          tagName: 'div',
-          properties: { className: ['cas-label'] },
-          children: [{ type: 'text', value: label }],
+          type: "element",
+          tagName: "div",
+          properties: { className: ["cas-label"] },
+          children: [{ type: "text", value: label }],
         },
         {
-          type: 'element',
-          tagName: 'button',
+          type: "element",
+          tagName: "button",
           properties: {
-            className: ['cas-copy'],
+            className: ["cas-copy"],
             onclick: `navigator.clipboard.writeText(${JSON.stringify(codeText)})`,
           },
-          children: [{ type: 'text', value: 'Copy' }],
+          children: [{ type: "text", value: "Copy" }],
         },
         node,
       ],
-    }
-    parent.children.splice(index, 1, wrapper)
-  })
-}
+    };
+    parent.children.splice(index, 1, wrapper);
+  });
+};
 
 export async function processMarkdown(content: string): Promise<string> {
   const result = await unified()
@@ -2171,8 +2354,8 @@ export async function processMarkdown(content: string): Promise<string> {
     .use(rehypeHighlight, { detect: true })
     .use(rehypeCasBlocks)
     .use(rehypeStringify)
-    .process(content)
-  return String(result)
+    .process(content);
+  return String(result);
 }
 ```
 
@@ -2187,7 +2370,6 @@ npm install unist-util-visit
 Append to `content/examples/twisted-cubic.md`:
 
 ````markdown
-
 ## Macaulay2 verification
 
 ```macaulay2
@@ -2228,28 +2410,28 @@ git commit -m "feat: CAS code snippets with Macaulay2/SageMath labels and copy b
 
 **Spec coverage check:**
 
-| Spec requirement | Covered by task |
-|---|---|
-| TanStack Start + TypeScript | Task 1 |
-| Zod schema validation at build time | Task 2 |
-| Markdown + YAML frontmatter | Task 4 |
-| KaTeX math rendering | Task 3 |
-| Site-wide LaTeX macros (H) | Task 3 |
-| Content types: variety, computation, counterexample | Tasks 2, 9 |
-| Variety properties table | Task 9 |
-| Counterexample "Refutes" banner | Task 9 |
-| Computation metadata panel | Task 9 |
-| Sidebar with foldable behaviour | Task 6 |
-| Homepage with counts + recent | Task 7 |
-| Examples listing with filters | Task 8 |
-| Individual example permalinks | Task 9 |
-| Varieties filter page (D) | Task 10 |
-| Tags pages | Task 11 |
-| Fields pages | Task 11 |
-| Static prerender config | Task 12 |
-| Pagefind search | Task 13 |
-| Automatic backlinks (D) | Task 5, 9 |
-| CAS snippets (A) | Task 14 |
+| Spec requirement                                    | Covered by task |
+| --------------------------------------------------- | --------------- |
+| TanStack Start + TypeScript                         | Task 1          |
+| Zod schema validation at build time                 | Task 2          |
+| Markdown + YAML frontmatter                         | Task 4          |
+| KaTeX math rendering                                | Task 3          |
+| Site-wide LaTeX macros (H)                          | Task 3          |
+| Content types: variety, computation, counterexample | Tasks 2, 9      |
+| Variety properties table                            | Task 9          |
+| Counterexample "Refutes" banner                     | Task 9          |
+| Computation metadata panel                          | Task 9          |
+| Sidebar with foldable behaviour                     | Task 6          |
+| Homepage with counts + recent                       | Task 7          |
+| Examples listing with filters                       | Task 8          |
+| Individual example permalinks                       | Task 9          |
+| Varieties filter page (D)                           | Task 10         |
+| Tags pages                                          | Task 11         |
+| Fields pages                                        | Task 11         |
+| Static prerender config                             | Task 12         |
+| Pagefind search                                     | Task 13         |
+| Automatic backlinks (D)                             | Task 5, 9       |
+| CAS snippets (A)                                    | Task 14         |
 
 **Advanced features deferred to Plan 2:** B (TikZJax), C (Hodge diamond), E (Stacks tags), F (concept vocabulary), G (variety comparison).
 

@@ -1,0 +1,7 @@
+node_modules/
+dist/
+.output/
+.superpowers/
+test-results/
+app/routeTree.gen.ts
+e2e/screenshots/
