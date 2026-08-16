@@ -1,4 +1,4 @@
-import { createRootRoute, Outlet, HeadContent, Scripts } from '@tanstack/react-router'
+import { createRootRoute, Outlet, HeadContent, Scripts, Link } from '@tanstack/react-router'
 import { useEffect } from 'react'
 import { getAllTagsFn } from '~/lib/server-fns'
 import { Sidebar } from '~/components/Sidebar'
@@ -15,7 +15,22 @@ export const Route = createRootRoute({
     ],
   }),
   component: RootLayout,
+  notFoundComponent: NotFound,
 })
+
+function NotFound() {
+  return (
+    <div className="max-w-prose">
+      <h1 className="text-2xl font-semibold mb-2">Page not found</h1>
+      <p className="text-gray-700 mb-4">
+        The page you're looking for doesn't exist.
+      </p>
+      <Link to="/" className="text-blue-700 underline">
+        Back to the index
+      </Link>
+    </div>
+  )
+}
 
 function RootLayout() {
   const { allTags } = Route.useLoaderData()

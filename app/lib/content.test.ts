@@ -48,4 +48,15 @@ describe('content loader', () => {
   it('throws for unknown slug', () => {
     expect(() => getExampleBySlug('does-not-exist')).toThrow()
   })
+
+  // \P is a valid YAML escape in double-quoted strings (maps to U+2029).
+  // LaTeX-bearing fields must be written with single quotes; this guard
+  // catches the silent corruption that produces red KaTeX errors in the UI.
+  it('preserves LaTeX in titles — no YAML-escape corruption', () => {
+    const e = getExampleBySlug('p1-as-a-toric-variety')
+    expect(e.title).toBe('$\\PP^1$ as a toric variety')
+    getAllExamples().forEach((ex) => {
+      expect(ex.title).not.toContain(' ')
+    })
+  })
 })

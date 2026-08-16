@@ -112,7 +112,7 @@ export function ExampleMeta({ example, backlinks }: ExampleMetaProps) {
             {backlinks.map((bl) => (
               <li key={bl.slug}>
                 <Link to="/examples/$slug" params={{ slug: bl.slug }} className="text-sm text-indigo-600 hover:underline">
-                  {bl.title}
+                  <MathText text={bl.title} />
                 </Link>
               </li>
             ))}

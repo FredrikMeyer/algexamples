@@ -110,7 +110,11 @@ function SearchPage() {
             value={search.q ?? ''}
             onChange={(e) => {
               const v = e.target.value
-              v ? set({ q: v }) : clear('q')
+              if (v) {
+                set({ q: v })
+              } else {
+                clear('q')
+              }
             }}
             placeholder="Search titles, summaries, body text…"
             className="w-full rounded border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-900 focus:border-indigo-400 focus:outline-none focus:ring-1 focus:ring-indigo-300"
@@ -187,7 +191,11 @@ function SearchPage() {
             value={search.tag ?? ''}
             onChange={(e) => {
               const v = e.target.value
-              v ? set({ tag: v }) : clear('tag')
+              if (v) {
+                set({ tag: v })
+              } else {
+                clear('tag')
+              }
             }}
             placeholder="e.g. projective-space"
             className="w-48 rounded border border-gray-200 bg-gray-50 px-3 py-1.5 text-sm text-gray-900 focus:border-indigo-400 focus:outline-none focus:ring-1 focus:ring-indigo-300"
@@ -220,7 +228,11 @@ function SearchPage() {
                   value={search.dim ?? ''}
                   onChange={(e) => {
                     const v = parseInt(e.target.value, 10)
-                    isNaN(v) || e.target.value === '' ? clear('dim') : set({ dim: v })
+                    if (isNaN(v) || e.target.value === '') {
+                      clear('dim')
+                    } else {
+                      set({ dim: v })
+                    }
                   }}
                   placeholder="Any"
                   className="w-20 rounded border border-gray-200 bg-gray-50 px-3 py-1.5 text-sm text-gray-900 focus:border-indigo-400 focus:outline-none focus:ring-1 focus:ring-indigo-300"

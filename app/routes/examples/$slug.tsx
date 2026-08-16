@@ -2,6 +2,7 @@ import { createFileRoute } from '@tanstack/react-router'
 import { getExampleDetailFn } from '~/lib/server-fns'
 import { PropertiesTable } from '~/components/PropertiesTable'
 import { ExampleMeta } from '~/components/ExampleMeta'
+import { MathText } from '~/components/MathText'
 import type { VarietyExample } from '~/lib/schema'
 
 export const Route = createFileRoute('/examples/$slug')({
@@ -32,7 +33,7 @@ function ExampleDetailPage() {
         className="text-4xl font-semibold text-gray-900 mb-6"
         style={{ fontFamily: "'EB Garamond', Georgia, serif", letterSpacing: '-0.01em' }}
       >
-        {example.title}
+        <MathText text={example.title} />
       </h1>
 
       <div className="flex flex-col lg:flex-row gap-8">

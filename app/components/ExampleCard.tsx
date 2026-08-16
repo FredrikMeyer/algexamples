@@ -1,15 +1,15 @@
-import { Link } from '@tanstack/react-router'
-import type { Example } from '~/lib/schema'
-import { MathText } from '~/components/MathText'
+import { Link } from "@tanstack/react-router";
+import type { Example } from "~/lib/schema";
+import { MathText } from "~/components/MathText";
 
-const TYPE_COLOURS: Record<Example['type'], string> = {
-  variety: 'bg-teal-100 text-teal-800',
-  computation: 'bg-emerald-100 text-emerald-800',
-  counterexample: 'bg-amber-100 text-amber-800',
-}
+const TYPE_COLOURS: Record<Example["type"], string> = {
+  variety: "bg-teal-100 text-teal-800",
+  computation: "bg-emerald-100 text-emerald-800",
+  counterexample: "bg-amber-100 text-amber-800",
+};
 
 interface ExampleCardProps {
-  example: Example
+  example: Example;
 }
 
 export function ExampleCard({ example }: ExampleCardProps) {
@@ -21,13 +21,17 @@ export function ExampleCard({ example }: ExampleCardProps) {
           params={{ slug: example.slug }}
           className="font-medium text-gray-900 hover:text-indigo-700 leading-snug"
         >
-          {example.title}
+          <MathText text={example.title} />
         </Link>
-        <span className={`text-xs px-2 py-0.5 rounded-full whitespace-nowrap font-medium ${TYPE_COLOURS[example.type]}`}>
+        <span
+          className={`text-xs px-2 py-0.5 rounded-full whitespace-nowrap font-medium ${TYPE_COLOURS[example.type]}`}
+        >
           {example.type}
         </span>
       </div>
-      <p className="text-sm text-gray-500 mb-2 leading-relaxed"><MathText text={example.summary} /></p>
+      <p className="text-sm text-gray-500 mb-2 leading-relaxed">
+        <MathText text={example.summary} />
+      </p>
       <div className="flex flex-wrap gap-1">
         {example.tags.slice(0, 5).map((tag) => (
           <Link
@@ -41,5 +45,5 @@ export function ExampleCard({ example }: ExampleCardProps) {
         ))}
       </div>
     </div>
-  )
+  );
 }
