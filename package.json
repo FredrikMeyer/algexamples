@@ -8,6 +8,7 @@
     "build": "vite build",
     "postbuild": "tsx --tsconfig tsconfig.scripts.json scripts/generate-data.ts && pagefind --site dist/client",
     "start": "node .output/server/index.mjs",
+    "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "lint": "eslint app",
     "e2e": "playwright test",

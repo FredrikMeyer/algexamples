@@ -66,7 +66,7 @@ function ExamplesPage() {
       {/* Filter tabs */}
       <div className="flex flex-wrap gap-2 mb-6">
         <Link
-          to="/examples/"
+          to="/examples"
           search={{}}
           className={`px-4 py-1.5 rounded-full text-sm font-medium transition-colors ${
             !activeType
@@ -81,7 +81,7 @@ function ExamplesPage() {
         ).map((type) => (
           <Link
             key={type}
-            to="/examples/"
+            to="/examples"
             search={{ type }}
             className={`px-4 py-1.5 rounded-full text-sm font-medium transition-colors ${
               activeType === type
@@ -99,7 +99,7 @@ function ExamplesPage() {
         <div className="text-center py-12 text-gray-500">
           <p className="text-lg font-medium mb-1">No examples found</p>
           <p className="text-sm">
-            <Link to="/examples/" search={{}} className="text-blue-600 hover:underline">
+            <Link to="/examples" search={{}} className="text-blue-600 hover:underline">
               Clear filters
             </Link>
           </p>

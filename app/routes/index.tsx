@@ -33,15 +33,15 @@ function HomePage() {
         </p>
         {total > 0 && (
           <div className="flex gap-4 text-sm">
-            <Link to="/examples/" search={{ type: 'variety' }} className="text-indigo-600 hover:text-indigo-800 hover:underline">
+            <Link to="/examples" search={{ type: 'variety' }} className="text-indigo-600 hover:text-indigo-800 hover:underline">
               {counts.variety} {counts.variety === 1 ? 'variety' : 'varieties'}
             </Link>
             <span className="text-gray-300">·</span>
-            <Link to="/examples/" search={{ type: 'computation' }} className="text-indigo-600 hover:text-indigo-800 hover:underline">
+            <Link to="/examples" search={{ type: 'computation' }} className="text-indigo-600 hover:text-indigo-800 hover:underline">
               {counts.computation} {counts.computation === 1 ? 'computation' : 'computations'}
             </Link>
             <span className="text-gray-300">·</span>
-            <Link to="/examples/" search={{ type: 'counterexample' }} className="text-indigo-600 hover:text-indigo-800 hover:underline">
+            <Link to="/examples" search={{ type: 'counterexample' }} className="text-indigo-600 hover:text-indigo-800 hover:underline">
               {counts.counterexample} {counts.counterexample === 1 ? 'counterexample' : 'counterexamples'}
             </Link>
           </div>

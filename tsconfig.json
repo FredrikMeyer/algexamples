@@ -6,9 +6,10 @@
     "jsx": "react-jsx",
     "strict": true,
     "skipLibCheck": true,
+    "types": ["vite/client", "node"],
     "paths": {
-      "~/*": ["app/*"]
+      "~/*": ["./app/*"]
     }
   },
-  "include": ["app", "content"]
+  "include": ["app", "content", "vite.config.ts", "vitest.config.ts"]
 }

@@ -165,7 +165,7 @@ function VarietiesPage() {
 
         {isFiltered && (
           <Link
-            to="/varieties/"
+            to="/varieties"
             search={{}}
             className="self-end px-3 py-1.5 rounded text-sm font-medium text-gray-500 hover:text-gray-800 hover:bg-gray-100 transition-colors"
           >
@@ -178,7 +178,7 @@ function VarietiesPage() {
         <div className="text-center py-12 text-gray-400">
           <p className="text-base font-medium mb-1">No varieties match</p>
           <p className="text-sm">
-            <Link to="/varieties/" search={{}} className="text-indigo-600 hover:underline">
+            <Link to="/varieties" search={{}} className="text-indigo-600 hover:underline">
               Clear filters
             </Link>
           </p>

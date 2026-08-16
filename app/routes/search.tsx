@@ -254,7 +254,7 @@ function SearchPage() {
                         onClick={() =>
                           val === ''
                             ? clear('rational')
-                            : set({ rational: val as 'true' | 'false' })
+                            : set({ rational: val === 'true' })
                         }
                         className={`px-3 py-1.5 transition-colors ${
                           active ? 'bg-indigo-700 text-white' : 'bg-white text-gray-600 hover:bg-gray-50'
@@ -272,7 +272,7 @@ function SearchPage() {
               <div>
                 <p className="text-xs text-gray-500 mb-1">Singularities</p>
                 <button
-                  onClick={() => (search.smooth ? clear('smooth') : set({ smooth: 'true' }))}
+                  onClick={() => (search.smooth ? clear('smooth') : set({ smooth: true }))}
                   className={`px-3 py-1.5 rounded text-sm font-medium border transition-colors ${
                     search.smooth
                       ? 'bg-indigo-700 text-white border-indigo-700'

@@ -9,6 +9,25 @@ import { processMarkdown } from './app/lib/markdown'
 
 const base = process.env.VITE_BASE_PATH ?? '/'
 
+const pages = (() => {
+  try {
+    const examples = getAllExamples()
+    const tags = getAllTags()
+    const fields = getAllFields()
+    return [
+      '/',
+      '/examples/',
+      '/varieties/',
+      '/search',
+      ...examples.map((e) => `/examples/${e.slug}`),
+      ...fields.map((f) => `/fields/${f}`),
+      ...tags.map((t) => `/tags/${t}`),
+    ].map((path) => ({ path }))
+  } catch {
+    return ['/', '/examples/', '/varieties/'].map((path) => ({ path }))
+  }
+})()
+
 export default defineConfig({
   base,
   resolve: {
@@ -17,28 +36,11 @@ export default defineConfig({
   plugins: [
     tanstackStart({
       srcDirectory: 'app',
+      pages,
       prerender: {
         enabled: true,
         crawlLinks: true,
         filter: (page) => !page.path.includes('?'),
-        routes: () => {
-          try {
-            const examples = getAllExamples()
-            const tags = getAllTags()
-            const fields = getAllFields()
-            return [
-              '/',
-              '/examples/',
-              '/varieties/',
-              '/search',
-              ...examples.map((e) => `/examples/${e.slug}`),
-              ...fields.map((f) => `/fields/${f}`),
-              ...tags.map((t) => `/tags/${t}`),
-            ]
-          } catch {
-            return ['/', '/examples/', '/varieties/']
-          }
-        },
       },
     }),
     viteReact(),
