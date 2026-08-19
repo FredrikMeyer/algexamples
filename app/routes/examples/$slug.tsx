@@ -52,14 +52,33 @@ function ExampleDetailPage() {
           {/* Markdown body */}
           <div className="prose" dangerouslySetInnerHTML={{ __html: html }} />
 
-          {/* Links / References */}
-          {example.links && example.links.length > 0 && (
+          {/* References and external links */}
+          {((example.references && example.references.length > 0) ||
+            (example.links && example.links.length > 0)) && (
             <div className="mt-8 pt-6 border-t border-gray-200">
               <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-500 mb-3">
                 References
               </h2>
               <ul className="space-y-1">
-                {example.links.map((link) => (
+                {example.references?.map((reference) =>
+                  /^https?:\/\//.test(reference) ? (
+                    <li key={reference}>
+                      <a
+                        href={reference}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-sm text-blue-600 hover:underline break-all"
+                      >
+                        {reference}
+                      </a>
+                    </li>
+                  ) : (
+                    <li key={reference} className="text-sm text-gray-700">
+                      {reference}
+                    </li>
+                  ),
+                )}
+                {example.links?.map((link) => (
                   <li key={link.url}>
                     <a
                       href={link.url}
